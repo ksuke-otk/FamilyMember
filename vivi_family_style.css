@@ -20,6 +20,18 @@
     --view-text: #3498db; /* 青系 */
 }
 
+/*================================
+ 0. box-sizingのリセット (最重要)
+================================*/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* 既存の :root 以下へ続く */
+:root { 
+    /* ... 略 ... */
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -241,14 +253,19 @@ body {
     margin: 0;
 }
 
+/* 4. メインコンテンツ（リスト/詳細）セクション内の .member-item */
 .member-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 0; /* 元のリスト項目と統合 */
+    padding: 15px 0;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
-    position: relative;
+    position: relative; 
+    
+    /* 🚨 【追加/修正】編集(✎)と削除(🗑️)アイコン分の右側の余白を確保 */
+    /* 削除アイコン(right: 5px) + 編集アイコン(right: 40px) の位置を考慮し、余裕を持たせて設定 */
+    padding-right: 80px; 
 }
 
 .member-item:last-child {
