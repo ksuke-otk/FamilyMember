@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - メンバー詳細</title>
+    <link rel="stylesheet" href="vivi_family_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left">
+                <a href="family_member.html" class="icon-button back-button"><span class="icon">＜</span> 戻る</a>
+            </div>
+            <div class="header-center"><h1 id="detail-title">メンバー詳細</h1></div>
+            <div class="header-right">
+                <button class="icon-button edit-button" id="edit-button-link">
+                    <span class="icon">✎</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="detail-section">
+                <div class="detail-group">
+                    <label>名前</label>
+                    <p class="detail-value" id="member-name"></p>
+                </div>
+                <div class="detail-group">
+                    <label>関係性</label>
+                    <p class="detail-value" id="member-relation"></p>
+                </div>
+                <div class="detail-group">
+                    <label>権限</label>
+                    <p class="detail-value" id="member-permission"></p>
+                </div>
+            </section>
+
+            </main>
+            <nav class="bottom-nav">
+                 <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+                 <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+                 <a href="family_member.html" class="nav-item active"><span class="icon">⚙️</span>設定</a>
+            </nav>    
+    </div>
+
+
+
+    <script>
+        // メンバーデータ定義 (変更なし)
+        const members = {
+            '1': {
+                name: '私の名前',
+                title_name: '父',
+                relation: '父 (あなた)',
+                permission: '管理者',
+                permission_class: 'permission-admin'
+            },
+            '2': {
+                name: '妻の名前',
+                title_name: '母',
+                relation: '母',
+                permission: '投稿可能',
+                permission_class: 'permission-post'
+            }
+        };
+
+        function loadMemberDetail() {
+            // URLからクエリパラメータを取得
+            const params = new URLSearchParams(window.location.search);
+            const memberId = params.get('id');
+            const data = members[memberId];
+
+            if (!data) {
+                // データが見つからない場合の処理 (例: エラーメッセージ表示)
+                document.getElementById('detail-title').textContent = 'メンバーが見つかりません';
+                document.querySelector('.main-content').innerHTML = '<p style="text-align:center; margin-top: 50px;">指定されたメンバー情報がありません。</p>';
+                return;
+            }
+
+            // 1. ヘッダーを更新
+            document.getElementById('detail-title').textContent = `メンバー詳細 (${data.title_name})`;
+            document.getElementById('edit-button-link').onclick = () => {
+                location.href = `member_edit.html?id=${memberId}`;
+            };
+
+            // 2. 詳細情報を更新
+            document.getElementById('member-name').textContent = data.name;
+            document.getElementById('member-relation').textContent = data.relation;
+            
+            // 権限情報を更新
+            const permissionElement = document.getElementById('member-permission');
+            permissionElement.textContent = data.permission;
+            permissionElement.className = `detail-value ${data.permission_class}`;
+        }
+
+        // ページ読み込み時に実行
+        loadMemberDetail();
+    </script>
+</body>
+</html>
