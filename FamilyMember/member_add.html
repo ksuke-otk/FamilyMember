@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - 家族招待</title>
+    <link rel="stylesheet" href="vivi_family_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left"><h1>家族招待</h1></div>
+            <button class="icon-button cancel-button" onclick="if(confirm('招待を中止しますか？')) location.href='family_member.html'">キャンセル</button>
+        </header>
+
+        <main class="main-content form-page">
+            <form id="invite-family-form">
+                <p class="form-instruction">招待したい家族の情報を入力してください。</p>
+
+                <div class="form-group">
+                    <label for="family-name">名前 <span class="required">*</span></label>
+                    <input type="text" id="family-name" name="name" required placeholder="例: 山田 太郎">
+                </div>
+                
+                <div class="form-group">
+                    <label for="family-relation">関係性 <span class="required">*</span></label>
+                    <select id="family-relation" name="relation" required>
+                        <option value="">選択してください</option>
+                        <option value="father">父</option>
+                        <option value="mother">母</option>
+                        <option value="grandfather">祖父</option>
+                        <option value="grandmother">祖母</option>
+                    </select>
+                </div>
+
+  
+                <div class="form-group">
+                    <label for="family-permission">権限 <span class="required">*</span></label>
+                    <select id="family-permission" name="permission" required>
+                        <option value="admin">管理者</option>
+                        <option value="post" selected>投稿可能</option>
+                        <option value="view">閲覧のみ</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="primary-button large-button">完了</button>
+                </div>
+            </form>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item active"><span class="icon">⚙️</span>設定</a>
+       </nav>  
+
+    </div>
+ 
+
+</body>
+</html>
