@@ -226,10 +226,11 @@ body {
   4. メインコンテンツ（リスト/詳細）
 ================================*/
 .main-content {
-        flex-grow: 1;
-        overflow-y: auto;
-        padding: 0 15px 20px 15px;
-    }
+    flex-grow: 1;
+    overflow-y: auto;
+    /* 🚨 【確認】左右15pxのパディングが設定されていることを確認 */
+    padding: 0 15px 20px 15px; 
+}
     
     .section-title {
         font-size: 1.1em;
@@ -258,25 +259,33 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 0;
+    
+    /* 🚨 【修正】垂直方向のパディングを維持 */
+    padding: 15px 0; 
+    
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     position: relative; 
     
-    /* 🚨 【追加/修正】編集(✎)と削除(🗑️)アイコン分の右側の余白を確保 */
-    /* 削除アイコン(right: 5px) + 編集アイコン(right: 40px) の位置を考慮し、余裕を持たせて設定 */
-    padding-right: 80px; 
+    /* 🚨 【削除！】この行を削除します。 */
+    /* padding-right: 80px;  */ 
+    
+    /* 🚨 【追加】リスト要素の左右のパディングは、メインコンテンツのパディングで吸収されるため不要。
+       ただし、`.info`が右端に接触しないよう、リスト全体のコンテンツエリアの幅を確保するため、
+       代わりに `.member-list` の左右パディングを調整します。 */
 }
 
 .member-item:last-child {
     border-bottom: none;
 }
 
-/* 🚨 【重要追加】名前と役割の表示エリアを、アイコンの位置に合わせて広げる */
+/* 🚨 【再修正】名前と役割の表示エリアを、アイコンの位置に合わせて広げる */
 .member-item .info {
     flex-grow: 1;
-    /* アイコンと被らないように右側の幅を少し狭くする */
-    padding-right: 15px;
+    /* 🚨 【重要】アイコン（約80px幅）と被らないように右側のパディングを確保 */
+    padding-right: 80px; 
+    
+    /* アイコン分のスペースを確保し、テキストがアイコンと重ならないようにします */
 }
 
 .member-item .name {
