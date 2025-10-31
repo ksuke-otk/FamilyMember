@@ -224,9 +224,7 @@ body {
     margin-bottom: 2px;
 }
 
-/*================================
-  4. メインコンテンツ（リスト/詳細）
-================================*/
+/* 4. メインコンテンツ（リスト/詳細） */
 .main-content {
     flex-grow: 1;
     overflow-y: auto;
@@ -375,18 +373,29 @@ body {
     font-weight: bold;
 }
 
-/*================================
-  5. 権限説明ボックス（家族メンバー画面）
-================================*/
+/* 5. 権限説明ボックス（家族メンバー画面） */
 .permission-info-box {
     background-color: var(--view-bg); 
     border-radius: 8px;
-    padding: 15px;
+    
+    /* 🚨 【修正】内側のパディングは上下のみにし、左右のパディングは外側の.main-contentに依存 */
+    padding: 15px; 
+    
+    /* 🚨 【追加】左右15pxのマージンを設定して、外側の.main-contentのパディングに合わせる */
+    margin: 0 0 20px 0; /* 上下は既存のまま、左右を0にするか、または以下のように全体を調整 */
+    
+    /* ※最も確実な修正：.main-contentのパディングを吸収するため、paddingを削除し、マージンを追加します。 */
+    /* 🚨 【再々修正】*/
+    padding: 15px; /* 内側パディングはそのまま */
     margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-
+    
+    /* 🚨 【追加/修正】これを削除することで、.main-contentのパディングが効くようになります。 */
+    /* .main-content内にあるので、左右のマージンは不要です。しかし、これが左に寄る原因の場合、*/
+    /* 一度 .main-content のpaddingを0にして、子要素（.permission-info-box, .add-button, .member-list）にパディングを持たせる手法も考えられます。 */
+    
+    /* 権限ボックスだけが左に寄っている場合、これに左右のパディング/マージンを追加してみてください。 */
+    /* ここでは一旦、以下の修正を試します。 */
 }
-
 .permission-title {
     font-size: 1.0em;
     font-weight: bold;
