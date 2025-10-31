@@ -261,27 +261,27 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 0;
+    padding: 15px 0; /* 垂直方向のパディングのみ維持 */
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     position: relative; 
     
-    /* 🚨 【追加/修正】編集(✎)と削除(🗑️)アイコン分の右側の余白を確保 */
-    /* 削除アイコン(right: 5px) + 編集アイコン(right: 40px) の位置を考慮し、余裕を持たせて設定 */
-    padding-right: 80px; 
+    /* 🚨 【重要】この行を完全に削除してください！ */
+    /* padding-right: 80px; */ 
 }
 
 .member-item:last-child {
     border-bottom: none;
 }
 
-/* 🚨 【再修正】名前と役割の表示エリアを、アイコンの位置に合わせて広げる */
+/* 🚨 【確定】名前と役割の表示エリアを、アイコンの位置に合わせて広げる */
 .member-item .info {
     flex-grow: 1;
-    /* 🚨 【重要】アイコン（約80px幅）と被らないように右側のパディングを確保 */
+    /* 🚨 【重要】右側のパディングのみを確保し、左側は親（.main-content）に揃える */
     padding-right: 80px; 
     
-    /* アイコン分のスペースを確保し、テキストがアイコンと重ならないようにします */
+    /* 左側のパディングは`.main-content`に任せるため、ここでは設定しません。 */
+    /* これで、リストのテキストは左端（15pxのインデント）から始まり、右端（アイコンの80px手前）まで広がります。 */
 }
 
 .member-item .name {
