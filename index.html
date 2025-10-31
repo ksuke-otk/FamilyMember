@@ -1,136 +1,68 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>家族アルバムvivi - index</title>
-    <link rel="stylesheet" href="vivi_family_style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - index</title>
+    <link rel="stylesheet" href="vivi_family_style.css">
 </head>
 <body>
-    <div class="app-container">
-       <header class="top-bar">
-            <div class="header-left"></div> 
-            <div class="header-center"><h1>家族アルバム</h1></div>
-            <div class="header-right"></div>
-       </header>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left"></div> 
+            <div class="header-center"><h1>アルバム</h1></div>
+            <div class="header-right"></div>
+        </header>
 
-        <nav class="member-tabs">
-            <button class="tab active" onclick="showSection('family', this)">家族メンバー</button>
-            <button class="tab" onclick="showSection('kids', this)">子ども情報</button>
-        </nav>
+        <main class="main-content">
+            <section id="family-section" class="member-section active">
 
-        <main class="main-content">
-             <section id="family-section" class="member-section active">
+            </section>
+        </main>
+ 
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item"><span class="icon">⚙️</span>設定</a>
+        </nav>
+     </div>
 
- 
+    <script>
+      let memberToDeleteId = null;
 
-<!--
-                <button class="add-button primary-button" onclick="location.href='member_add.html'">
-                    <span class="icon">＋</span> 新しい家族を招待する
-                </button>
-                <ul class="member-list">
-                     <li class="member-item">
-                         <div class="info" onclick="location.href='member_detail.html?id=1'">
-                             <p><span class="name">私の名前 (父)</span>
-                             <p><span class="role">管理者</span>
-                          </div>
-                         <span class="edit-icon" onclick="event.stopPropagation(); location.href='member_edit.html?id=1'">✎</span>
-                                                  <span class="delete-icon" onclick="event.stopPropagation(); showDeleteModal('私の名前 (父)', '1')">🗑️</span>
-                    </li>
-                    <li class="member-item">
-                     <div class="info" onclick="location.href='member_detail.html?id=2'">
-                            <p><span class="name">妻の名前 (母)</span>
-                            <p><span class="role">投稿可能</span>
-                          </div>
-                         <span class="edit-icon" onclick="event.stopPropagation(); location.href='member_edit.html?id=2'">✎</span>
-                                                <span class="delete-icon" onclick="event.stopPropagation(); showDeleteModal('妻の名前 (母)', '2')">🗑️</span>
-                     </li>
-                </ul>
--->
-            </section>
+        function showSection(sectionId, element) {
+            document.querySelectorAll('.member-tabs .tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            document.querySelectorAll('.member-section').forEach(section => section.style.display = 'none');
+            document.getElementById(`${sectionId}-section`).style.display = 'block';
+       }
 
-<!--
-<section id="kids-section" class="member-section" style="display: none;">
-    <h2 class="section-title">登録されている子ども</h2>
-    <button class="add-button primary-button" onclick="location.href='kids_add.html'">
-        <span class="icon">＋</span> 新しい子どもを登録する
-    </button>
-    <ul class="member-list">
-        <li class="member-item" onclick="location.href='kids_info.html?id=a'">
-            <div class="info">
-                <span class="name">Aちゃん (長女)</span>
-                <span class="role">4歳 | 成長記録を見る</span>
-            </div>
-            
-        </li>
-        <li class="member-item" onclick="location.href='kids_info.html?id=b'">
-            <div class="info">
-                <span class="name">Bくん (長男)</span>
-                <span class="role">2歳 | 成長記録を見る</span>
-            </div>
-            
-        </li>
-    </ul>
-    -->
-</section>
-        </main>
-  
-        <nav class="bottom-nav">
-            <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
-            <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
-            <a href="family_member.html" class="nav-item"><span class="icon">⚙️</span>設定</a>
-         </nav>
-     </div>
-<!--
-    <div id="delete-modal" class="modal-overlay" style="display:none;">
-        <div class="modal-content">
-            <p id="modal-message">メンバーを削除しますか？</p>
-            <div class="modal-buttons">
-                <button class="button-no" onclick="hideDeleteModal()">いいえ</button>
-                <button class="button-yes" onclick="deleteMemberConfirmed()">はい</button>
-             </div>
-        </div>
-    </div>
--->
+            function showDeleteModal(memberName, memberId) {
+            memberToDeleteId = memberId;
+            document.getElementById('modal-message').textContent = `メンバーを削除しますか？`;
+            document.getElementById('delete-modal').style.display = 'flex';
+       }
 
-    <script>
- // ... (JavaScriptコードは変更なし) ...
-     let memberToDeleteId = null;
+          function hideDeleteModal() {
+            // 「いいえ」を押下した場合、家族メンバー画面に戻る（＝ポップアップを閉じる）
+            memberToDeleteId = null;
+            document.getElementById('delete-modal').style.display = 'none';
+      }
 
-       function showSection(sectionId, element) {
-            document.querySelectorAll('.member-tabs .tab').forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
-            document.querySelectorAll('.member-section').forEach(section => section.style.display = 'none');
-            document.getElementById(`${sectionId}-section`).style.display = 'block';
-     }
+          function deleteMemberConfirmed() {
+            // 「はい」を押下した場合、削除処理を適用
+            if (memberToDeleteId) {
+              // 削除対象の要素をDOMから削除する処理（今回はシミュレーション）
+                const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
+                if (memberElement) {
+                    memberElement.remove();
+                }
 
-            function showDeleteModal(memberName, memberId) {
-            memberToDeleteId = memberId;
-            document.getElementById('modal-message').textContent = `メンバーを削除しますか？`;
-            document.getElementById('delete-modal').style.display = 'flex';
-     }
-
-          function hideDeleteModal() {
-           // 「いいえ」を押下した場合、家族メンバー画面に戻る（＝ポップアップを閉じる）
-            memberToDeleteId = null;
-            document.getElementById('delete-modal').style.display = 'none';
-      }
-
-          function deleteMemberConfirmed() {
-             // 「はい」を押下した場合、削除処理を適用
-           if (memberToDeleteId) {
-             // 削除対象の要素をDOMから削除する処理（今回はシミュレーション）
-                const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
-               if (memberElement) {
-                   memberElement.remove();
-               }
-
-                   alert(`ID ${memberToDeleteId} のメンバーを削除しました。`);
-            }
-             // 処理後、家族メンバー画面に戻る（＝ポップアップを閉じる）
-              hideDeleteModal(); 
-        }
-      </script>
+                    alert(`ID ${memberToDeleteId} のメンバーを削除しました。`);
+            }
+            // 処理後、家族メンバー画面に戻る（＝ポップアップを閉じる）
+              hideDeleteModal(); 
+        }
+      </script>
 </body>
-
 </html>
