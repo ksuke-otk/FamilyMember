@@ -39,14 +39,15 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--background-color);
-    display: flex;
-    justify-content: center;
+    /* 🚨 【修正】中央寄せをapp-containerに任せるため、bodyのdisplay: flexを削除 */
+    /* display: flex; <--- 削除またはコメントアウト */
+    /* justify-content: center; <--- 削除またはコメントアウト */
     min-height: 100vh;
     color: var(--text-color);
 
     /* 🚨 【重要追加】横スクロールの発生を完全に防ぐ */
     overflow-x: hidden; 
-    width: 100vw; /* 画面の幅全体を使う */
+    /* width: 100vw; <--- 削除またはコメントアウト（削除が安全） */
 }
 
 .app-container {
