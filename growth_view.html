@@ -1,97 +1,101 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>家族アルバムvivi - 成長記録</title>
-    <link rel="stylesheet" href="vivi_family_style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - 成長記録</title>
+    <link rel="stylesheet" href="vivi_family_style.css">
 </head>
 <body>
-    <div class="app-container">
-        <header class="top-bar">
-            <div class="header-left">
-                                <a href="kids_detail.html" class="icon-button back-button">
-                    <span class="icon">＜</span> 戻る
-                </a>
-            </div>
-            <div class="header-center"><h1 id="detail-title">成長記録</h1></div>
-            <div class="header-right">
-                            </div>
-        </header>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left">
+                <a href="#" id="header-back-link" class="icon-button back-button">
+                    <span class="icon">＜</span> 戻る
+                </a>
+            </div>
+            <div class="header-center"><h1 id="detail-title">成長記録</h1></div>
+            <div class="header-right">
+            </div>
+        </header>
 
-        <main class="main-content">
-            <section class="growth-section">
-                
-                                <div class="kid-back-link">
-                                        <a href="#" id="kid-detail-link" class="back-icon">
-                        <span style="font-size: 2em;">&#x21B6;</span>
-                    </a>
-                </div>
+        <main class="main-content">
+            <section class="growth-section">
+                
+                <div class="kid-back-link">
+                    <a href="#" id="kid-detail-link" class="back-icon">
+                        <span style="font-size: 2em;">&#x21B6;</span>
+                    </a>
+                </div>
 
-                <p class="kid-name-display" id="kid-name-display">田中太郎</p>
+                <p class="kid-name-display" id="kid-name-display">田中太郎</p>
 
-                                <div class="growth-chart-box">
-                    <p style="text-align: center; color: #888;">[グラフ表示エリア]</p>
-                                        <svg width="100%" height="150" viewBox="0 0 300 150">
-                        <polyline points="20,130 80,110 140,100 200,80 260,30"
-                            style="fill:none;stroke:var(--primary-dark);stroke-width:2" />
-                    </svg>
-                </div>
+                <div class="growth-chart-box">
+                    <p style="text-align: center; color: #888;">[グラフ表示エリア]</p>
+                    <svg width="100%" height="150" viewBox="0 0 300 150">
+                        <polyline points="20,130 80,110 140,100 200,80 260,30"
+                            style="fill:none;stroke:var(--primary-dark);stroke-width:2" />
+                    </svg>
+                </div>
 
-                                <div class="growth-data-list" id="growth-data-list">
-                    <p>1歳: 82cm</p>
-                    <p>2歳: 87cm</p>
-                    <p>3歳: 99cm</p>
-                </div>
+                <div class="growth-data-list" id="growth-data-list">
+                    <p>1歳: 82cm</p>
+                    <p>2歳: 87cm</p>
+                    <p>3歳: 99cm</p>
+                </div>
 
-                <button class="primary-button large-button" style="margin-top: 30px;" id="ar-measure-link">
-                    AR身長測定へ
-                </button>
-            </section>
-        </main>
+                <button class="primary-button large-button" style="margin-top: 30px;" id="ar-measure-link">
+                    AR身長測定へ
+                </button>
+            </section>
+        </main>
 
-<nav class="bottom-nav">
-    <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
-    <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
-    <a href="family_member.html" class="nav-item active"><span class="icon">⚙️</span>設定</a>
-</nav>  
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item active"><span class="icon">⚙️</span>設定</a>
+        </nav> 	
 
-    </div>
+    </div>
 
+    <script>
+        const kidsData = {
+            'a': { name: 'Aちゃん', data: ['3歳: 95cm', '4歳: 102cm'] },
+            'b': { name: 'Bくん', data: ['1歳: 82cm', '2歳: 87cm', '3歳: 99cm'] }
+        };
 
+        function loadGrowthRecord() {
+            const params = new URLSearchParams(window.location.search);
+            const kidId = params.get('kid');
+            const data = kidsData[kidId] || { name: '不明な子ども', data: ['データなし'] };
+            
+            // 遷移先のURLを生成
+            const backUrl = `kids_info.html?id=${kidId}`;
 
-        <script>
-        const kidsData = {
-            'a': { name: 'Aちゃん', data: ['3歳: 95cm', '4歳: 102cm'] },
-            'b': { name: 'Bくん', data: ['1歳: 82cm', '2歳: 87cm', '3歳: 99cm'] }
-        };
+            // 1. 子どもの名前を更新
+            document.getElementById('kid-name-display').textContent = data.name;
 
-        function loadGrowthRecord() {
-            const params = new URLSearchParams(window.location.search);
-            const kidId = params.get('kid');
-            const data = kidsData[kidId] || { name: '不明な子ども', data: ['データなし'] };
+            // 2. ヘッダーの戻るボタンのリンクを更新
+            document.getElementById('header-back-link').href = backUrl;
 
-            // 1. 子どもの名前を更新
-            document.getElementById('kid-name-display').textContent = data.name;
+            // 3. コンテンツ内の戻るアイコンのリンクを更新
+            document.getElementById('kid-detail-link').href = backUrl;
+            
+            // 4. 測定データ一覧を更新 (簡易表示)
+            const dataList = document.getElementById('growth-data-list');
+            dataList.innerHTML = '';
+            data.data.forEach(item => {
+                const p = document.createElement('p');
+                p.textContent = item;
+                dataList.appendChild(p);
+            });
+            
 
-            // 2. 戻るリンクを更新 (子ども情報画面に戻るためにkidIdを付与)
-            document.getElementById('kid-detail-link').href = `kids_detail.html?id=${kidId}`;
-            
-            // 3. 測定データ一覧を更新 (簡易表示)
-            const dataList = document.getElementById('growth-data-list');
-            dataList.innerHTML = '';
-            data.data.forEach(item => {
-                const p = document.createElement('p');
-                p.textContent = item;
-                dataList.appendChild(p);
-            });
-            
+        }
 
-        }
-
-        // ページ読み込み時に実行
-        loadGrowthRecord();
-    </script>
+        // ページ読み込み時に実行
+        loadGrowthRecord();
+    </script>
 
 </body>
 </html>
