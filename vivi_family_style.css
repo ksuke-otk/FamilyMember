@@ -59,7 +59,7 @@ body {
     position: relative;
     min-height: 100vh;
     
-    /* 🚨 【修正1】コンテナを画面中央に配置するため、左右のマージンをautoにします。 */
+    /* 🚨 【重要修正】コンテナを画面中央に配置します */
     margin-left: auto;
     margin-right: auto;
 }
