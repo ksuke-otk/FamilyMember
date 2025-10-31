@@ -58,6 +58,10 @@ body {
     flex-direction: column;
     position: relative;
     min-height: 100vh;
+    
+    /* 🚨 【修正1】コンテナを画面中央に配置するため、左右のマージンをautoにします。 */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /*================================
@@ -264,8 +268,20 @@ body {
     cursor: pointer;
     position: relative; 
     
-    /* 🚨 【重要】この行を完全に削除してください！ */
+    /* 🚨 【確認】この行が完全に削除されていることを確認してください！ */
     /* padding-right: 80px; */ 
+}
+
+/* 🚨 【修正2-A】info内のpタグのデフォルトマージンをリセットし、垂直方向のスペースを制御します。 */
+.member-item .info p {
+    margin: 0;
+}
+
+/* 🚨 【修正2-B】名前と役割の表示エリアを、アイコンの位置に合わせて広げる */
+.member-item .info {
+    flex-grow: 1;
+    /* 🚨 【重要】右側のパディングを確保し、左側のコンテンツは.main-contentのパディングに揃えます。 */
+    padding-right: 80px; 
 }
 
 .member-item:last-child {
