@@ -1,4 +1,16 @@
 /*================================
+ 0. box-sizingのリセット (最重要)
+================================*/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* 既存の :root 以下へ続く */
+:root { 
+    /* ... 略 ... */
+}
+
+/*================================
   1. グローバル設定と共通レイアウト
 ================================*/
 :root {
@@ -20,17 +32,7 @@
     --view-text: #3498db; /* 青系 */
 }
 
-/*================================
- 0. box-sizingのリセット (最重要)
-================================*/
-*, *::before, *::after {
-    box-sizing: border-box;
-}
 
-/* 既存の :root 以下へ続く */
-:root { 
-    /* ... 略 ... */
-}
 
 body {
     font-family: Arial, sans-serif;
@@ -259,20 +261,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
-    /* 🚨 【修正】垂直方向のパディングを維持 */
-    padding: 15px 0; 
-    
+    padding: 15px 0;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     position: relative; 
     
-    /* 🚨 【削除！】この行を削除します。 */
-    /* padding-right: 80px;  */ 
-    
-    /* 🚨 【追加】リスト要素の左右のパディングは、メインコンテンツのパディングで吸収されるため不要。
-       ただし、`.info`が右端に接触しないよう、リスト全体のコンテンツエリアの幅を確保するため、
-       代わりに `.member-list` の左右パディングを調整します。 */
+    /* 🚨 【追加/修正】編集(✎)と削除(🗑️)アイコン分の右側の余白を確保 */
+    /* 削除アイコン(right: 5px) + 編集アイコン(right: 40px) の位置を考慮し、余裕を持たせて設定 */
+    padding-right: 80px; 
 }
 
 .member-item:last-child {
@@ -388,11 +384,7 @@ body {
     padding: 15px;
     margin-bottom: 20px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    /* main-contentとその内部要素全体にボックスサイズを適用（通常はグローバルに設定） */
-    *, *::before, *::after {
-    box-sizing: border-box;
-    }
-/* グローバル設定がない場合は、これをCSSの先頭に追加してください */
+
 }
 
 .permission-title {
