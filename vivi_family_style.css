@@ -1,302 +1,169 @@
-/*================================
- 0. box-sizingのリセット (最重要)
-================================*/
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-/* 既存の :root 以下へ続く */
-:root { 
-    /* ... 略 ... */
-}
-
-/*================================
-  1. グローバル設定と共通レイアウト
-================================*/
 :root {
-    --primary-color: #79c2d0; /* テーマカラー */
+    --primary-color: #79c2d0;
     --primary-dark: #5fa5b1;
     --background-color: #f4f4f4;
     --text-color: #333;
-    --light-gray: #ccc; /* 灰色ボタンの背景/ボーダーに使用 */
+    --light-gray: #ccc;
     --border-color: #eee;
     --danger-color: #e74c3c;
-    --delete-color: var(--danger-color); /* 削除アイコンのホバー色 */
-    
-    /* 権限ごとの背景/文字色 */
+    --radius: 12px;
+
     --admin-bg: #f9e2e2;
-    --admin-text: #e74c3c; /* 赤系 */
+    --admin-text: #e74c3c;
     --post-bg: #e6f6e9;
-    --post-text: #27ae60; /* 緑系 */
+    --post-text: #27ae60;
     --view-bg: #ebf5f9;
-    --view-text: #3498db; /* 青系 */
+    --view-text: #3498db;
 }
 
-
-
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", "Hiragino Sans", sans-serif;
     margin: 0;
-    padding: 0;
     background-color: var(--background-color);
-    /* 🚨 【修正】中央寄せをapp-containerに任せるため、bodyのdisplay: flexを削除 */
-    /* display: flex; <--- 削除またはコメントアウト */
-    /* justify-content: center; <--- 削除またはコメントアウト */
-    min-height: 100vh;
     color: var(--text-color);
-
-    /* 🚨 【重要追加】横スクロールの発生を完全に防ぐ */
-    overflow-x: hidden; 
-    /* width: 100vw; <--- 削除またはコメントアウト（削除が安全） */
+    overflow-x: hidden;
 }
 
 .app-container {
     width: 100%;
     max-width: 450px;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    margin: 0 auto;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    position: relative;
-    min-height: 100vh;
-    
-    /* 🚨 【重要修正】コンテナを画面中央に配置します */
-    margin-left: auto;
-    margin-right: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/*================================
-  2. ヘッダーとボタン
-================================*/
 .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
-    background-color: var(--primary-color);
-    color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 12px 15px;
+    background: var(--primary-color);
+    color: #fff;
     position: sticky;
     top: 0;
     z-index: 10;
 }
 
 .top-bar h1 {
-    font-size: 1.2em;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
     margin: 0;
     font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
-.icon-button {
-    background: none;
+.member-tabs {
+    display: flex;
+    justify-content: space-around;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.member-tabs .tab {
+    flex-grow: 1;
+    padding: 15px 0;
     border: none;
-    color: white;
-    font-size: 1em;
+    background: none;
+    font-weight: 600;
+    color: #777;
     cursor: pointer;
-    text-decoration: none;
-    padding: 5px 10px;
-    margin-left: 10px;
-    display: inline-flex;
-    align-items: center;
-    border-radius: 5px;
-    transition: background-color 0.2s;
+    border-bottom: 3px solid transparent;
 }
 
-.cancel-button {
-    border: 1px solid white;
+.member-tabs .tab.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+    background-color: rgba(121, 194, 208, 0.08);
 }
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px 15px 80px;
+}
+
+.section-title {
+    border-left: 5px solid var(--primary-color);
+    padding-left: 8px;
+    margin: 20px 0 15px;
+    font-size: 1.1em;
+}
+
+.permission-info-box {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 15px 20px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.permission-title {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 5px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.permission-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    padding-bottom: 5px;
+}
+
+.permission-label {
+    min-width: 65px;
+    font-size: 0.8em;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 3px 6px;
+    margin-right: 10px;
+}
+
+.permission-label.admin { background: var(--admin-bg); color: var(--admin-text); }
+.permission-label.post { background: var(--post-bg); color: var(--post-text); }
+.permission-label.view { background: var(--view-bg); color: var(--view-text); }
 
 .primary-button {
-    background-color: var(--primary-color);
-    color: white;
+    background: var(--primary-color);
+    color: #fff;
     border: none;
-    border-radius: 8px;
-    font-size: 1.0em;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.2s;
-    text-decoration: none;
+    border-radius: var(--radius);
     padding: 12px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
 }
 
 .primary-button:hover {
     background-color: var(--primary-dark);
 }
 
-.large-button {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1em;
-}
-
-.secondary-button {
-    width: 100%;
-    padding: 12px;
-    margin: 20px 0;
-    background-color: #ffffff;
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 8px;
-    font-size: 1.0em;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.2s;
-}
-
-.delete-button {
-    width: 100%;
-    padding: 15px;
-    background-color: transparent;
-    color: var(--danger-color);
-    border: 1px solid var(--danger-color);
-    border-radius: 8px;
-    font-size: 1.0em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.delete-area {
-    margin-top: 40px;
-}
-
-
-/*================================
-  3. ナビゲーション (タブと下部ナビ)
-================================*/
-.member-tabs {
-    display: flex;
-    justify-content: space-around;
-    border-bottom: 1px solid var(--border-color);
-    background-color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.member-tabs .tab {
-    flex-grow: 1;
-    background: none;
-    border: none;
-    padding: 15px 0;
-    font-size: 1.0em;
-    font-weight: bold;
-    color: #888;
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.member-tabs .tab.active {
-    color: var(--primary-color);
-    border-bottom: 3px solid var(--primary-color);
-}
-
-.bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    border-top: 1px solid var(--border-color);
-    background-color: #ffffff;
-    padding: 5px 0;
-    position: sticky;
-    bottom: 0;
-    width: 100%;
-    max-width: 450px;
-    z-index: 10;
-}
-
-.bottom-nav .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: #888;
-    font-size: 0.7em;
-    padding: 5px;
-    transition: color 0.2s;
-}
-
-.bottom-nav .nav-item.active {
-    color: var(--primary-color);
-}
-
-.bottom-nav .icon {
-    font-size: 1.5em;
-    margin-bottom: 2px;
-}
-
-/* 4. メインコンテンツ（リスト/詳細） */
-.main-content {
-    flex-grow: 1;
-    overflow-y: auto;
-    /* 🚨 【確認】左右15pxのパディングが設定されていることを確認 */
-    padding: 0 15px 20px 15px; 
-}
-    
-    .section-title {
-        font-size: 1.1em;
-        font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        padding-left: 5px;
-        border-left: 5px solid var(--primary-color);
-        color: var(--text-color);
-    }
-
-.add-button {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-/* メンバーリスト (インラインから統合) */
 .member-list {
     list-style: none;
+    margin: 0;
     padding: 0;
-    margin: 0;
 }
 
-/* 4. メインコンテンツ（リスト/詳細）セクション内の .member-item */
 .member-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 0; /* 垂直方向のパディングのみ維持 */
-    border-bottom: 1px solid var(--border-color);
+    background: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    padding: 15px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    position: relative;
     cursor: pointer;
-    position: relative; 
-    
-    /* 🚨 【確認】この行が完全に削除されていることを確認してください！ */
-    /* padding-right: 80px; */ 
-}
-
-/* 🚨 【修正2-A】info内のpタグのデフォルトマージンをリセットし、垂直方向のスペースを制御します。 */
-.member-item .info p {
-    margin: 0;
-}
-
-/* 🚨 【修正2-B】名前と役割の表示エリアを、アイコンの位置に合わせて広げる */
-.member-item .info {
-    flex-grow: 1;
-    /* 🚨 【重要】右側のパディングを確保し、左側のコンテンツは.main-contentのパディングに揃えます。 */
-    padding-right: 80px; 
-}
-
-.member-item:last-child {
-    border-bottom: none;
-}
-
-/* 🚨 【確定】名前と役割の表示エリアを、アイコンの位置に合わせて広げる */
-.member-item .info {
-    flex-grow: 1;
-    /* 🚨 【重要】右側のパディングのみを確保し、左側は親（.main-content）に揃える */
-    padding-right: 80px; 
-    
-    /* 左側のパディングは`.main-content`に任せるため、ここでは設定しません。 */
-    /* これで、リストのテキストは左端（15pxのインデント）から始まり、右端（アイコンの80px手前）まで広がります。 */
 }
 
 .member-item .name {
@@ -306,234 +173,59 @@ body {
 
 .member-item .role {
     font-size: 0.85em;
-    color: #888;
-    margin-top: 2px;
+    color: #777;
 }
 
-
-    
-    /* メンバー情報編集アイコンのスタイル */
-/* 4. メインコンテンツ（リスト/詳細）セクション内の修正 */
-.edit-icon {
-    font-size: 1.2em;
-    color: var(--light-gray);
-    margin-left: 10px;
-    cursor: pointer;
-    padding: 5px;
-    z-index: 10;
-    
-    /* 🚨 【重要】絶対位置で配置を固定 */
+.edit-icon, .delete-icon {
     position: absolute;
-    right: 40px; /* 削除アイコンの左側に配置 */
     top: 50%;
     transform: translateY(-50%);
-}
-    
-    .edit-icon:hover {
-        color: var(--primary-color); /* ホバーでテーマカラーに変更 */
-    }
-    
-    .delete-icon {
-        font-size: 1.2em;
-        color: var(--light-gray);
-        margin-left: 10px;
-        cursor: pointer;
-        padding: 5px;
-        z-index: 10;
-        
-        /* 🚨 【重要】絶対位置で配置を固定 */
-        position: absolute;
-        right: 5px; /* 右端から少し内側に配置 */
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-/* 削除ボタンが押されたときのみ、詳細画面遷移のカーソルを無効にする */
-.member-item .delete-icon:hover {
-    color: var(--delete-color); /* 赤系に変更 */
+    color: var(--light-gray);
+    cursor: pointer;
+    font-size: 1.2em;
 }
 
-/* 詳細画面の表示スタイル */
-.detail-section {
-    padding-top: 10px;
-}
+.edit-icon { right: 40px; }
+.delete-icon { right: 10px; }
 
-.detail-group {
-    padding: 15px 0;
-    border-bottom: 1px solid var(--border-color);
-}
+.edit-icon:hover { color: var(--primary-color); }
+.delete-icon:hover { color: var(--danger-color); }
 
-.detail-group label {
-    display: block;
-    font-size: 0.85em;
-    color: #888;
-    margin-bottom: 5px;
-}
-
-.detail-group .detail-value {
-    margin: 0;
-    font-size: 1.1em;
-    font-weight: 500;
-}
-
-/* メンバー詳細画面での権限の色分け */
-.detail-group .permission-admin {
-    color: var(--admin-text);
-    font-weight: bold;
-}
-.detail-group .permission-post {
-    color: var(--post-text);
-    font-weight: bold;
-}
-.detail-group .permission-view {
-    color: var(--view-text);
-    font-weight: bold;
-}
-
-/* 5. 権限説明ボックス（家族メンバー画面） */
-.permission-info-box {
-    background-color: var(--view-bg); 
-    border-radius: 8px;
-    
-    /* 🚨 【修正】内側のパディングは上下のみにし、左右のパディングは外側の.main-contentに依存 */
-    padding: 15px; 
-    
-    /* 🚨 【追加】左右15pxのマージンを設定して、外側の.main-contentのパディングに合わせる */
-    margin: 0 0 20px 0; /* 上下は既存のまま、左右を0にするか、または以下のように全体を調整 */
-    
-    /* ※最も確実な修正：.main-contentのパディングを吸収するため、paddingを削除し、マージンを追加します。 */
-    /* 🚨 【再々修正】*/
-    padding: 15px; /* 内側パディングはそのまま */
-    margin-bottom: 20px;
-    
-    /* 🚨 【追加/修正】これを削除することで、.main-contentのパディングが効くようになります。 */
-    /* .main-content内にあるので、左右のマージンは不要です。しかし、これが左に寄る原因の場合、*/
-    /* 一度 .main-content のpaddingを0にして、子要素（.permission-info-box, .add-button, .member-list）にパディングを持たせる手法も考えられます。 */
-    
-    /* 権限ボックスだけが左に寄っている場合、これに左右のパディング/マージンを追加してみてください。 */
-    /* ここでは一旦、以下の修正を試します。 */
-}
-.permission-title {
-    font-size: 1.0em;
-    font-weight: bold;
-    color: var(--text-color);
-    margin-top: 0;
-    margin-bottom: 10px;
-    padding-left: 5px;
-    border-left: 3px solid var(--primary-color);
-}
-
-.permission-item {
+.bottom-nav {
     display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+    justify-content: space-around;
+    border-top: 1px solid var(--border-color);
+    background: #fff;
+    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    padding: 5px 0;
+    position: sticky;
+    bottom: 0;
 }
 
-.permission-item:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
-}
-
-.permission-label {
-    min-width: 65px;
-    text-align: center;
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #888;
+    text-decoration: none;
     font-size: 0.8em;
-    font-weight: bold;
-    padding: 3px 6px;
-    border-radius: 4px;
-    margin-right: 10px;
-    line-height: 1.5;
 }
 
-.permission-label.admin {
-    background-color: var(--admin-bg);
-    color: var(--admin-text);
+.nav-item.active {
+    color: var(--primary-color);
 }
 
-.permission-label.post {
-    background-color: var(--post-bg);
-    color: var(--post-text);
+.nav-item .icon {
+    font-size: 1.5em;
+    margin-bottom: 2px;
 }
 
-.permission-label.view {
-    background-color: var(--view-bg);
-    color: var(--view-text);
-}
-
-.permission-desc {
-    font-size: 0.85em;
-    color: #555;
-    margin: 0;
-    line-height: 1.5;
-}
-
-/*================================
-  6. フォーム（招待/登録/編集画面）
-================================*/
-.form-page {
-    padding-top: 20px;
-}
-
-.form-instruction {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 0.9em;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 1.0em;
-    transition: border-color 0.2s;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    border-color: var(--primary-color);
-    outline: none;
-}
-
-.required {
-    color: var(--danger-color);
-    margin-left: 3px;
-    font-weight: normal;
-}
-
-.form-actions {
-    margin-top: 30px;
-    padding-bottom: 40px;
-}
-
-/*================================
-  7. ポップアップ（モーダル） - 統合・修正
-================================*/
-
+/* モーダル */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -541,39 +233,811 @@ body {
 }
 
 .modal-content {
-    background: white;
+    background: #fff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: var(--radius);
     text-align: center;
     width: 80%;
     max-width: 300px;
-}
-
-.modal-content p {
-    font-size: 1.1em;
-    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .modal-buttons button {
     padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
     margin: 0 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     cursor: pointer;
-    min-width: 80px;
-    /* 共通設定 */
-    background-color: #f0f0f0; /* 薄い灰色に統一 */
-    color: var(--text-color);
-    border: 1px solid var(--light-gray);
-    transition: background-color 0.1s;
 }
 
-/* 「いいえ」ボタン (共通スタイルを使用) */
-.modal-buttons .button-no {
-    /* スタイルは親セレクタから継承 */
+.button-yes {
+    background: var(--primary-color);
+    color: #fff;
 }
 
-/* 「はい」ボタン (共通スタイルを使用) */
-.modal-buttons .button-yes {
-    /* スタイルは親セレクタから継承 */
+.button-yes:hover {
+    background: var(--primary-dark);
+}
+
+.button-no {
+    background: #f0f0f0;
+    color: #333;
+}
+
+/* ------------------------------
+   家族招待画面専用スタイル
+------------------------------ */
+
+/* フォームページ全体 */
+.form-page {
+    padding: 20px;
+    background-color: #f8f9fa;
+  }
+  
+  /* 入力フォームのカード風レイアウト */
+  #invite-family-form {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  
+  /* 入力説明文 */
+  .form-instruction {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  /* フォームグループ */
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    background-color: #fafafa;
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #5b9bd5;
+    outline: none;
+    background-color: #fff;
+  }
+  
+  .required {
+    color: #e74c3c;
+  }
+  
+  /* ボタンエリア */
+  .form-actions {
+    margin-top: 24px;
+    text-align: center;
+  }
+  
+  /* ボタンの大サイズ（家族メンバー画面と統一） */
+  .large-button {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 12px;
+  }
+  
+  /* キャンセルボタン（ヘッダー右上） */
+  .cancel-button {
+    background: none;
+    border: none;
+    color: #5b9bd5;
+    font-size: 15px;
+    cursor: pointer;
+    margin-right: 12px;
+  }
+  
+  .cancel-button:hover {
+    text-decoration: underline;
+  }
+  
+  /* モーダル統一 */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  
+  .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    width: 80%;
+    max-width: 320px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .modal-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .button-yes, .button-no {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+  .button-yes {
+    background-color: #5b9bd5;
+    color: white;
+  }
+  
+  .button-no {
+    background-color: #ddd;
+    color: #333;
+  }
+  
+  .button-yes:hover {
+    background-color: #4685c3;
+  }
+  
+  .button-no:hover {
+    background-color: #c0c0c0;
+  }
+  
+
+  /* ------------------------------
+   メンバー詳細画面専用スタイル
+------------------------------ */
+
+/* 詳細セクション全体 */
+.detail-section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    margin-top: 20px;
+    font-size: 15px;
+    color: #333;
+  }
+  
+  /* 各項目ブロック */
+  .detail-group {
+    margin-bottom: 18px;
+  }
+  
+  .detail-group:last-child {
+    margin-bottom: 0;
+  }
+  
+  .detail-group label {
+    display: block;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
+    margin-bottom: 6px;
+  }
+  
+  /* 値部分 */
+  .detail-value {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 1em;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+/* 権限の色区分（修正版） */
+.permission-admin {
+    color: #e74c3c; /* 🔴 管理者は文字だけ赤 */
+    font-weight: 600;
+  }
+  
+  .permission-post {
+    color: #27ae60; /* 緑：投稿可能 */
+    font-weight: 600;
+  }
+  
+  .permission-view {
+    color: #3498db; /* 青：閲覧のみ */
+    font-weight: 600;
+  }
+  
+  
+  /* ヘッダーの戻るボタン・編集ボタン */
+  .back-button {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .back-button .icon {
+    margin-right: 4px;
+    font-size: 1.2em;
+    vertical-align: middle;
+  }
+  
+  .icon-button.edit-button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.3em;
+    padding: 6px 8px;
+    transition: opacity 0.2s;
+  }
+  
+  .icon-button.edit-button:hover {
+    opacity: 0.8;
+  }
+  
+  /* モバイル対応微調整 */
+  @media (max-width: 480px) {
+    .detail-section {
+      padding: 16px;
+    }
+  
+    .detail-group label {
+      font-size: 0.9em;
+    }
+  
+    .detail-value {
+      font-size: 0.95em;
+      padding: 8px 10px;
+    }
+  }
+  
+  /* ------------------------------
+   メンバー情報編集画面専用スタイル
+------------------------------ */
+
+/* 編集フォーム全体 */
+#edit-family-form {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-size: 15px;
+    color: #333;
+  }
+  
+  /* 各フォーム項目 */
+  #edit-family-form .form-group {
+    margin-bottom: 16px;
+  }
+  
+  #edit-family-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+  }
+  
+  #edit-family-form input,
+  #edit-family-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    background-color: #fafafa;
+    transition: border-color 0.2s;
+  }
+  
+  #edit-family-form input:focus,
+  #edit-family-form select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background-color: #fff;
+  }
+  
+  .required {
+    color: var(--danger-color);
+  }
+  
+  /* ボタンエリア */
+  #edit-family-form .form-actions {
+    margin-top: 24px;
+    text-align: center;
+  }
+  
+  /* 完了ボタン（統一デザイン） */
+  #edit-family-form .primary-button.large-button {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 12px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  #edit-family-form .primary-button.large-button:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  /* キャンセルボタン（右上）統一 */
+  .cancel-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .cancel-button:hover {
+    text-decoration: underline;
+  }
+  
+  /* 権限プルダウン強調 */
+  /*#family-permission option[value="admin"] {
+    color: var(--danger-color); 
+    font-weight: bold;
+  }
+  
+  #family-permission option[value="post"] {
+    color: var(--post-text);
+  }
+  
+  #family-permission option[value="view"] {
+    color: var(--view-text);
+  }*/
+  
+  /* モバイル対応微調整 */
+  @media (max-width: 480px) {
+    #edit-family-form {
+      padding: 16px;
+    }
+  
+    #edit-family-form input,
+    #edit-family-form select {
+      font-size: 14px;
+    }
+  }
+  
+
+  /* ------------------------------
+   子ども登録画面専用スタイル
+------------------------------ */
+
+/* フォームページ全体 */
+#invite-kid-form {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-size: 15px;
+    color: #333;
+  }
+  
+  /* 入力説明文（統一デザイン） */
+  #invite-kid-form .form-instruction {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  /* フォーム項目 */
+  #invite-kid-form .form-group {
+    margin-bottom: 16px;
+  }
+  
+  #invite-kid-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+  }
+  
+  #invite-kid-form input,
+  #invite-kid-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    background-color: #fafafa;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  
+  #invite-kid-form input:focus,
+  #invite-kid-form select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background-color: #fff;
+  }
+  
+  .required {
+    color: var(--danger-color);
+  }
+  
+  /* 完了ボタン（統一デザイン） */
+  #invite-kid-form .form-actions {
+    margin-top: 24px;
+    text-align: center;
+  }
+  
+  #invite-kid-form .primary-button.large-button {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 12px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  #invite-kid-form .primary-button.large-button:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  /* キャンセルボタン（ヘッダー右上・統一） */
+  .cancel-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .cancel-button:hover {
+    text-decoration: underline;
+  }
+  
+  /* モーダル統一（他画面と揃える） */
+  #cancel-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  
+  #cancel-modal .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    width: 80%;
+    max-width: 320px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  #cancel-modal .modal-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  #cancel-modal .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  #cancel-modal .button-yes,
+  #cancel-modal .button-no {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+  #cancel-modal .button-yes {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  #cancel-modal .button-no {
+    background-color: #ddd;
+    color: #333;
+  }
+  
+  #cancel-modal .button-yes:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  #cancel-modal .button-no:hover {
+    background-color: #c0c0c0;
+  }
+  
+  /* モバイル対応微調整 */
+  @media (max-width: 480px) {
+    #invite-kid-form {
+      padding: 16px;
+    }
+  
+    #invite-kid-form input,
+    #invite-kid-form select {
+      font-size: 14px;
+    }
+  
+    #invite-kid-form .primary-button.large-button {
+      font-size: 16px;
+    }
+  }
+  
+  /* ------------------------------
+   子ども情報編集画面専用スタイル
+------------------------------ */
+
+/* 編集フォーム全体 */
+#edit-family-form {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-size: 15px;
+    color: #333;
+  }
+  
+  /* 各フォーム項目 */
+  #edit-family-form .form-group {
+    margin-bottom: 16px;
+  }
+  
+  #edit-family-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+  }
+  
+  #edit-family-form input,
+  #edit-family-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    background-color: #fafafa;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  
+  #edit-family-form input:focus,
+  #edit-family-form select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background-color: #fff;
+  }
+  
+  .required {
+    color: var(--danger-color);
+  }
+  
+  /* 完了ボタン（統一デザイン） */
+  #edit-family-form .form-actions {
+    margin-top: 24px;
+    text-align: center;
+  }
+  
+  #edit-family-form .primary-button.large-button {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 12px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  #edit-family-form .primary-button.large-button:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  /* キャンセルボタン（右上） */
+  .cancel-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .cancel-button:hover {
+    text-decoration: underline;
+  }
+  
+  /* モーダル統一 */
+  #cancel-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  
+  #cancel-modal .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    width: 80%;
+    max-width: 320px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  #cancel-modal .modal-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  #cancel-modal .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  #cancel-modal .button-yes,
+  #cancel-modal .button-no {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+  #cancel-modal .button-yes {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  #cancel-modal .button-no {
+    background-color: #ddd;
+    color: #333;
+  }
+  
+  #cancel-modal .button-yes:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  #cancel-modal .button-no:hover {
+    background-color: #c0c0c0;
+  }
+  
+  /* モバイル対応微調整 */
+  @media (max-width: 480px) {
+    #edit-family-form {
+      padding: 16px;
+    }
+  
+    #edit-family-form input,
+    #edit-family-form select {
+      font-size: 14px;
+    }
+  
+    #edit-family-form .primary-button.large-button {
+      font-size: 16px;
+    }
+  }
+  
+
+  /* ... (既存の CSS は省略) ... */
+
+
+/* ------------------------------
+   メンバー詳細画面専用スタイル - 追記・修正
+------------------------------ */
+
+/* ヘッダーの編集ボタンと統一されたデザイン */
+.icon-button.delete-button-icon {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.3em;
+    padding: 6px 8px;
+    transition: opacity 0.2s;
+    /* 編集ボタンと縦位置を合わせる */
+    margin-left: 5px; 
+}
+
+.icon-button.delete-button-icon:hover {
+    opacity: 0.8;
+}
+
+/* ヘッダー右側の子要素を左から右に並べるための調整 */
+.top-bar .header-right {
+    display: flex;
+    align-items: center;
+}
+
+/* 削除をアイコンとして目立たせるための色（任意だが推奨） */
+.icon-button.delete-button-icon .icon {
+    /* ゴミ箱アイコンを白く保ちつつ、ホバー時に危険色を出す調整も可能 */
+}
+
+/* ------------------------------
+   成長記録ボタンの独自アクションボタン
+------------------------------ */
+
+.secondary-button {
+  /* 既存のsecondary-buttonクラスをアクションボタンとして再定義 */
+  background: #e9ecef; /* 明るいグレーの背景 */
+  color: var(--primary-dark); /* メインカラーのテキスト */
+  border: 1px solid var(--primary-color); /* メインカラーの枠線 */
+  border-radius: var(--radius);
+  padding: 12px;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  margin: 30px 0 20px; /* 上下にマージンを追加して目立たせる */
+  transition: all 0.2s;
+  display: flex; /* アイコンとテキストを横並びにする */
+  align-items: center;
+  justify-content: center; /* 中央寄せ */
+  font-size: 1.05em;
+}
+
+.secondary-button:hover {
+  background-color: var(--primary-color); /* ホバーで色を反転 */
+  color: #fff;
+}
+
+.secondary-button .icon {
+  /* アイコンのスタイル調整 */
+  font-size: 1.4em;
+  margin-right: 10px;
+  /* アイコンの色はボタンの現在のcolorプロパティを継承 */
 }
