@@ -311,21 +311,27 @@ body {
     font-size: 15px;
     background-color: #fafafa;
     transition: border-color 0.2s;
+    
   }
 
 /* date型のinputに、ブラウザのデフォルトスタイルをリセットするプロパティを追加 */
 /* これにより、モバイル特有の大きなカレンダーアイコンなどを抑制し、他のフォームとデザインを統一します */
 .form-group input[type="date"] {
   -webkit-appearance: none; /* iOS Safari用 */
-  -moz-appearance: none;    /* Firefox用 */
-  appearance: none;         /* 標準プロパティ */
-  padding-right: 12px;      /* 右側のスペースを確保（カレンダーアイコンの代わりにテキストを揃えるため） */
+  -moz-appearance: none;      /* Firefox用 */
+  appearance: none;           /* 標準プロパティ */
+  /* padding-right: 12px; を削除またはコメントアウト */ 
+  /* padding-right: 12px; は、リセットによって不要になる可能性があります */
+  
+  /* 以下の行を追加: 背景画像でカスタムの矢印やアイコンを指定しない場合、
+     デフォルトのドロップダウン/カレンダーアイコンを非表示にするため */
+  background-image: none;
 }
 
 /* フォーム項目にフォーカスが当たった時のスタイル（念のためdateにも適用） */
 .form-group input:focus,
 .form-group select:focus,
-.form-group input[type="date"]:focus { /* ← dateを追加 */
+.form-group input[type="date"]:focus {
 border-color: var(--primary-color);
 outline: none;
 background-color: #fff;
@@ -695,6 +701,10 @@ background-color: #fff;
     font-size: 15px;
     background-color: #fafafa;
     transition: border-color 0.2s, background-color 0.2s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none; /* dateフィールドのデフォルトアイコンを非表示 */
   }
   
   #invite-kid-form input:focus,
@@ -861,6 +871,10 @@ background-color: #fff;
     font-size: 15px;
     background-color: #fafafa;
     transition: border-color 0.2s, background-color 0.2s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none; /* dateフィールドのデフォルトアイコンを非表示 */
   }
   
   #edit-family-form input:focus,
