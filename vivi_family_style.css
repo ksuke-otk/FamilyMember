@@ -313,22 +313,22 @@ body {
     transition: border-color 0.2s;
   }
 
-  /* date型のinputに、ブラウザのデフォルトスタイルをリセットするプロパティを追加 */
+/* date型のinputに、ブラウザのデフォルトスタイルをリセットするプロパティを追加 */
 /* これにより、モバイル特有の大きなカレンダーアイコンなどを抑制し、他のフォームとデザインを統一します */
 .form-group input[type="date"] {
-    -webkit-appearance: none; /* iOS Safari用 */
-    -moz-appearance: none;    /* Firefox用 */
-    appearance: none;         /* 標準プロパティ */
-    padding-right: 12px;      /* 右側のスペースを確保（カレンダーアイコンの代わりにテキストを揃えるため） */
+  -webkit-appearance: none; /* iOS Safari用 */
+  -moz-appearance: none;    /* Firefox用 */
+  appearance: none;         /* 標準プロパティ */
+  padding-right: 12px;      /* 右側のスペースを確保（カレンダーアイコンの代わりにテキストを揃えるため） */
 }
 
 /* フォーム項目にフォーカスが当たった時のスタイル（念のためdateにも適用） */
 .form-group input:focus,
 .form-group select:focus,
 .form-group input[type="date"]:focus { /* ← dateを追加 */
-  border-color: var(--primary-color);
-  outline: none;
-  background-color: #fff;
+border-color: var(--primary-color);
+outline: none;
+background-color: #fff;
 }
   
   .form-group input:focus,
