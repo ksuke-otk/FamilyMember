@@ -315,20 +315,23 @@ body {
 
   /* date型のinputに、ブラウザのデフォルトスタイルをリセットするプロパティを追加 */
 /* これにより、モバイル特有の大きなカレンダーアイコンなどを抑制し、他のフォームとデザインを統一します */
+/* 以下の input[type="date"] に特化したスタイルは削除します。
 .form-group input[type="date"] {
-  -webkit-appearance: none; /* iOS Safari用 */
-  -moz-appearance: none;    /* Firefox用 */
-  appearance: none;         /* 標準プロパティ */
-  padding-right: 12px;      /* 右側のスペースを確保（カレンダーアイコンの代わりにテキストを揃えるため） */
+  -webkit-appearance: none; 
+  -moz-appearance: none;    
+  appearance: none;        
+  padding-right: 12px;      
 }
+*/
 
 /* フォーム項目にフォーカスが当たった時のスタイル（念のためdateにも適用） */
+/* 以下のフォーカススタイルを統一します */
 .form-group input:focus,
-.form-group select:focus,
-.form-group input[type="date"]:focus { /* ← dateを追加 */
-border-color: var(--primary-color);
-outline: none;
-background-color: #fff;
+.form-group select:focus {
+    /* 統一されたフォーカススタイル */
+    border-color: var(--primary-color);
+    outline: none;
+    background-color: #fff;
 }
   
   .form-group input:focus,
