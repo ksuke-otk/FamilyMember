@@ -17,10 +17,10 @@
                 <button class="icon-button edit-button" id="edit-button-link">
                     <span class="icon">✎</span> 
                 </button>
-                <button class="icon-button delete-button-icon" onclick="deleteKidConfirmed()">
-                     <span class="icon">🗑️</span>
-                </button>
-            </div>
+                <button class="icon-button delete-button-icon" onclick="showDeleteKidModal()">
+                                         <span class="icon">🗑️</span>
+                                    </button>
+                                </div>
         </header>
 
         <main class="main-content">
@@ -63,16 +63,16 @@
        </nav>  
 
     </div>
-    <div id="delete-modal" class="modal-overlay" style="display:none;">
-        <div class="modal-content">
-            <p id="modal-message">子どもの情報を削除しますか？</p>
-            <div class="modal-buttons">
-                <button class="button-yes" onclick="deleteMemberConfirmed()">はい</button>
-                <button class="button-no" onclick="hideDeleteModal()">いいえ</button>
-            </div>
-        </div>
-    </div>
  
+    <div id="delete-kid-modal" class="modal-overlay" style="display:none;">
+                <div class="modal-content">
+                    <p id="kid-modal-message">この子どもの情報を削除しますか？</p>
+                    <div class="modal-buttons">
+                        <button class="button-yes" onclick="deleteKidConfirmed()">はい</button>
+                        <button class="button-no" onclick="hideDeleteKidModal()">いいえ</button>
+                    </div>
+                </div>
+            </div>
 
     <script>
         // 子どもデータ定義 (本来はサーバーサイドやAPIから取得するデータ)
@@ -129,31 +129,47 @@
             };
         }
 
-        /**
-         * 子ども情報削除の確認と実行
-         */
-         function showDeleteModal(memberName, memberId) {
-            memberToDeleteId = memberId;
-            document.getElementById('modal-message').textContent = `子どもの情報を削除しますか？`;
-            document.getElementById('delete-modal').style.display = 'flex';
-        }
+/**
+         * 💡【追加】子ども削除モーダルを表示
+         */
+        function showDeleteKidModal() {
+            const data = kids[currentKidId];
+            const kidName = data ? data.name : 'この子どもの情報';
+            
+            // モーダル内のメッセージを更新
+            document.getElementById('kid-modal-message').textContent = `${kidName} の情報を本当に削除しますか？`;
+            
+            // モーダルを表示
+            document.getElementById('delete-kid-modal').style.display = 'flex';
+        }
 
-        function hideDeleteModal() {
-            memberToDeleteId = null;
-            document.getElementById('delete-modal').style.display = 'none';
-        }
+        /**
+         * 💡【追加】子ども削除モーダルを非表示
+         */
+        function hideDeleteKidModal() {
+            document.getElementById('delete-kid-modal').style.display = 'none';
+        }
 
-        function deleteMemberConfirmed() {
-            if (memberToDeleteId) {
-                const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
-                if (memberElement) memberElement.remove();
-                //alert(`ID ${memberToDeleteId} の子どもの情報を削除しました。`);
-            }
-            hideDeleteModal(); 
-        }
 
-        // ページ読み込み時に実行
-        loadKidDetail();
-    </script>
+        /**
+         * 💡【修正】子ども情報削除の実行
+         */
+        function deleteKidConfirmed() {
+            const data = kids[currentKidId];
+            const kidName = data ? data.name : 'この子どもの情報';
+
+            // 削除処理のシミュレーション
+            console.log(`子どもの情報 (ID: ${currentKidId}, 名前: ${kidName}) を削除しました。`);
+            
+            // モーダルを閉じる
+            hideDeleteKidModal();
+            
+            // 削除後、家族メンバー一覧画面へ遷移
+            location.href = 'family_member.html';
+        }
+
+        // ページ読み込み時に実行
+        loadKidDetail();
+    </script>
 </body>
 </html>
