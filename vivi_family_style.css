@@ -1072,3 +1072,16 @@ body {
   /* アイコンの色はボタンの現在のcolorプロパティを継承 */
 }
 
+/* 子ども登録/編集画面の date 型 input のプレースホルダーを薄く表示する */
+#invite-kid-form input[type="date"]::placeholder,
+#edit-family-form input[type="date"]::placeholder {
+   color: #aaa; /* より薄いグレー */
+ opacity: 1; /* ブラウザによっては opacity を設定しないと薄くならないため */
+}
+
+/* フォーム共通設定（念のため date も含める） */
+.form-group input::placeholder,
+.form-group select::placeholder {
+    color: #aaa;
+    opacity: 1;
+}
