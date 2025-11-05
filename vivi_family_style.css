@@ -303,7 +303,8 @@ body {
   }
   
   .form-group input,
-  .form-group select {
+  .form-group select,
+  .form-group input[type="date"] { /* ← 【追記】: input[type="date"]を明示的に追加 */
     width: 100%;
     padding: 10px 12px;
     border-radius: 10px;
@@ -314,27 +315,22 @@ body {
     
   }
 
-/* date型のinputに、ブラウザのデフォルトスタイルをリセットするプロパティを追加 */
-/* これにより、モバイル特有の大きなカレンダーアイコンなどを抑制し、他のフォームとデザインを統一します */
+/* date型のinputに、ブラウザのデフォルトスタイルをリセットするプロパティを修正 */
 .form-group input[type="date"] {
   -webkit-appearance: none; /* iOS Safari用 */
   -moz-appearance: none;      /* Firefox用 */
   appearance: none;           /* 標準プロパティ */
-  /* padding-right: 12px; を削除またはコメントアウト */ 
-  /* padding-right: 12px; は、リセットによって不要になる可能性があります */
-  
-  /* 以下の行を追加: 背景画像でカスタムの矢印やアイコンを指定しない場合、
-     デフォルトのドロップダウン/カレンダーアイコンを非表示にするため */
-  background-image: none;
+  background-image: none;     /* カレンダーアイコンを非表示（縦幅ずれの原因の一つ） */
+  /* padding-right: 12px; は削除済み */
 }
 
-/* フォーム項目にフォーカスが当たった時のスタイル（念のためdateにも適用） */
+/* フォーム項目にフォーカスが当たった時のスタイル（dateを含む） */
 .form-group input:focus,
 .form-group select:focus,
-.form-group input[type="date"]:focus {
-border-color: var(--primary-color);
-outline: none;
-background-color: #fff;
+.form-group input[type="date"]:focus { /* ← dateがすでに含まれていますが、念のため再確認 */
+    border-color: var(--primary-color);
+    outline: none;
+    background-color: #fff;
 }
   
   .form-group input:focus,
