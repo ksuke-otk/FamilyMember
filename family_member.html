@@ -106,9 +106,21 @@
     <script>
         let memberToDeleteId = null;
 
+        /**
+         * タブとセクションの表示を切り替える
+         * @param {string} sectionId - 'family' または 'kids'
+         * @param {HTMLElement} element - クリックされたタブボタン
+         */
+
         function showSection(sectionId, element) {
             document.querySelectorAll('.member-tabs .tab').forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
+            // elementが渡されていない場合（初期ロード時）、IDで要素を取得
+            const targetTab = element || document.getElementById(`tab-${sectionId}`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+
+            
             document.querySelectorAll('.member-section').forEach(section => section.style.display = 'none');
             document.getElementById(`${sectionId}-section`).style.display = 'block';
         }
@@ -132,6 +144,18 @@
             }
             hideDeleteModal(); 
         }
+        // 💡 ページロード時の初期表示ロジック
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTabParam = urlParams.get('tab');
+            
+            // URLパラメータをチェック: 'kid' があれば子どもタブ、なければ家族タブを初期表示
+            const initialSectionId = (activeTabParam === 'kid') ? 'kids' : 'family';
+            
+            // showSection関数を実行し、指定されたタブとセクションを表示
+            // 第二引数にnullを渡し、関数内でIDから要素を取得するようにしました
+            showSection(initialSectionId, null); 
+        });
     </script>
 </body>
 </html>
