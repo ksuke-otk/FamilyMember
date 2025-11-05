@@ -21,28 +21,14 @@
 
         <main class="main-content">
             <section id="family-section" class="member-section active">
-                <h2 class="section-title">登録メンバー</h2>
 
-                <div class="permission-info-box">
-                    <h3 class="permission-title">権限について</h3>
-                    <div class="permission-item">
-                        <span class="permission-label admin">管理者</span>
-                        <p class="permission-desc">すべての機能を多用可能（家族設定、削除など）</p>
-                    </div>
-                    <div class="permission-item">
-                        <span class="permission-label post">投稿可能</span>
-                        <p class="permission-desc">写真・動画の投稿、コメント、タグづけが可能</p>
-                    </div>
-                    <div class="permission-item">
-                        <span class="permission-label view">閲覧のみ</span>
-                        <p class="permission-desc">写真・動画の閲覧とコメント閲覧のみ可能</p>
-                    </div>
-                </div>
+
+
 
                 <button class="add-button primary-button" onclick="location.href='member_add.html'">
                     <span class="icon">＋</span> 新しい家族を招待する
                 </button>
-
+                <h2 class="section-title">登録メンバー</h2>
                 <ul class="member-list">
                     <li class="member-item">
                         <div class="info" onclick="location.href='member_detail.html?id=1'">
@@ -65,10 +51,11 @@
             </section>
 
             <section id="kids-section" class="member-section" style="display: none;">
-                <h2 class="section-title">登録されている子ども</h2>
                 <button class="add-button primary-button" onclick="location.href='kids_add.html'">
                     <span class="icon">＋</span> 新しい子どもを登録する
                 </button>
+                <h2 class="section-title">登録されている子ども</h2>
+
                 <ul class="member-list">
                     <li class="member-item" onclick="location.href='kids_info.html?id=a'">
                         <div class="info">
@@ -84,6 +71,21 @@
                     </li>
                 </ul>
             </section>
+            <div class="permission-info-box">
+                <h3 class="permission-title">権限について</h3>
+                <div class="permission-item">
+                    <span class="permission-label admin">管理者</span>
+                    <p class="permission-desc">すべての機能を多用可能（家族設定、削除など）</p>
+                </div>
+                <div class="permission-item">
+                    <span class="permission-label post">投稿可能</span>
+                    <p class="permission-desc">写真・動画の投稿、コメント、タグづけが可能</p>
+                </div>
+                <div class="permission-item">
+                    <span class="permission-label view">閲覧のみ</span>
+                    <p class="permission-desc">写真・動画の閲覧とコメント閲覧のみ可能</p>
+                </div>
+            </div>
         </main>
 
         <nav class="bottom-nav">
