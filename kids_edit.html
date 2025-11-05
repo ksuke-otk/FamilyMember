@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - 子ども情報編集</title>
+    <link rel="stylesheet" href="vivi_family_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left"><h1>子ども情報編集</h1></div>
+            <button class="icon-button cancel-button" onclick="showCancelModal()">キャンセル</button>
+        </header>
+
+        <main class="main-content form-page">
+            <form id="edit-family-form">
+                <div class="form-group">
+                    <label for="kid-name">名前 <span class="required">*</span></label>
+                    <input type="text" id="kid-name" name="name" required placeholder="例: 山田 花子">
+                </div>
+                
+                <div class="form-group">
+                    <label for="kid-gender">性別 <span class="required">*</span></label>
+                    <select id="kid-gender" name="gender" required>
+                        <option value="">選択してください</option>
+                        <option value="female">女の子</option>
+                        <option value="male">男の子</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="kid-birthday">誕生日 <span class="required">*</span></label>
+                    <input type="date" id="kid-birthday" name="birthday" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="primary-button large-button">完了</button>
+                </div>
+            </form>
+        </main>
+        <nav class="bottom-nav">
+             <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+             <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+             <a href="family_member.html" class="nav-item active"><span class="icon">⚙️</span>設定</a>
+        </nav>  
+    </div>
+
+  
+
+    <div id="cancel-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <p id="cancel-modal-message">編集を中止しますか？</p>
+            <div class="modal-buttons">
+
+                <button class="button-yes" onclick="cancelEditConfirmed()">はい</button>
+                <button class="button-no" onclick="hideCancelModal()">いいえ</button>
+
+             </div>
+        </div>
+    </div>
+    
+
+    <script>
+        // メンバーIDを取得する（ここではシミュレーションのため固定）
+        const urlParams = new URLSearchParams(window.location.search);
+        const memberId = urlParams.get('id') || '1'; // デフォルトID
+
+        function showCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'flex';
+        }
+
+        function hideCancelModal() {
+            // 「いいえ」を押下した場合、モーダルを閉じる
+            document.getElementById('cancel-modal').style.display = 'none';
+        }
+
+        function cancelEditConfirmed() {
+            // 「はい」を押下した場合、家族メンバー画面に遷移
+            location.href = 'family_member.html';
+        }
+        
+        // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
+        document.addEventListener('DOMContentLoaded', () => {
+            // 実際にはAPIからデータを取得し、フォーム要素に設定する処理が入る
+            // 例として、URLにid=2があれば、関係性を母に変更する
+            if (memberId === '2') {
+                document.getElementById('family-name').value = '妻の名前';
+                document.getElementById('family-relation').value = 'mother';
+                document.getElementById('family-permission').value = 'post';
+            }
+        });
+    </script>
+    
+</body>
+</html>
