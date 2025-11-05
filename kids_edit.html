@@ -10,11 +10,13 @@
     <div class="app-container">
         <header class="top-bar">
             <div class="header-left"><h1>子ども情報編集</h1></div>
-            <button class="icon-button cancel-button" onclick="showCancelModal()">キャンセル</button>
+            <div class="header-right">
+                <button class="icon-button cancel-button" onclick="showCancelModal()">キャンセル</button>
+            </div>
         </header>
 
         <main class="main-content form-page">
-            <form id="edit-family-form">
+            <form id="edit-family-form" onsubmit="handleEdit(event)">
                 <div class="form-group">
                     <label for="kid-name">名前 <span class="required">*</span></label>
                     <input type="text" id="kid-name" name="name" required placeholder="例: 山田 花子">
@@ -37,9 +39,9 @@
                                onblur="if(!this.value) this.type='text'">
                     </div>
 
-                <div class="form-actions">
-                    <button type="submit" class="primary-button large-button">完了</button>
-                </div>
+                    <div class="form-actions">
+                        <button type="submit" class="primary-button large-button">完了</button>
+                    </div>
             </form>
         </main>
         <nav class="bottom-nav">
@@ -65,9 +67,15 @@
     
 
     <script>
-        // メンバーIDを取得する（ここではシミュレーションのため固定）
+        // 💡 修正: URLからIDを取得し、グローバルスコープで利用できるようにする
         const urlParams = new URLSearchParams(window.location.search);
-        const memberId = urlParams.get('id') || '1'; // デフォルトID
+        const currentKidId = urlParams.get('id');
+
+        // 子どもデータ（シミュレーション用）
+        const kids = {
+            'a': { name: 'Aちゃん', gender: 'female', birthday: '2021-04-01' },
+            'b': { name: 'Bくん', gender: 'male', birthday: '2023-06-01' }
+        };
 
         function showCancelModal() {
             document.getElementById('cancel-modal').style.display = 'flex';
@@ -80,20 +88,55 @@
 
         function cancelEditConfirmed() {
             // 「はい」を押下した場合、家族メンバー画面に遷移
-            location.href = 'family_member.html';
+            // 💡 修正: 家族メンバー画面に遷移し、tab=kidを付与
+        location.href = 'family_member.html?tab=kid';
         }
         
-        // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
-        document.addEventListener('DOMContentLoaded', () => {
-            // 実際にはAPIからデータを取得し、フォーム要素に設定する処理が入る
-            // 例として、URLにid=2があれば、関係性を母に変更する
-            if (memberId === '2') {
-                document.getElementById('family-name').value = '妻の名前';
-                document.getElementById('family-relation').value = 'mother';
-                document.getElementById('family-permission').value = 'post';
+        /**
+         * 💡 新規追加: 編集完了ボタン押下時の処理
+         * @param {Event} event 
+         */
+        function handleEdit(event) {
+            event.preventDefault(); 
+            const form = document.getElementById('edit-family-form');
+
+            if (!form.checkValidity()) {
+                console.log("必須項目が未入力です。");
+                return; 
             }
-        });
+            
+            const name = form.elements['kid-name'].value;
+            // ... (その他のデータ取得/更新処理) ...
+
+            console.log(`子どもの情報 (ID: ${currentKidId}) を更新しました。`);
+            
+            // 💡 修正: 編集完了後、家族メンバー画面に遷移し、tab=kidを付与
+            location.href = 'family_member.html?tab=kid';
+        }
+        
+        /**
+         * フォームの初期値を設定する処理
+         */
+        function loadKidData() {
+            const data = kids[currentKidId];
+            if (!data) {
+                 // IDがない、またはデータが見つからない場合はエラー表示などが望ましい
+                 console.error('指定されたIDの子どもの情報が見つかりません。');
+                 return;
+            }
+
+            // フォームにデータをセット
+            document.getElementById('kid-name').value = data.name;
+            document.getElementById('kid-gender').value = data.gender;
+            
+            // 日付入力フィールドに値を設定
+            const birthdayInput = document.getElementById('kid-birthday');
+            birthdayInput.type = 'date'; // typeをdateに変更して値を設定
+            birthdayInput.value = data.birthday; 
+        }
+
+        // ページ読み込み時に実行
+        document.addEventListener('DOMContentLoaded', loadKidData);
     </script>
-    
 </body>
 </html>
