@@ -10,7 +10,7 @@
     <div class="app-container">
         <header class="top-bar">
             <div class="header-left">
-                <a href="family_member.html" class="icon-button back-button"><span class="icon">＜</span> 戻る</a>
+                <a href="family_member.html?tab=kid" class="icon-button back-button"><span class="icon">＜</span> 戻る</a>
             </div>
             <div class="header-center"><h1 id="detail-title">子ども情報</h1></div>
             <div class="header-right">
@@ -130,45 +130,44 @@
 
 /**
          * 💡【追加】子ども削除モーダルを表示
-         */
-        function showDeleteKidModal() {
-            const data = kids[currentKidId];
-            const kidName = data ? data.name : 'この子どもの情報';
-            
-            // モーダル内のメッセージを更新
-            document.getElementById('kid-modal-message').textContent = `子どもの情報を削除しますか？`;
-            
-            // モーダルを表示
-            document.getElementById('delete-kid-modal').style.display = 'flex';
-        }
+         */ 
+            function showDeleteKidModal() {
+            const data = kids[currentKidId];
+            const kidName = data ? data.name : 'この子どもの情報';
 
-        /**
+            // モーダル内のメッセージを更新
+            document.getElementById('kid-modal-message').textContent = `子どもの情報を削除しますか？`;
+ 
+             // モーダルを表示
+            document.getElementById('delete-kid-modal').style.display = 'flex';
+             }
+
+         /**
          * 💡【追加】子ども削除モーダルを非表示
          */
-        function hideDeleteKidModal() {
-            document.getElementById('delete-kid-modal').style.display = 'none';
-        }
+            function hideDeleteKidModal() {
+             document.getElementById('delete-kid-modal').style.display = 'none';
+            }
 
 
-        /**
+          /**
          * 💡【修正】子ども情報削除の実行
          */
-        function deleteKidConfirmed() {
-            const data = kids[currentKidId];
-            const kidName = data ? data.name : 'この子どもの情報';
+            function deleteKidConfirmed() {
+            const data = kids[currentKidId];
+            const kidName = data ? data.name : 'この子どもの情報';
 
-            // 削除処理のシミュレーション
-            console.log(`子どもの情報 (ID: ${currentKidId}, 名前: ${kidName}) を削除しました。`);
-            
-            // モーダルを閉じる
-            hideDeleteKidModal();
-            
-            // 削除後、家族メンバー一覧画面へ遷移
-            location.href = 'family_member.html';
-        }
+            // 削除処理のシミュレーション
+ 
+            // モーダルを閉じる
+             hideDeleteKidModal();
+ 
+            // 削除後、家族メンバー一覧画面へ遷移
+            location.href = 'family_member.html?tab=kid';
+        }
 
-        // ページ読み込み時に実行
-        loadKidDetail();
-    </script>
+            // ページ読み込み時に実行
+         loadKidDetail();
+     </script>
 </body>
 </html>
