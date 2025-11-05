@@ -1041,3 +1041,39 @@ body {
   margin-right: 10px;
   /* アイコンの色はボタンの現在のcolorプロパティを継承 */
 }
+
+/* ------------------------------
+   子ども登録画面、編集画面などのフォーム共通スタイル修正
+------------------------------ */
+
+/* input, selectの共通スタイル */
+.form-group input,
+.form-group select {
+  /* ... (既存のスタイル) ... */
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  background-color: #fafafa;
+  transition: border-color 0.2s;
+  /* ... (既存のスタイル) ... */
+}
+
+/* date型のinputに、ブラウザのデフォルトスタイルをリセットするプロパティを追加 */
+/* これにより、モバイル特有の大きなカレンダーアイコンなどを抑制し、他のフォームとデザインを統一します */
+.form-group input[type="date"] {
+    -webkit-appearance: none; /* iOS Safari用 */
+    -moz-appearance: none;    /* Firefox用 */
+    appearance: none;         /* 標準プロパティ */
+    padding-right: 12px;      /* 右側のスペースを確保（カレンダーアイコンの代わりにテキストを揃えるため） */
+}
+
+/* フォーム項目にフォーカスが当たった時のスタイル（念のためdateにも適用） */
+.form-group input:focus,
+.form-group select:focus,
+.form-group input[type="date"]:focus { /* ← dateを追加 */
+  border-color: var(--primary-color);
+  outline: none;
+  background-color: #fff;
+}
