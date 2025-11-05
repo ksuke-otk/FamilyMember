@@ -17,6 +17,9 @@
                 <button class="icon-button edit-button" id="edit-button-link">
                     <span class="icon">✎</span> 
                 </button>
+                <button class="icon-button delete-button-icon" onclick="deleteKidConfirmed()">
+                     <span class="icon">🗑️</span>
+                </button>
             </div>
         </header>
 
@@ -40,15 +43,17 @@
                 </div>
             </section>
 
-            <button class="secondary-button" id="growth-record-link">
-                <span class="icon">📈</span> 成長記録（身長データ）を見る
-            </button>
-            
-            <div class="form-actions delete-area">
-                 <button class="delete-button" onclick="if(confirm('この子どもの情報を削除しますか？')) alert('削除されました')">
-                    子ども情報を削除する
+            <main class="main-content">
+
+    
+                <button class="secondary-button" id="growth-record-link">
+                    <span class="icon">📈</span> 成長記録
                 </button>
-            </div>
+                
+                <div class="form-actions delete-area" style="margin-top: 20px;">
+                </div>
+            </main>
+
         </main>
 
         <nav class="bottom-nav">
@@ -79,6 +84,10 @@
             }
         };
 
+        // URLからクエリパラメータを取得
+                const params = new URLSearchParams(window.location.search);
+                const currentKidId = params.get('id');
+
         function loadKidDetail() {
             // URLからクエリパラメータを取得
             const params = new URLSearchParams(window.location.search);
@@ -96,7 +105,7 @@
             document.getElementById('detail-title').textContent = `子ども情報 (${data.title_name})`;
             // 編集リンクを更新 (kids_add.html?edit=a or b)
             document.getElementById('edit-button-link').onclick = () => {
-                location.href = `kids_add.html?edit=${kidId}`;
+                location.href = `kids_edit.html?edit=${kidId}`;
             };
 
             // 2. 詳細情報を更新
@@ -109,6 +118,23 @@
             document.getElementById('growth-record-link').onclick = () => {
                 location.href = `growth_view.html?kid=${kidId}`;
             };
+        }
+
+        /**
+         * 子ども情報削除の確認と実行
+         */
+         function deleteKidConfirmed() {
+            const data = kids[currentKidId];
+            const kidName = data ? data.name : 'この子どもの情報';
+
+            if (confirm(`${kidName} の情報を本当に削除しますか？\nこの操作は元に戻せません。`)) {
+                // 削除処理のシミュレーション
+                console.log(`子どもの情報 (ID: ${currentKidId}, 名前: ${kidName}) を削除しました。`);
+                alert(`${kidName} の情報を削除しました。`);
+                
+                // 削除後、家族メンバー一覧画面へ遷移
+                location.href = 'family_member.html';
+            }
         }
 
         // ページ読み込み時に実行
