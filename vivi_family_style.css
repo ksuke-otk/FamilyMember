@@ -320,7 +320,7 @@ body {
   -webkit-appearance: none; /* iOS Safari用 */
   -moz-appearance: none;      /* Firefox用 */
   appearance: none;           /* 標準プロパティ */
-  background-image: none;     /* カレンダーアイコンを非表示（縦幅ずれの原因の一つ） */
+  background-image: 10px;     /* カレンダーアイコンを非表示（縦幅ずれの原因の一つ） */
   /* padding-right: 12px; は削除済み */
 }
 
@@ -704,15 +704,6 @@ body {
     background-image: none; /* dateフィールドのデフォルトアイコンを非表示 */
   }
   
-  /* プレースホルダーの色を薄いグレーに設定（全input/selectに適用） */
-#invite-kid-form input::placeholder,
-#edit-family-form input::placeholder,
-#invite-kid-form select::placeholder, /* selectには通常プレースホルダーは使えませんが、念のため */
-#edit-family-form select::placeholder {
- color: #aaa; /* 薄いグレー */
- opacity: 1; /* iOSで薄くなりすぎないように調整 */
-}
-
   #invite-kid-form input:focus,
   #invite-kid-form select:focus {
     border-color: var(--primary-color);
@@ -884,13 +875,6 @@ body {
     background-image: none; /* dateフィールドのデフォルトアイコンを非表示 */
   }
   
-/* プレースホルダーの色を薄いグレーに設定（編集画面にも適用） */
-#edit-family-form input::placeholder,
-#edit-family-form select::placeholder {
- color: #aaa; /* 薄いグレー */
- opacity: 1; 
-}
-
   #edit-family-form input:focus,
   #edit-family-form select:focus {
     border-color: var(--primary-color);
@@ -1049,10 +1033,7 @@ body {
     align-items: center;
 }
 
-/* 削除をアイコンとして目立たせるための色（任意だが推奨） */
-.icon-button.delete-button-icon .icon {
-    /* ゴミ箱アイコンを白く保ちつつ、ホバー時に危険色を出す調整も可能 */
-}
+
 
 /* ------------------------------
    成長記録ボタンの独自アクションボタン
@@ -1088,16 +1069,3 @@ body {
   /* アイコンの色はボタンの現在のcolorプロパティを継承 */
 }
 
-/* 子ども登録/編集画面の date 型 input のプレースホルダーを薄く表示する */
-#invite-kid-form input[type="date"]::placeholder,
-#edit-family-form input[type="date"]::placeholder {
-   color: #aaa; /* より薄いグレー */
- opacity: 1; /* ブラウザによっては opacity を設定しないと薄くならないため */
-}
-
-/* フォーム共通設定（念のため date も含める） */
-.form-group input::placeholder,
-.form-group select::placeholder {
-    color: #aaa;
-    opacity: 1;
-}
