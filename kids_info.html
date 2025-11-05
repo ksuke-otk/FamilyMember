@@ -63,6 +63,15 @@
        </nav>  
 
     </div>
+    <div id="delete-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <p id="modal-message">子どもの情報を削除しますか？</p>
+            <div class="modal-buttons">
+                <button class="button-yes" onclick="deleteMemberConfirmed()">はい</button>
+                <button class="button-no" onclick="hideDeleteModal()">いいえ</button>
+            </div>
+        </div>
+    </div>
  
 
     <script>
@@ -123,18 +132,24 @@
         /**
          * 子ども情報削除の確認と実行
          */
-         function deleteKidConfirmed() {
-            const data = kids[currentKidId];
-            const kidName = data ? data.name : 'この子どもの情報';
+         function showDeleteModal(memberName, memberId) {
+            memberToDeleteId = memberId;
+            document.getElementById('modal-message').textContent = `子どもの情報を削除しますか？`;
+            document.getElementById('delete-modal').style.display = 'flex';
+        }
 
-            if (confirm(`${kidName} の情報を本当に削除しますか？\nこの操作は元に戻せません。`)) {
-                // 削除処理のシミュレーション
-                console.log(`子どもの情報 (ID: ${currentKidId}, 名前: ${kidName}) を削除しました。`);
-                alert(`${kidName} の情報を削除しました。`);
-                
-                // 削除後、家族メンバー一覧画面へ遷移
-                location.href = 'family_member.html';
+        function hideDeleteModal() {
+            memberToDeleteId = null;
+            document.getElementById('delete-modal').style.display = 'none';
+        }
+
+        function deleteMemberConfirmed() {
+            if (memberToDeleteId) {
+                const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
+                if (memberElement) memberElement.remove();
+                //alert(`ID ${memberToDeleteId} の子どもの情報を削除しました。`);
             }
+            hideDeleteModal(); 
         }
 
         // ページ読み込み時に実行
