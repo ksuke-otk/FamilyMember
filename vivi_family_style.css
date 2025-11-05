@@ -689,7 +689,8 @@ body {
   }
   
   #invite-kid-form input,
-  #invite-kid-form select {
+  #invite-kid-form select,
+  #invite-kid-form input[type="date"] { /* ← 【修正】: input[type="date"]を明示的に追加 */
     width: 100%;
     padding: 10px 12px;
     border-radius: 10px;
@@ -859,7 +860,8 @@ body {
   }
   
   #edit-family-form input,
-  #edit-family-form select {
+  #edit-family-form select,
+  #edit-family-form input[type="date"] { /* ← 【修正】: input[type="date"]を明示的に追加 */
     width: 100%;
     padding: 10px 12px;
     border-radius: 10px;
