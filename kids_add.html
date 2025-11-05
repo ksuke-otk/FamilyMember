@@ -66,23 +66,23 @@
     
 
     <script>
-                // メンバーIDを取得する（ここではシミュレーションのため固定）
-                const urlParams = new URLSearchParams(window.location.search);
-                const memberId = urlParams.get('id') || '1'; // デフォルトID
+                // メンバーIDを取得する（ここではシミュレーションのため固定）
+                const urlParams = new URLSearchParams(window.location.search);
+                const memberId = urlParams.get('id') || '1'; // デフォルトID
         
-                function showCancelModal() {
-                    document.getElementById('cancel-modal').style.display = 'flex';
-                }
+                function showCancelModal() {
+                document.getElementById('cancel-modal').style.display = 'flex';
+                }
         
-                function hideCancelModal() {
-                    // 「いいえ」を押下した場合、モーダルを閉じる
-                    document.getElementById('cancel-modal').style.display = 'none';
-                }
+                function hideCancelModal() {
+                // 「いいえ」を押下した場合、モーダルを閉じる
+                document.getElementById('cancel-modal').style.display = 'none';
+                }
         
-                function cancelEditConfirmed() {
-                    // 「はい」を押下した場合、家族メンバー画面に遷移
-                    location.href = 'family_member.html';
-                }
+                function cancelEditConfirmed() {
+                // 「はい」を押下した場合、家族メンバー画面に遷移
+                location.href = 'family_member.html?tab=kid';
+                }
                 
                 /**
                  * 完了ボタン押下時の処理 (子ども登録)
@@ -111,22 +111,22 @@
                     //alert(`${name} ちゃん/くんをアルバムに登録しました。`); // 完了メッセージ表示
         
                     // 家族メンバー画面に遷移
-                    location.href = 'family_member.html';
-                }
+                    location.href = 'family_member.html?tab=kid';
+                    }
         
-                
-                // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
-                document.addEventListener('DOMContentLoaded', () => {
-                    // 実際にはAPIからデータを取得し、フォーム要素に設定する処理が入る
-                    // 例として、URLにid=2があれば、関係性を母に変更する
-                    if (memberId === '2') {
-                        // この画面は新規登録画面なので、初期値の設定は基本的に不要ですが、
-                        // 既存のテンプレートに合わせて残しています。
-                        // 実際の「子ども編集」画面の場合は、ここに初期値の設定が入ります。
-                        // document.getElementById('kid-name').value = '次郎'; 
-                    }
-                });
-            </script>
+                
+                 // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
+                document.addEventListener('DOMContentLoaded', () => {
+                 // 実際にはAPIからデータを取得し、フォーム要素に設定する処理が入る
+                 // 例として、URLにid=2があれば、関係性を母に変更する
+                 if (memberId === '2') {
+                 // この画面は新規登録画面なので、初期値の設定は基本的に不要ですが、
+                 // 既存のテンプレートに合わせて残しています。
+                 // 実際の「子ども編集」画面の場合は、ここに初期値の設定が入ります。
+                 // document.getElementById('kid-name').value = '次郎'; 
+                 }
+             });
+        </script>
 
 </body>
 </html>
