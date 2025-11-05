@@ -14,7 +14,7 @@
         </header>
 
         <main class="main-content form-page">
-            <form id="edit-family-form">
+            <form id="edit-family-form" onsubmit="handleEdit(event)">
                 <div class="form-group">
                     <label for="family-name">名前 <span class="required">*</span></label>
                     <input type="text" id="family-name" name="name" required value="私の名前" placeholder="例: 山田 太郎">
@@ -23,9 +23,11 @@
                 <div class="form-group">
                     <label for="family-relation">関係性 <span class="required">*</span></label>
                     <select id="family-relation" name="relation" required>
-                        <option value="father" selected>父</option>
+                        <option value="father">父</option>
                         <option value="mother">母</option>
                         <option value="grandfather">祖父</option>
+                        <option value="grandmother">祖母</option>
+                        <option value="child">子ども</option>
                     </select>
                 </div>
 
@@ -56,43 +58,71 @@
         <div class="modal-content">
             <p id="cancel-modal-message">編集を中止しますか？</p>
             <div class="modal-buttons">
-                <button class="button-no" onclick="hideCancelModal()">いいえ</button>
+
                 <button class="button-yes" onclick="cancelEditConfirmed()">はい</button>
+                <button class="button-no" onclick="hideCancelModal()">いいえ</button>
+
              </div>
         </div>
     </div>
     
 
     <script>
-        // メンバーIDを取得する（ここではシミュレーションのため固定）
-        const urlParams = new URLSearchParams(window.location.search);
-        const memberId = urlParams.get('id') || '1'; // デフォルトID
-
-        function showCancelModal() {
-            document.getElementById('cancel-modal').style.display = 'flex';
-        }
-
-        function hideCancelModal() {
-            // 「いいえ」を押下した場合、モーダルを閉じる
-            document.getElementById('cancel-modal').style.display = 'none';
-        }
-
-        function cancelEditConfirmed() {
-            // 「はい」を押下した場合、家族メンバー画面に遷移
-            location.href = 'family_member.html';
-        }
+                // メンバーIDを取得する（ここではシミュレーションのため固定）
+                const urlParams = new URLSearchParams(window.location.search);
+                const memberId = urlParams.get('id') || '1'; // デフォルトID
         
-        // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
-        document.addEventListener('DOMContentLoaded', () => {
-            // 実際にはAPIからデータを取得し、フォーム要素に設定する処理が入る
-            // 例として、URLにid=2があれば、関係性を母に変更する
-            if (memberId === '2') {
-                document.getElementById('family-name').value = '妻の名前';
-                document.getElementById('family-relation').value = 'mother';
-                document.getElementById('family-permission').value = 'post';
-            }
-        });
-    </script>
+                function showCancelModal() {
+                    document.getElementById('cancel-modal').style.display = 'flex';
+                }
+        
+                function hideCancelModal() {
+                    // 「いいえ」を押下した場合、モーダルを閉じる
+                    document.getElementById('cancel-modal').style.display = 'none';
+                }
+        
+                function cancelEditConfirmed() {
+                    // 「はい」を押下した場合、家族メンバー画面に遷移
+                    location.href = 'family_member.html';
+                }
+                
+                /**
+                 * 完了ボタン押下時の処理 (メンバー情報編集)
+                 * @param {Event} event 
+                 */
+                function handleEdit(event) {
+                    // フォームのデフォルトの送信動作をキャンセル
+                    event.preventDefault(); 
+                    
+                    // メンバーIDを再取得
+                    const currentMemberId = urlParams.get('id') || '1'; 
+                    
+                    // フォームのデータを取得 (ここではシミュレーション)
+                    const form = event.target;
+                    const name = form.elements['family-name'].value;
+                    const relation = form.elements['family-relation'].value;
+                    const permission = form.elements['family-permission'].value;
+        
+                    // 更新処理のシミュレーション
+                    console.log(`ID ${currentMemberId} のメンバー情報を更新しました: 名前=${name}, 関係性=${relation}, 権限=${permission}`);
+                    //alert(`メンバー ${name} さんの情報を更新しました。`); // 完了メッセージ表示
+        
+                    // メンバー詳細画面に遷移 (IDを付与)
+                    location.href = `member_detail.html?id=${currentMemberId}`;
+                }
+        
+                
+                // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
+                document.addEventListener('DOMContentLoaded', () => {
+                    // 実際にはAPIからデータを取得し、フォーム要素に設定する処理が入る
+                    // 例として、URLにid=2があれば、関係性を母に変更する
+                    if (memberId === '2') {
+                        document.getElementById('family-name').value = '妻の名前';
+                        document.getElementById('family-relation').value = 'mother';
+                        document.getElementById('family-permission').value = 'post';
+                    }
+                });
+            </script>
     
 </body>
 </html>
