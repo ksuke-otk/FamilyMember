@@ -703,6 +703,15 @@ body {
     appearance: none;
     background-image: none; /* dateフィールドのデフォルトアイコンを非表示 */
   }
+
+  /* プレースホルダーの色を薄いグレーに設定（全input/selectに適用） */
+#invite-kid-form input::placeholder,
+#edit-family-form input::placeholder,
+#invite-kid-form select::placeholder, /* selectには通常プレースホルダーは使えませんが、念のため */
+#edit-family-form select::placeholder {
+ color: #aaa; /* 薄いグレー */
+ opacity: 1; /* iOSで薄くなりすぎないように調整 */
+}
   
   #invite-kid-form input:focus,
   #invite-kid-form select:focus {
@@ -875,6 +884,13 @@ body {
     background-image: none; /* dateフィールドのデフォルトアイコンを非表示 */
   }
   
+/* プレースホルダーの色を薄いグレーに設定（編集画面にも適用） */
+#edit-family-form input::placeholder,
+#edit-family-form select::placeholder {
+ color: #aaa; /* 薄いグレー */
+ opacity: 1; 
+}
+
   #edit-family-form input:focus,
   #edit-family-form select:focus {
     border-color: var(--primary-color);
