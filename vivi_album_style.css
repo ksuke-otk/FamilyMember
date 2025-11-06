@@ -346,3 +346,148 @@ body {
         /* スタイルは主にdisplayプロパティで制御される */
         margin-top: 10px;
     }
+
+    /* ------------------------------
+   💡 カレンダービュー専用スタイル (vivi_album_style.css に追記)
+------------------------------ */
+
+/* 月ナビゲーションコンテナ */
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* 年月表示 */
+.calendar-nav h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+/* カレンダーグリッド */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: var(--border-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* 曜日ヘッダー */
+.day-header {
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-size: 0.85em;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 0;
+    line-height: 1;
+}
+
+/* 日付セル */
+.day-cell {
+    background-color: #fff;
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    min-height: 50px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+/* 前月/翌月の日付 */
+.day-cell.inactive {
+    background-color: #f8f9fa;
+    color: var(--light-gray);
+    cursor: default;
+}
+
+/* 今日の日付 */
+.day-cell.today {
+    border: 2px solid var(--danger-color);
+    color: var(--danger-color);
+}
+
+/* 写真マーク (📸) */
+.photo-marker {
+    display: block;
+    font-size: 0.8em;
+    margin-top: 3px;
+    line-height: 1;
+}
+/* 日曜日 (任意) */
+.day-header:nth-child(1),
+.calendar-grid .day-cell:nth-child(7n + 1) {
+    color: var(--danger-color);
+}
+
+/* 土曜日 (任意) */
+.day-header:nth-child(7),
+.calendar-grid .day-cell:nth-child(7n) {
+    color: #3498db;
+}
+
+/* ------------------------------
+   💡 プルダウン（アルバム選択）用スタイル - 追記
+------------------------------ */
+
+.album-dropdown-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dropdown-label {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.album-dropdown {
+    padding: 8px 12px;
+    font-size: 1em;
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    background-color: #fff;
+    color: var(--text-color);
+    appearance: none; /* デフォルトの矢印を非表示に（カスタム矢印用）*/
+    cursor: pointer;
+    flex-grow: 1; /* スペースを占有 */
+    max-width: 200px; /* 最大幅を設定 */
+}
+
+/* ------------------------------
+   💡 アルバムコンテンツの表示/非表示を管理するためのクラス
+------------------------------ */
+.album-content-section {
+    margin-top: 10px;
+    /* デフォルトで非表示 */
+    display: none; 
+}
+
+.album-content-section.active {
+    /* アクティブなセクションは表示 */
+    display: block;
+}
+
+/* ------------------------------
+   💡 既存のタブ関連スタイルの削除/修正
+------------------------------ */
+
+/* 修正: 以前のタブナビゲーションのスタイルは不要になるため、削除またはコメントアウト */
+/* .member-tabs { ... } */ 
+/* .member-tabs .tab { ... } */
+/* .member-tabs .tab.active { ... } */
