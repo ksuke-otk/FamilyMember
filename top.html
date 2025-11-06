@@ -4,52 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家族アルバムvivi - アルバム</title>
-    <link rel="stylesheet" href="vivi_family_style.css">
+    <link rel="stylesheet" href="vivi_album_style.css">
 </head>
 <body>
     <div class="app-container">
         <!-- ヘッダー -->
         <header class="top-bar">
             <div class="header-left"></div> 
-            <div class="header-center"><h1>アルバム</h1></div>
+            <div class="header-center"><h1>アルバム一覧</h1></div>
             <div class="header-right"></div>
+            
         </header>
+        <nav class="album-tabs">
+            <button class="tab" onclick="location.href='calendar.html'">カレンダー</button>
+            <button class="tab active" onclick="location.href='top.html'">一覧</button>
 
+        </nav>
         <!-- メイン -->
         <main class="main-content">
+
+
             <section id="album-section" class="member-section active">
-                <h2 class="section-title">家族の思い出アルバム</h2>
-
-                <div class="permission-info-box">
-                    <h3 class="permission-title">アルバムについて</h3>
-                    <p style="margin-bottom: 10px;">家族みんなで撮った写真や動画をここに集めましょう。<br>
-                    アップロードした写真は、メンバー全員が閲覧できます。</p>
-                </div>
-
                 <button class="primary-button" onclick="location.href='upload_photo.html'">
                     <span class="icon">＋</span> 新しい写真・動画を追加
                 </button>
+                <div class="title-with-button">
+                    <h2 class="section-title">家族の思い出アルバム</h2>
+                            <button class="secondary-button icon-only-button" onclick="location.href='download.html'">
+                                <span class="icon">⬇️</span>
+                            </button>
+                </div>
+                <nav class="member-tabs">
+                    <button class="tab album-tab-item active" onclick="showAlbumSection('all', this)">すべて</button>
+                    <button class="tab album-tab-item" onclick="showAlbumSection('ichiro', this)">一郎くん</button>
+                    <button class="tab album-tab-item" onclick="showAlbumSection('yoshiko', this)">良子ちゃん</button>
+                    <button class="tab album-tab-item" onclick="showAlbumSection('kai', this)">かいくん</button>
+                    <button class="tab album-tab-item" onclick="showAlbumSection('kii', this)">きいちゃん</button>
+
+
+                </nav>
+
+
 
                 <!-- 写真一覧（ダミー表示例） -->
                 <ul class="member-list">
                     <li class="member-item" onclick="location.href='photo_detail.html?id=1'">
+                        <div class="checkbox-area">
+                            <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation()">
+                        </div>
                         <div class="info">
-                            <span class="name">七五三の記念写真</span><br>
-                            <span class="role">2024年11月 | 投稿者：母</span>
+                            <span class="name">七五三</span><br>
+                            <div class="photo-grid">
+                                <div class="photo-item" onclick="location.href='picture_detail.html?id=001'">
+                                    <img src="placeholder_1.jpg" alt="写真1" class="photo-thumbnail">
+                                </div>
+
+                            </div>
+                            <span class="role">2024-11</span>
                         </div>
                     </li>
 
                     <li class="member-item" onclick="location.href='photo_detail.html?id=2'">
+                        <div class="checkbox-area">
+                            <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation()">
+                        </div>
                         <div class="info">
-                            <span class="name">運動会の動画</span><br>
-                            <span class="role">2024年10月 | 投稿者：父</span>
+                            <span class="name">運動会</span><br>
+                            <div class="photo-grid">
+                                <div class="photo-item" onclick="location.href='picture_detail.html?id=004'">
+                                    <img src="placeholder_4.jpg" alt="写真4" class="photo-thumbnail">
+                                </div>
+
+                            </div>
+                            <span class="role">2024-10</span>
                         </div>
                     </li>
 
                     <li class="member-item" onclick="location.href='photo_detail.html?id=3'">
+                        <div class="checkbox-area">
+                            <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation()">
+                        </div>
                         <div class="info">
                             <span class="name">夏の海旅行</span><br>
-                            <span class="role">2024年8月 | 投稿者：姉</span>
+                            <div class="photo-grid">
+                                <div class="photo-item" onclick="location.href='picture_detail.html?id=004'">
+                                    <img src="placeholder_4.jpg" alt="写真4" class="photo-thumbnail">
+                                </div>
+
+                            </div>
+                            <span class="role">2024-8</span>
                         </div>
                     </li>
                 </ul>
@@ -68,12 +111,11 @@
         // 共通スクリプト（削除モーダル等が含まれていても問題なし）
         let memberToDeleteId = null;
 
-        function showSection(sectionId, element) {
-            document.querySelectorAll('.member-tabs .tab').forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
-            document.querySelectorAll('.member-section').forEach(section => section.style.display = 'none');
-            document.getElementById(`${sectionId}-section`).style.display = 'block';
-        }
+        // 💡 【修正】showSection関数を、アルバム画面では使用しないため、古いロジックをリファクタリング
+           function showSection(sectionId, element) {
+           // この関数は family_member.html 用のロジックであり、top.htmlでは基本的に未使用だが残しておく
+             console.warn('showSection: top.htmlでは showAlbumSection を使用してください。');
+           }
 
         function showDeleteModal(memberName, memberId) {
             memberToDeleteId = memberId;
@@ -96,6 +138,30 @@
             }
             hideDeleteModal(); 
         }
-    </script>
+/**
+         * 💡 【再確認】アルバムコンテンツの切り替え
+         * @param {string} albumId - 切り替えるアルバムのID ('all', 'ichiro', 'yoshiko'など)
+         * @param {HTMLElement} element - クリックされたタブボタン要素
+         */
+         function showAlbumSection(albumId, element) {
+            // 1. 全てのタブのactiveクラスを解除
+            document.querySelectorAll('.album-tab-item').forEach(tab => tab.classList.remove('active'));
+            // 2. クリックされたタブにactiveクラスを追加
+            element.classList.add('active');
+
+            // 3. 全てのコンテンツセクションを非表示
+            document.querySelectorAll('.album-content-section').forEach(section => section.style.display = 'none');
+            // 4. 対応するセクションを表示
+            const targetSection = document.getElementById(`${albumId}-album-section`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        }
+
+            // ページ読み込み時に実行
+             document.addEventListener('DOMContentLoaded', () => {
+              // 初期表示ロジックは'all'がデフォルトでactiveになっているため、ここでは特に処理は不要
+             });
+        </script>
 </body>
 </html>
