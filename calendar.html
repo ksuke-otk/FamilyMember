@@ -7,19 +7,20 @@
     <link rel="stylesheet" href="vivi_album_style.css">
 </head>
 <body>
-    <div class="app-container">
-                <header class="top-bar">
-            <div class="header-left"></div> 
-            <div class="header-center"><h1>カレンダー</h1></div>
-            <div class="header-right"></div>
-        </header>
-        
-                <nav class="album-tabs">
-            <button class="tab active" onclick="location.href='calendar.html'">カレンダー</button>
-            <button class="tab" onclick="location.href='top.html'">一覧</button>
-        </nav>
-        
-                <main class="main-content">
+    <div class="app-container">
+        <!-- ヘッダー -->
+        <header class="top-bar">
+            <div class="header-left"></div> 
+            <div class="header-center"><h1>カレンダー</h1></div>
+            <div class="header-right"></div>
+            
+        </header>
+        <nav class="album-tabs">
+            <button class="tab active" onclick="location.href='calendar.html'">カレンダー</button>
+            <button class="tab " onclick="location.href='top.html'">一覧</button>
+        </nav>
+        <!-- メイン -->
+        <main class="main-content">
             <section id="calendar-view">
                 <div class="calendar-nav">
                     <button class="icon-only-button" style="font-size: 1.5em;">＜</button>
@@ -92,5 +93,62 @@
             <a href="family_member.html" class="nav-item"><span class="icon">⚙️</span>設定</a>
         </nav>
     </div>
+<script>
+    // 共通スクリプト（削除モーダル等が含まれていても問題なし）
+    let memberToDeleteId = null;
+
+    // 💡 【修正】showSection関数を、アルバム画面では使用しないため、古いロジックをリファクタリング
+       function showSection(sectionId, element) {
+       // この関数は family_member.html 用のロジックであり、top.htmlでは基本的に未使用だが残しておく
+         console.warn('showSection: top.htmlでは showAlbumSection を使用してください。');
+       }
+
+    function showDeleteModal(memberName, memberId) {
+        memberToDeleteId = memberId;
+        document.getElementById('modal-message').textContent = `メンバーを削除しますか？`;
+        document.getElementById('delete-modal').style.display = 'flex';
+    }
+
+    function hideDeleteModal() {
+        memberToDeleteId = null;
+        document.getElementById('delete-modal').style.display = 'none';
+    }
+
+    function deleteMemberConfirmed() {
+        if (memberToDeleteId) {
+            const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
+            if (memberElement) {
+                memberElement.remove();
+            }
+            alert(`ID ${memberToDeleteId} のメンバーを削除しました。`);
+        }
+        hideDeleteModal(); 
+    }
+     /**
+     * 💡 【再確認】アルバムコンテンツの切り替え
+     * @param {string} albumId - 切り替えるアルバムのID ('all', 'ichiro', 'yoshiko'など)
+     * @param {HTMLElement} element - クリックされたタブボタン要素
+     */
+     function showAlbumSection(albumId, element) {
+        // 1. 全てのタブのactiveクラスを解除
+        document.querySelectorAll('.album-tab-item').forEach(tab => tab.classList.remove('active'));
+        // 2. クリックされたタブにactiveクラスを追加
+        element.classList.add('active');
+
+        // 3. 全てのコンテンツセクションを非表示
+        document.querySelectorAll('.album-content-section').forEach(section => section.style.display = 'none');
+        // 4. 対応するセクションを表示
+        const targetSection = document.getElementById(`${albumId}-album-section`);
+        if (targetSection) {
+            targetSection.style.display = 'block';
+        }
+    }
+
+        // ページ読み込み時に実行
+         document.addEventListener('DOMContentLoaded', () => {
+          // 初期表示ロジックは'all'がデフォルトでactiveになっているため、ここでは特に処理は不要
+         });
+    </script>
 </body>
+
 </html>
