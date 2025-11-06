@@ -1,0 +1,348 @@
+/* ==================================
+   vivi_album_style.css
+   アルバム画面 (top.html) および共通要素用スタイル
+   ================================== */
+
+/* 基本リセットと変数定義 */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #79c2d0;
+    --primary-dark: #5fa5b1;
+    --background-color: #f4f4f4;
+    --text-color: #333;
+    --light-gray: #ccc;
+    --border-color: #eee;
+    --danger-color: #e74c3c;
+    --radius: 12px;
+    /* アルバム画面で直接使われない色変数は除外しましたが、
+       必要であれば全定義を残しても構いません。ここでは最小限に留めます。 */
+}
+
+body {
+    font-family: "Segoe UI", "Hiragino Sans", sans-serif;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* --- ヘッダー (top-bar) --- */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: var(--primary-color);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.top-bar h1 {
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* --- 💡 アルバムタブナビゲーション (album-tabs) --- */
+.album-tabs {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 45px; /* ヘッダーの高さに応じて調整 */
+    z-index: 5;
+}
+
+.album-tabs .tab {
+    flex-grow: 1;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 1em;
+    font-weight: bold;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.album-tabs .tab.active {
+    color: var(--primary-dark);
+    border-bottom-color: var(--primary-dark);
+}
+
+/* --- メインコンテンツ --- */
+.main-content {
+    flex-grow: 1;
+    /* アルバム画面は下部に固定ナビがあるため、パディングを調整 */
+    padding: 20px 15px 80px; 
+}
+
+/* 💡 【追加】タイトルとボタンを横並びにするコンテナ */
+.title-with-button {
+    display: flex;
+    justify-content: space-between; /* 両端に配置 */
+    align-items: center; /* 垂直方向の中央揃え */
+    margin-bottom: 5px; /* リストとの間隔を調整 */
+}
+
+/* 💡 【修正】セクションタイトル: マージンを調整し、親コンテナの高さに合わせる */
+.section-title {
+    border-left: 5px solid var(--primary-color);
+    padding-left: 8px;
+    margin: 0; /* 親コンテナでマージンを制御するためリセット */
+    font-size: 1.1em;
+    flex-grow: 1; /* タイトルが占有できるだけスペースを確保 */
+    padding-top: 5px; /* タイトルの上下のパディングを調整 */
+    padding-bottom: 5px;
+}
+
+.section-title {
+    border-left: 5px solid var(--primary-color);
+    padding-left: 8px;
+    margin: 20px 0 15px;
+    font-size: 1.1em;
+}
+
+/* --- 情報ボックス (アルバムの説明など) --- */
+.permission-info-box {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 15px 20px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.permission-title {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 5px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* --- プライマリーボタン (写真追加ボタン) --- */
+.primary-button {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+    background-color: var(--primary-dark);
+}
+
+/* --- 写真/アイテムリスト --- */
+.member-list { /* リストのクラス名が member-list ですが、写真一覧として使用 */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.member-item {
+    background: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    padding: 15px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    position: relative;
+    cursor: pointer;
+}
+
+.member-item .name {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.member-item .role { /* 投稿日時/投稿者の情報として使用 */
+    font-size: 0.85em;
+    color: #777;
+}
+
+/* --- ボトムナビゲーション --- */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--border-color);
+    background: #fff;
+    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    padding: 5px 0;
+    position: sticky;
+    bottom: 0;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #888;
+    text-decoration: none;
+    font-size: 0.8em;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+}
+
+.nav-item .icon {
+    font-size: 1.5em;
+    margin-bottom: 2px;
+}
+
+/* --- 💡 アクションボタンコンテナ (追加) --- */
+.action-buttons-container {
+    display: flex;
+    flex-direction: column; /* 縦に並べる */
+    gap: 10px; /* ボタン間のスペース */
+    margin-bottom: 20px;
+}
+
+/* --- 💡 ダウンロードボタン (Secondary Button) --- */
+.secondary-button {
+    background: #ffffff; /* 明るいグレーの背景 */
+    color: var(--primary-dark); /* メインカラーのテキスト */
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 0px;
+    font-weight: bold;
+    width: 20%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 1em;
+}
+
+
+/* 💡 member-item を Flex にしてチェックボックスと情報を横並びにする */
+.member-item {
+    display: flex; /* Flexboxを有効化 */
+    align-items: center; /* 垂直方向の中央揃え */
+    background: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+/* 💡 チェックボックスのエリア */
+.checkbox-area {
+    flex-shrink: 0; /* 縮まない */
+    padding-right: 10px;
+}
+
+/* --- 💡 【追加】子ども別アルバム切り替えタブ (member-tabs) --- */
+.member-tabs {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 15px; /* 下のコンテンツとの間隔 */
+}
+
+.member-tabs .tab {
+    flex-grow: 1;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.95em; /* フォントサイズを少し小さく */
+    font-weight: 500;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.member-tabs .tab.active {
+    color: var(--primary-dark);
+    border-bottom-color: var(--primary-dark);
+    font-weight: bold;
+}
+
+/* 💡 【追加】アルバムコンテンツセクション: 切り替え対象のリストを内包 */
+.album-content-section {
+    /* スタイルは主にdisplayプロパティで制御される */
+    margin-top: 10px;
+}
+
+/* --- 💡 ダウンロードボタン (アイコンのみ) のスタイルを調整 --- */
+.secondary-button.icon-only-button {
+    width: auto; /* 幅をコンテンツに合わせる */
+    padding: 8px 10px; /* パディングを小さくして、タイトルと高さを合わせる */
+    border: 1px solid var(--light-gray);
+    background: #fff;
+    border-radius: 8px;
+    margin-left: 10px; /* タイトルとの間隔 */
+    line-height: 1; /* アイコンの縦位置を調整 */
+    font-size: 1.1em;
+    font-weight: normal;
+}
+.secondary-button.icon-only-button .icon {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+/* --- 💡 【追加】子ども別アルバム切り替えタブ (member-tabs) --- */
+.member-tabs {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        background-color: #fff;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 15px; /* 下のコンテンツとの間隔 */
+    }
+    
+    .member-tabs .tab {
+        flex-grow: 1;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 0.95em; /* フォントサイズを少し小さく */
+        font-weight: 500;
+        color: #888;
+        background: none;
+        border: none;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: color 0.2s, border-bottom-color 0.2s;
+    }
+    
+    .member-tabs .tab.active {
+        color: var(--primary-dark);
+        border-bottom-color: var(--primary-dark);
+        font-weight: bold;
+    }
+    
+    /* 💡 【追加】アルバムコンテンツセクション: 切り替え対象のリストを内包 */
+    .album-content-section {
+        /* スタイルは主にdisplayプロパティで制御される */
+        margin-top: 10px;
+    }
