@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - ダウンロード</title> 
+    <link rel="stylesheet" href="vivi_album_style.css"> 
+
+</head>
+<body>
+    <div class="app-container">
+        <div class="download-modal-overlay">
+            <div class="download-modal-content">
+                <header class="modal-header">
+                    <h2>写真・動画ダウンロード</h2>
+                    <button class="close-button" onclick="closeModal()">×</button>
+                </header>
+                
+                <p>以下のコンテンツをダウンロードします。よろしいですか？</p>
+
+                <ul id="download-list" class="download-list">
+                    </ul>
+
+                <div class="total-info">
+                    合計: <span id="total-count">0</span> 点
+                </div>
+
+                <div class="download-button-area">
+                    <button class="primary-button" onclick="startDownload()">
+                        <span class="icon">⬇️</span> ダウンロード開始
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * モーダルを閉じて元の画面に戻る
+         */
+        function closeModal() {
+            // download.html は常に top.html から遷移すると仮定して戻る
+            history.back();
+        }
+
+        /**
+         * ダウンロード処理の開始（シミュレーション）
+         */
+        function startDownload() {
+            // 💡 修正: ダウンロード完了をシミュレーションし、元の画面に戻る
+            //alert('ダウンロードが完了しました。アルバム一覧に戻ります。'); 
+            location.href = 'top.html?reset=true';
+        }
+
+        /**
+         * URLパラメータから選択されたデータをロードして表示
+         */
+        function loadDownloadList() {
+            const params = new URLSearchParams(window.location.search);
+            const itemsParam = params.get('items');
+            const downloadListElement = document.getElementById('download-list');
+            const totalCountElement = document.getElementById('total-count');
+            let totalPhotos = 0;
+
+            if (!itemsParam) {
+                downloadListElement.innerHTML = '<p style="text-align:center; color:#999;">ダウンロード対象が選択されていません。</p>';
+                return;
+            }
+
+            // URLパラメータをパース: "albumId:albumName:photoCount,..."
+            const items = itemsParam.split(',');
+            downloadListElement.innerHTML = ''; // リストをクリア
+
+            items.forEach(itemString => {
+                const parts = itemString.split(':');
+                if (parts.length === 3) {
+                    const albumId = parts[0];
+                    const albumName = decodeURIComponent(parts[1]).replace(/\s\(\d+枚\)/, ''); // (5枚)などを削除
+                    const photoCount = parseInt(parts[2], 10);
+
+                    if (!isNaN(photoCount) && photoCount > 0) {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'download-item';
+                        listItem.innerHTML = `
+                            <span class="name">${albumName}</span>
+                            <span class="count">${photoCount}点</span>
+                        `;
+                        downloadListElement.appendChild(listItem);
+                        totalPhotos += photoCount;
+                    }
+                }
+            });
+
+            // 合計を更新
+            totalCountElement.textContent = `${totalPhotos}`;
+
+            // 選択されたアルバムがない場合の代替処理（念のため）
+            if (totalPhotos === 0) {
+                 downloadListElement.innerHTML = '<p style="text-align:center; color:#999;">ダウンロード対象が選択されていません。</p>';
+            }
+        }
+
+        // ページロード時に実行
+        document.addEventListener('DOMContentLoaded', loadDownloadList);
+    </script>
+</body>
+</html>
