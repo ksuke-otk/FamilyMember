@@ -8,27 +8,33 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- ヘッダー -->
         <header class="top-bar">
             <div class="header-left"></div> 
             <div class="header-center"><h1>カレンダー</h1></div>
             <div class="header-right"></div>
-            
         </header>
         <nav class="album-tabs">
             <button class="tab active" onclick="location.href='calendar.html'">カレンダー</button>
             <button class="tab " onclick="location.href='top.html'">一覧</button>
         </nav>
-        <!-- メイン -->
+        
         <main class="main-content">
+            <div class="album-dropdown-container">
+                <label for="album-selector" class="dropdown-label">アルバム選択:</label>
+                <select id="album-selector" class="album-dropdown" onchange="showAlbumSection(this.value, this)">
+                    <option value="all">すべて</option>
+                    <option value="ichiro">一郎くん</option>
+                    <option value="yoshiko">良子ちゃん</option>
+                </select>
+            </div>
             <section id="calendar-view">
                 <div class="calendar-nav">
-                    <button class="icon-only-button" style="font-size: 1.5em;">＜</button>
-                    <h2>2025年11月</h2>
-                    <button class="icon-only-button" style="font-size: 1.5em;">＞</button>
+                    <button class="icon-only-button" style="font-size: 1.5em;" onclick="prevMonth()">＜</button>
+                    <h2 id="current-month-year">YYYY年M月</h2>
+                    <button class="icon-only-button" style="font-size: 1.5em;" onclick="nextMonth()">＞</button>
                 </div>
                 
-                <div class="calendar-grid">
+                <div class="calendar-grid" id="calendar-grid">
                     <div class="day-header">日</div>
                     <div class="day-header">月</div>
                     <div class="day-header">火</div>
@@ -37,56 +43,10 @@
                     <div class="day-header">金</div>
                     <div class="day-header">土</div>
 
-                    <div class="day-cell inactive">26</div>
-                    <div class="day-cell inactive">27</div>
-                    <div class="day-cell inactive">28</div>
-                    <div class="day-cell inactive">29</div>
-                    <div class="day-cell inactive">30</div>
-                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-01'">1</div>
-                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-02'">
-                        2 
-                        <span class="photo-marker">📸</span>
                     </div>
-                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-03'">3</div>
-                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-04'">4</div>
-                    <div class="day-cell today" onclick="location.href='day_detail.html?date=2025-11-05'">
-                        5 
-                        <span class="photo-marker">📸</span>
-                    </div>
-                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-06'">6</div>
-                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-07'">7</div>
-                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-08'">
-                        8 
-                        <span class="photo-marker">📸</span>
-                    </div>
-                    <div class="day-cell">9</div>
-                    <div class="day-cell">10</div>
-                    <div class="day-cell">11</div>
-                    <div class="day-cell">12</div>
-                    <div class="day-cell">13</div>
-                    <div class="day-cell">14</div>
-                    <div class="day-cell">15</div>
-                    <div class="day-cell">16</div>
-                    <div class="day-cell">17</div>
-                    <div class="day-cell">18</div>
-                    <div class="day-cell">19</div>
-                    <div class="day-cell">20</div>
-                    <div class="day-cell">21</div>
-                    <div class="day-cell">22</div>
-                    <div class="day-cell">23</div>
-                    <div class="day-cell">24</div>
-                    <div class="day-cell">25</div>
-                    <div class="day-cell">26</div>
-                    <div class="day-cell">27</div>
-                    <div class="day-cell">28</div>
-                    <div class="day-cell">29</div>
-                    <div class="day-cell">30</div>
-                    <div class="day-cell inactive">1</div>
-                </div>
             </section>
       </main>
 
-        <!-- ボトムナビ -->
         <nav class="bottom-nav">
             <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
             <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
@@ -94,14 +54,163 @@
         </nav>
     </div>
 <script>
-    // 共通スクリプト（削除モーダル等が含まれていても問題なし）
+    // 既存のスクリプトは省略...
     let memberToDeleteId = null;
+    // ... (既存の showSection, showDeleteModal, showAlbumSection 関数など) ...
+    
+    // ===========================================
+    // 💡 【追記】カレンダー自動更新ロジック
+    // ===========================================
 
-    // 💡 【修正】showSection関数を、アルバム画面では使用しないため、古いロジックをリファクタリング
-       function showSection(sectionId, element) {
-       // この関数は family_member.html 用のロジックであり、top.htmlでは基本的に未使用だが残しておく
-         console.warn('showSection: top.htmlでは showAlbumSection を使用してください。');
-       }
+    // 閲覧中の年月を保持するDateオブジェクト
+    let viewingDate = new Date(); 
+
+    // サンプルの写真投稿日データ (YYYY-MM-DD 形式)
+    // 実際にはAPIから取得するデータに置き換えてください。
+    const photoDates = [
+        '2025-11-02', 
+        '2025-11-05', 
+        '2025-11-08',
+        // 例として、現在の月ではない日付もいくつか含めます
+        '2024-12-25',
+        '2026-01-01'
+    ];
+
+    /**
+     * 年月表示を更新する
+     */
+    function updateMonthYearDisplay() {
+        const year = viewingDate.getFullYear();
+        // getMonth() は 0-11 を返すため +1
+        const month = viewingDate.getMonth() + 1; 
+        document.getElementById('current-month-year').textContent = `${year}年${month}月`;
+    }
+
+    /**
+     * 指定された年月のカレンダーグリッドを生成する
+     */
+    function renderCalendar() {
+        const calendarGrid = document.getElementById('calendar-grid');
+        
+        // 既存の日付セルを削除（曜日ヘッダー7つは残す）
+        while (calendarGrid.children.length > 7) {
+            calendarGrid.removeChild(calendarGrid.lastChild);
+        }
+        
+        const year = viewingDate.getFullYear();
+        const month = viewingDate.getMonth(); // 0-indexed
+        
+        const today = new Date();
+        const todayYear = today.getFullYear();
+        const todayMonth = today.getMonth();
+        const todayDate = today.getDate();
+
+        // 1. その月の最初の日 (1日) の曜日を取得 (0:日, 1:月, ..., 6:土)
+        const firstDayOfMonth = new Date(year, month, 1);
+        const startDayOfWeek = firstDayOfMonth.getDay(); 
+
+        // 2. その月の最終日を取得
+        const lastDayOfMonth = new Date(year, month + 1, 0).getDate(); 
+        
+        // 3. 前月の最終日を取得
+        const lastDayOfPrevMonth = new Date(year, month, 0).getDate();
+
+        let nextMonthDayCount = 1;
+
+        // 前月の日付セルを生成 (inactive)
+        for (let i = 0; i < startDayOfWeek; i++) {
+            const date = lastDayOfPrevMonth - startDayOfWeek + i + 1;
+            const cell = createDayCell(date, true, false, null, false); 
+            calendarGrid.appendChild(cell);
+        }
+
+        // 今月の日付セルを生成
+        for (let i = 1; i <= lastDayOfMonth; i++) {
+            const isToday = (year === todayYear && month === todayMonth && i === todayDate);
+            // YYYY-MM-DD形式の文字列を作成
+            const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+            // photoDates配列に日付が含まれているかチェック
+            const hasPhoto = photoDates.includes(dateString);
+            
+            const cell = createDayCell(i, false, isToday, dateString, hasPhoto);
+            calendarGrid.appendChild(cell);
+        }
+
+        // 翌月の日付セルを生成 (inactive)
+        // グリッドのセル数が7の倍数になるまで、または最大6週間(42セル)まで埋める
+        while (calendarGrid.children.length % 7 !== 0) {
+             const cell = createDayCell(nextMonthDayCount++, true, false, null, false);
+             calendarGrid.appendChild(cell);
+        }
+        
+        updateMonthYearDisplay();
+    }
+
+    /**
+     * 日付セル要素を生成するヘルパー関数
+     */
+    function createDayCell(date, isInactive, isToday, dateString, hasPhoto) {
+        const cell = document.createElement('div');
+        cell.classList.add('day-cell');
+        cell.textContent = date;
+        
+        if (isInactive) {
+            cell.classList.add('inactive');
+            cell.style.cursor = 'default'; // 前月/翌月の日付はクリック不可に
+        } else {
+            if (isToday) {
+                cell.classList.add('today');
+            }
+            
+            // 詳細ページへの遷移を設定
+            cell.setAttribute('onclick', `location.href='day_detail.html?date=${dateString}'`);
+            
+            // 写真マーカーを追加
+            if (hasPhoto) {
+                const marker = document.createElement('span');
+                marker.classList.add('photo-marker');
+                marker.textContent = '📸';
+                cell.appendChild(marker);
+            }
+        }
+
+        return cell;
+    }
+
+    /**
+     * 前の月に移動する
+     */
+    function prevMonth() {
+        // 現在の月に -1 して新しい Date オブジェクトを設定
+        viewingDate.setMonth(viewingDate.getMonth() - 1);
+        renderCalendar();
+    }
+
+    /**
+     * 次の月に移動する
+     */
+    function nextMonth() {
+        // 現在の月に +1 して新しい Date オブジェクトを設定
+        viewingDate.setMonth(viewingDate.getMonth() + 1);
+        renderCalendar();
+    }
+
+    // ページ読み込み時の初期化
+    document.addEventListener('DOMContentLoaded', () => {
+        // カレンダーの初期表示
+        renderCalendar(); 
+        
+        // 既存の showAlbumSection などのロジック...
+        // ...
+    });
+    
+    // ... (既存の showDeleteModal, deleteMemberConfirmed, showAlbumSection 関数など) ...
+    // 💡 既存の関数定義は省略していますが、必要に応じてそのまま残してください。
+
+    // 既存の showSection 関数 (family_member.html 用)
+    function showSection(sectionId, element) {
+      console.warn('showSection: top.htmlでは showAlbumSection を使用してください。');
+    }
 
     function showDeleteModal(memberName, memberId) {
         memberToDeleteId = memberId;
@@ -124,31 +233,20 @@
         }
         hideDeleteModal(); 
     }
-     /**
-     * 💡 【再確認】アルバムコンテンツの切り替え
-     * @param {string} albumId - 切り替えるアルバムのID ('all', 'ichiro', 'yoshiko'など)
-     * @param {HTMLElement} element - クリックされたタブボタン要素
-     */
      function showAlbumSection(albumId, element) {
-        // 1. 全てのタブのactiveクラスを解除
         document.querySelectorAll('.album-tab-item').forEach(tab => tab.classList.remove('active'));
-        // 2. クリックされたタブにactiveクラスを追加
         element.classList.add('active');
-
-        // 3. 全てのコンテンツセクションを非表示
         document.querySelectorAll('.album-content-section').forEach(section => section.style.display = 'none');
-        // 4. 対応するセクションを表示
         const targetSection = document.getElementById(`${albumId}-album-section`);
         if (targetSection) {
             targetSection.style.display = 'block';
         }
     }
-
-        // ページ読み込み時に実行
-         document.addEventListener('DOMContentLoaded', () => {
-          // 初期表示ロジックは'all'がデフォルトでactiveになっているため、ここでは特に処理は不要
-         });
-    </script>
+    
+    // ページ読み込み時に実行
+    document.addEventListener('DOMContentLoaded', () => {
+     // 初期表示ロジックは'all'がデフォルトでactiveになっているため、ここでは特に処理は不要
+    });
+</script>
 </body>
-
 </html>
