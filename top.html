@@ -285,111 +285,113 @@
         
             const clickHandler = "handleAlbumItemClick(this, event)"; 
         
-            // ダミーコンテンツの再描画
-            if (albumId === 'all') {
-                list.innerHTML = `
-                <li class="member-item" onclick="${clickHandler}" data-id="1" data-photo-count="3">
-                    <div class="checkbox-area">
-                        <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
-                    </div>
-                    <div class="info">
-                        <span class="name">七五三 (3枚)</span><br>
-                        <div class="photo-grid">
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=001'">
-                                <img src="placeholder_1.jpg" alt="写真1" class="photo-thumbnail">
-                            </div>
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=002'">
-                                <img src="placeholder_2.jpg" alt="写真2" class="photo-thumbnail">
-                            </div>
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=003'">
-                                <img src="placeholder_3.jpg" alt="写真3" class="photo-thumbnail">
-                            </div>
-                        </div>
-                        <span class="role">2024-11</span>
-                    </div>
-                </li>
-                <li class="member-item" onclick="${clickHandler}" data-id="2" data-photo-count="2">
-                    <div class="checkbox-area">
-                        <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
-                    </div>
-                    <div class="info">
-                        <span class="name">運動会 (2枚)</span><br>
-                        <div class="photo-grid">
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=004'">
-                                <img src="placeholder_4.jpg" alt="写真4" class="photo-thumbnail">
-                            </div>
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=005'">
-                                <img src="placeholder_5.jpg" alt="写真5" class="photo-thumbnail">
-                            </div>
-                        </div>
-                        <span class="role">2024-10</span>
-                    </div>
-                </li>
-                <li class="member-item" onclick="${clickHandler}" data-id="3" data-photo-count="5">
-                    <div class="checkbox-area">
-                        <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
-                    </div>
-                    <div class="info">
-                        <span class="name">夏の海旅行 (5枚)</span><br>
-                        <div class="photo-grid">
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=006'">
-                                <img src="placeholder_6.jpg" alt="写真6" class="photo-thumbnail">
-                            </div>
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=007'">
-                                <img src="placeholder_7.jpg" alt="写真7" class="photo-thumbnail">
-                            </div>
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=008'">
-                                <img src="placeholder_8.jpg" alt="写真8" class="photo-thumbnail">
-                            </div>
-                        </div>
-                        <span class="role">2024-8</span>
-                    </div>
-                </li>
-                `;
-            } else if (albumId === 'ichiro') {
-                list.innerHTML = `
-                <li class="member-item" onclick="${clickHandler}" data-id="1" data-photo-count="3">
-                    <div class="checkbox-area">
-                        <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
-                    </div>
-                    <div class="info">
-                        <span class="name">一郎くんの七五三 (3枚)</span><br>
-                        <div class="photo-grid">
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=001'">
-                                <img src="placeholder_1.jpg" alt="写真1" class="photo-thumbnail">
-                            </div>
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=002'">
-                                <img src="placeholder_2.jpg" alt="写真2" class="photo-thumbnail">
-                            </div>
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=003'">
-                                <img src="placeholder_3.jpg" alt="写真3" class="photo-thumbnail">
-              　         </div>
-                        </div>
-                        <span class="role">2024-11</span>
-                    </div>
-                </li>
-                `;
-            } else if (albumId === 'yoshiko') {
-                list.innerHTML = `
-                <li class="member-item" onclick="${clickHandler}" data-id="2" data-photo-count="2">
-                    <div class="checkbox-area">
-                        <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
-                    </div>
-                    <div class="info">
-                        <span class="name">良子ちゃんの運動会 (2枚)</span><br>
-                        <div class="photo-grid">
-              　           <div class="photo-item" onclick="location.href='picture_detail.html?id=004'">
-                                <img src="placeholder_4.jpg" alt="写真4" class="photo-thumbnail">
-                            </div>
-                            <div class="photo-item" onclick="location.href='picture_detail.html?id=005'">
-                                <img src="placeholder_5.jpg" alt="写真5" class="photo-thumbnail">
-                            </div>
-                        </div>
-                        <span class="role">2024-10</span>
-                    </div>
-                </li>
-                `;
-            }
+// ダミーコンテンツの再描画
+if (albumId === 'all') {
+        list.innerHTML = `
+        <li class="member-item" onclick="${clickHandler}" data-id="1" data-photo-count="3">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">七五三 (3枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=001'">
+                        <img src="placeholder_1.jpg" alt="写真1" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=002'">
+                        <img src="placeholder_2.jpg" alt="写真2" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=003'">
+                        <img src="placeholder_3.jpg" alt="写真3" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-11</span>
+            </div>
+        </li>
+        <li class="member-item" onclick="${clickHandler}" data-id="2" data-photo-count="2">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">運動会 (2枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=004'">
+                        <img src="placeholder_4.jpg" alt="写真4" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=005'">
+                        <img src="placeholder_5.jpg" alt="写真5" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-10</span>
+            </div>
+        </li>
+        <li class="member-item" onclick="${clickHandler}" data-id="3" data-photo-count="5">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">夏の海旅行 (5枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=006'">
+                        <img src="placeholder_6.jpg" alt="写真6" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=007'">
+                        <img src="placeholder_7.jpg" alt="写真7" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=008'">
+                        <img src="placeholder_8.jpg" alt="写真8" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-8</span>
+            </div>
+        </li>
+        `;
+    } else if (albumId === 'ichiro') {
+        // 💡 修正後: <li class="member-item" onclick="${clickHandler}" ...> の形式に戻す
+        list.innerHTML = `
+        <li class="member-item" onclick="${clickHandler}" data-id="1" data-photo-count="3">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">一郎くんの七五三 (3枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=001'">
+                        <img src="placeholder_1.jpg" alt="写真1" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=002'">
+                        <img src="placeholder_2.jpg" alt="写真2" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=003'">
+                        <img src="placeholder_3.jpg" alt="写真3" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-11</span>
+            </div>
+        </li>
+        `;
+    } else if (albumId === 'yoshiko') {
+        // 💡 修正後: <li class="member-item" onclick="${clickHandler}" ...> の形式に戻す
+        list.innerHTML = `
+        <li class="member-item" onclick="${clickHandler}" data-id="2" data-photo-count="2">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">良子ちゃんの運動会 (2枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=004'">
+                        <img src="placeholder_4.jpg" alt="写真4" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=005'">
+                        <img src="placeholder_5.jpg" alt="写真5" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-10</span>
+            </div>
+        </li>
+        `;
+    }
         
             // アルバム切り替え後、選択状態をリセット
             toggleSelectAll(false);
