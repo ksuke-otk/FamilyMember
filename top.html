@@ -33,15 +33,14 @@
                                 <span class="icon">⬇️</span>
                             </button>
                 </div>
-                <nav class="member-tabs">
-                    <button class="tab album-tab-item active" onclick="showAlbumSection('all', this)">すべて</button>
-                    <button class="tab album-tab-item" onclick="showAlbumSection('ichiro', this)">一郎くん</button>
-                    <button class="tab album-tab-item" onclick="showAlbumSection('yoshiko', this)">良子ちゃん</button>
-                    <button class="tab album-tab-item" onclick="showAlbumSection('kai', this)">かいくん</button>
-                    <button class="tab album-tab-item" onclick="showAlbumSection('kii', this)">きいちゃん</button>
-
-
-                </nav>
+                <div class="album-dropdown-container">
+                    <label for="album-selector" class="dropdown-label">アルバム選択:</label>
+                    <select id="album-selector" class="album-dropdown" onchange="showAlbumSection(this.value, this)">
+                        <option value="all">すべて</option>
+                        <option value="ichiro">一郎くん</option>
+                        <option value="yoshiko">良子ちゃん</option>
+                    </select>
+                </div>
 
 
 
@@ -138,29 +137,34 @@
             hideDeleteModal(); 
         }
 /**
-         * 💡 【再確認】アルバムコンテンツの切り替え
-         * @param {string} albumId - 切り替えるアルバムのID ('all', 'ichiro', 'yoshiko'など)
-         * @param {HTMLElement} element - クリックされたタブボタン要素
-         */
-         function showAlbumSection(albumId, element) {
-            // 1. 全てのタブのactiveクラスを解除
-            document.querySelectorAll('.album-tab-item').forEach(tab => tab.classList.remove('active'));
-            // 2. クリックされたタブにactiveクラスを追加
-            element.classList.add('active');
+ * 💡 【修正】アルバムコンテンツの切り替え (プルダウン対応)
+ * @param {string} albumId - 切り替えるアルバムのID ('all', 'ichiro', 'yoshiko'など)
+ * @param {HTMLElement} element - クリックされた/変更された要素（今回はselect要素）
+ */
+ function showAlbumSection(albumId, element) {
+    // 1. 全てのコンテンツセクションを非表示
+    document.querySelectorAll('.album-content-section').forEach(section => {
+        section.classList.remove('active');
+        section.style.display = 'none'; // 明示的に非表示
+    });
 
-            // 3. 全てのコンテンツセクションを非表示
-            document.querySelectorAll('.album-content-section').forEach(section => section.style.display = 'none');
-            // 4. 対応するセクションを表示
-            const targetSection = document.getElementById(`${albumId}-album-section`);
-            if (targetSection) {
-                targetSection.style.display = 'block';
-            }
+    // 2. 対応するセクションを表示
+    const targetSection = document.getElementById(`${albumId}-album-section`);
+    if (targetSection) {
+        targetSection.classList.add('active');
+        targetSection.style.display = 'block'; // 表示
+    }
+}
+
+    // ページ読み込み時に実行
+    document.addEventListener('DOMContentLoaded', () => {
+        // 💡 ページロード時に 'all-album-section' を強制的に表示する
+        const initialSection = document.getElementById('all-album-section');
+        if (initialSection) {
+             initialSection.classList.add('active');
+             initialSection.style.display = 'block';
         }
-
-            // ページ読み込み時に実行
-             document.addEventListener('DOMContentLoaded', () => {
-              // 初期表示ロジックは'all'がデフォルトでactiveになっているため、ここでは特に処理は不要
-             });
-        </script>
+    });
+</script>
 </body>
 </html>
