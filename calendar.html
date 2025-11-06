@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - カレンダー</title>
+    <link rel="stylesheet" href="vivi_album_style.css">
+</head>
+<body>
+    <div class="app-container">
+                <header class="top-bar">
+            <div class="header-left"></div> 
+            <div class="header-center"><h1>カレンダー</h1></div>
+            <div class="header-right"></div>
+        </header>
+        
+                <nav class="album-tabs">
+            <button class="tab active" onclick="location.href='calendar.html'">カレンダー</button>
+            <button class="tab" onclick="location.href='top.html'">一覧</button>
+        </nav>
+        
+                <main class="main-content">
+            <section id="calendar-view">
+                <div class="calendar-nav">
+                    <button class="icon-only-button" style="font-size: 1.5em;">＜</button>
+                    <h2>2025年11月</h2>
+                    <button class="icon-only-button" style="font-size: 1.5em;">＞</button>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="day-header">日</div>
+                    <div class="day-header">月</div>
+                    <div class="day-header">火</div>
+                    <div class="day-header">水</div>
+                    <div class="day-header">木</div>
+                    <div class="day-header">金</div>
+                    <div class="day-header">土</div>
+
+                    <div class="day-cell inactive">26</div>
+                    <div class="day-cell inactive">27</div>
+                    <div class="day-cell inactive">28</div>
+                    <div class="day-cell inactive">29</div>
+                    <div class="day-cell inactive">30</div>
+                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-01'">1</div>
+                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-02'">
+                        2 
+                        <span class="photo-marker">📸</span>
+                    </div>
+                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-03'">3</div>
+                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-04'">4</div>
+                    <div class="day-cell today" onclick="location.href='day_detail.html?date=2025-11-05'">
+                        5 
+                        <span class="photo-marker">📸</span>
+                    </div>
+                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-06'">6</div>
+                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-07'">7</div>
+                    <div class="day-cell" onclick="location.href='day_detail.html?date=2025-11-08'">
+                        8 
+                        <span class="photo-marker">📸</span>
+                    </div>
+                    <div class="day-cell">9</div>
+                    <div class="day-cell">10</div>
+                    <div class="day-cell">11</div>
+                    <div class="day-cell">12</div>
+                    <div class="day-cell">13</div>
+                    <div class="day-cell">14</div>
+                    <div class="day-cell">15</div>
+                    <div class="day-cell">16</div>
+                    <div class="day-cell">17</div>
+                    <div class="day-cell">18</div>
+                    <div class="day-cell">19</div>
+                    <div class="day-cell">20</div>
+                    <div class="day-cell">21</div>
+                    <div class="day-cell">22</div>
+                    <div class="day-cell">23</div>
+                    <div class="day-cell">24</div>
+                    <div class="day-cell">25</div>
+                    <div class="day-cell">26</div>
+                    <div class="day-cell">27</div>
+                    <div class="day-cell">28</div>
+                    <div class="day-cell">29</div>
+                    <div class="day-cell">30</div>
+                    <div class="day-cell inactive">1</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ボトムナビ -->
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item"><span class="icon">⚙️</span>設定</a>
+        </nav>
+    </div>
+</body>
+</html>
