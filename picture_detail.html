@@ -68,15 +68,13 @@
                     <p class="comment-author">花子</p>
                     <p class="comment-text">とってもかわいい写真だね！</p>
                     <span class="comment-timestamp">2024/10/27 15:00</span>
-                    <button class="delete-comment-btn">🗑️</button>
-                </div>
+                    <button class="delete-comment-btn" onclick="deleteComment(this)">🗑️</button>                </div>
 
                 <div class="comment-item">
                     <p class="comment-author">お母さん</p>
                     <p class="comment-text">この日の笑顔は最高だったね！</p>
                     <span class="comment-timestamp">2024/10/27 15:15</span>
-                    <button class="delete-comment-btn">🗑️</button>
-                </div>
+                    <button class="delete-comment-btn" onclick="deleteComment(this)">🗑️</button>                </div>
             </section>
         </main>
         
@@ -92,5 +90,42 @@
         </nav>
         
     </div>
+    <script>
+                 /**
+                 * コメントを削除する処理
+                 * @param {HTMLButtonElement} buttonElement - クリックされた削除ボタン要素
+                 */
+                    function deleteComment(buttonElement) {
+                 // 1. 削除対象のコメント要素（.comment-item）を取得
+                    const commentItem = buttonElement.closest('.comment-item');
+                    if (!commentItem) return;
+        
+                 // 2. 削除確認のポップアップ
+                    if (!confirm('このコメントを削除しますか？')) {
+                    return;
+                    }
+        
+                 // 3. コメント要素をDOMから削除
+                    commentItem.remove();
+        
+                 // 4. コメント件数表示を更新
+                    const titleElement = document.getElementById('comment-count-title');
+                    if (titleElement) {
+                 // 現在の件数を正規表現で抽出し、1を引く
+                        const currentText = titleElement.textContent;
+                        const match = currentText.match(/\((\d+)件\)/);
+         
+                        if (match) {
+                            let currentCount = parseInt(match[1], 10);
+                            if (currentCount > 0) {
+                                let newCount = currentCount - 1;
+                                titleElement.textContent = `コメント (${newCount}件)`;
+                            }
+                        }
+                    }
+        
+                    console.log('コメントが削除されました。');
+                    }
+    </script>
 </body>
 </html>
