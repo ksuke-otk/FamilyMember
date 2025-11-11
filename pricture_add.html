@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - 写真を追加</title>
+    <link rel="stylesheet" href="vivi_album_style.css">
+    <style>
+        /* CSSはvivi_album_style.cssに統合されました */
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <header class="top-bar">
+            <div class="header-left">
+                <a href="top.html" class="icon-button back-button" onclick="showCancelModal(event)">キャンセル</a>
+            </div>
+            <div class="header-center"><h1>写真を追加</h1></div>
+            <div class="header-right">
+                </div>
+        </header>
+
+        <main class="main-content form-page">
+            <form id="picture-add-form" onsubmit="handleUpload(event)">
+                
+                <div class="form-group">
+                    <label>写真を選択 <span class="required">*</span></label>
+                    <div class="photo-upload-area" onclick="document.getElementById('file-input').click()">
+                        <span class="upload-icon">➕</span>
+                        <p style="margin: 0; font-weight: bold; color: var(--primary-dark);">タップしてファイルを選択</p>
+                        <p style="font-size: 0.8em; color: #888;">(最大10枚選択可能)</p>
+                        <input type="file" id="file-input" name="photos" accept="image/*" multiple style="display: none;">
+                    </div>
+                    <div id="photo-preview" class="photo-list-preview">
+                        </div>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 25px 0;">
+
+
+                <div class="form-group">
+                    <label for="photo-caption">キャプション (任意)</label>
+                    <textarea id="photo-caption" name="caption" rows="3" placeholder="写真に関するコメントを入力..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="photo-date">撮影日 (自動取得されない場合)</label>
+                    <input type="date" id="photo-date" name="date">
+                </div>
+                
+                <div class="form-group">
+                    <label>写っている子ども (必須) <span class="required">*</span></label>
+                    <p style="font-size: 0.8em; color: #888; margin-top: -10px; margin-bottom: 10px;">写真に写っている子どもの名前をすべて選択してください。</p>
+                    <ul class="checkbox-list" id="kids-list">
+                        <li>
+                            <label>
+                                <input type="checkbox" name="kid" value="hana">
+                                山田 花子
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" name="kid" value="taro">
+                                佐藤 太郎
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" name="kid" value="jiro">
+                                田中 次郎
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="primary-button" style="margin-top: 30px; margin-bottom: 40px;">
+                    写真をアップロード
+                </button>
+            </form>
+        </main>
+        
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item"><span class="icon">⚙️</span>設定</a>
+        </nav>
+
+        <div id="cancel-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <p id="modal-message">写真の追加を中止しますか？<br>入力した内容は破棄されます。</p>
+                <div class="modal-buttons">
+                    <button class="secondary-button" onclick="hideCancelModal()">いいえ</button>
+                    <button class="danger-button" onclick="cancelConfirmed()">はい</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 選択されたファイルを保持する配列（Fileオブジェクト）
+        let selectedFiles = [];
+
+        // ファイル選択時の処理 (写真削除機能対応済み)
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            // 新しく選択されたファイルを既存のリストに追加 (最大10枚の制限は省略)
+            Array.from(event.target.files).forEach(file => {
+                selectedFiles.push(file);
+            });
+            // プレビューを更新
+            updatePreview();
+            // ファイル選択 input の value をクリアして、同じファイルを再度選択できるようにする
+            event.target.value = null;
+        });
+
+        // プレビューをDOMに描画する関数 (写真削除機能対応済み)
+        function updatePreview() {
+            const previewArea = document.getElementById('photo-preview');
+            previewArea.innerHTML = ''; // 既存のプレビューをクリア
+
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const item = document.createElement('div');
+                    item.className = 'photo-preview-item';
+                    
+                    // 削除ボタンを追加
+                    item.innerHTML = `
+                        <img src="${e.target.result}" alt="プレビュー" style="width: 100%; height: 100%; object-fit: cover;">
+                        <button type="button" class="remove-photo-button" onclick="removeFile(${index})">×</button>
+                    `;
+                    previewArea.appendChild(item);
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            // 必須項目チェック（ファイルが0になった場合、写真選択エリアを必須に戻す）
+            updateFileRequiredState();
+        }
+
+        // 個別のファイルを削除する関数 (写真削除機能対応済み)
+        function removeFile(indexToRemove) {
+            // 指定されたインデックスのファイルを除外して新しい配列を作成
+            selectedFiles = selectedFiles.filter((_, index) => index !== indexToRemove);
+            // プレビューを再描画
+            updatePreview();
+        }
+
+        // フォームの送信処理 (selectedFilesのチェックを追加)
+        function handleUpload(event) {
+            event.preventDefault();
+            const form = event.target;
+
+            // ファイルが選択されているか確認
+            if (selectedFiles.length === 0) {
+                 alert("写真を最低1枚選択してください。");
+                 return;
+            }
+
+            // 子どもタグの必須チェックをカスタムで実行
+            const kidsCheckboxes = form.querySelectorAll('input[name="kid"]');
+            const isKidSelected = Array.from(kidsCheckboxes).some(checkbox => checkbox.checked);
+
+            if (!isKidSelected) {
+                alert("写っている子どもを最低一人選択してください。");
+                return;
+            }
+
+            // 必須項目チェック (ブラウザ標準のrequired属性で大半は処理されます)
+            if (!form.checkValidity()) {
+                console.log("必須項目が未入力です。");
+                return;
+            }
+            
+            // FormDataに選択されたファイルリストを追加 (アップロードシミュレーション用)
+            const formData = new FormData(form);
+            formData.delete('photos'); 
+            
+            selectedFiles.forEach(file => {
+                formData.append('photos[]', file, file.name); 
+            });
+
+
+            // アップロード処理のシミュレーション
+            console.log(`${selectedFiles.length}枚の写真をアップロードします...`);
+
+            // 成功後、アルバムトップ画面に遷移
+            location.href = 'top.html';
+        }
+
+        // キャンセル確認モーダルの表示 (aタグのデフォルト動作を停止)
+        function showCancelModal(event) {
+             // 💡 修正: これにより、aタグのデフォルトの遷移動作が阻止され、モーダルが表示されます。
+             event.preventDefault(); 
+             document.getElementById('cancel-modal').style.display = 'flex';
+        }
+
+        // キャンセル確認モーダルの非表示
+        function hideCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'none';
+        }
+
+        // キャンセル実行
+        function cancelConfirmed() {
+            hideCancelModal();
+            // アルバムトップ画面に戻る
+            location.href = 'top.html';
+        }
+        
+        // ファイルの必須状態を制御する（ファイルがない場合に required を設定）
+        function updateFileRequiredState() {
+            const fileInput = document.getElementById('file-input');
+            
+            // ファイルinputはhiddenなので、バリデーションエラーが発生しないように、
+            // ファイルが0枚のときのみ、一時的にrequired属性を付与します。
+            if (selectedFiles.length === 0) {
+                fileInput.setAttribute('required', 'required');
+            } else {
+                fileInput.removeAttribute('required');
+            }
+        }
+
+
+        // 子どもタグ付けのカスタムバリデーションロジック
+        document.addEventListener('DOMContentLoaded', () => {
+            const kidsCheckboxes = document.querySelectorAll('input[name="kid"]');
+            const form = document.getElementById('picture-add-form');
+
+            // ファイル選択 input の初期状態を設定
+            updateFileRequiredState(); 
+
+            // 元々あった子どものrequired属性を削除し、カスタムバリデーションで制御
+            kidsCheckboxes.forEach(checkbox => {
+                checkbox.removeAttribute('required');
+            });
+
+            // フォームにダミーの必須項目を追加し、チェックボックスの選択を強制
+            const dummyInput = document.createElement('input');
+            dummyInput.type = 'hidden';
+            dummyInput.name = 'kid_check';
+            dummyInput.required = true;
+            form.appendChild(dummyInput);
+
+            function updateKidValidation() {
+                const isChecked = Array.from(kidsCheckboxes).some(checkbox => checkbox.checked);
+                if (isChecked) {
+                    dummyInput.removeAttribute('required');
+                } else {
+                    dummyInput.setAttribute('required', 'required');
+                }
+            }
+            
+            kidsCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateKidValidation);
+            });
+
+            // 初期ロード時にバリデーションを適用
+            updateKidValidation();
+        });
+    </script>
+</body>
+</html>
