@@ -71,7 +71,8 @@ body {
     background-color: #fff;
     border-bottom: 1px solid var(--border-color);
     position: sticky;
-    top: 45px; /* ヘッダーの高さに応じて調整 */
+    /* 💡 修正: top-barの高さ(約50px)の直下に配置 */
+    top: 50px; 
     z-index: 100;
 }
 
@@ -96,13 +97,11 @@ body {
 
 /* --- メインコンテンツ --- */
 .main-content {
-    /* ここで、メインコンテンツを下に90pxずらしている（ヘッダーとタブバーの重なり防止用） */
-    padding-top: 90px; 
-
+    /* 💡 修正: padding-top: 90px; を削除し、paddingの値を変更 */
+    /* ヘッダー(50px) + タブバー(約45px) = 95px を上部のパディングとして確保 */
     flex-grow: 1;
-    /* アルバム画面は下部に固定ナビがあるため、パディングを調整 */
-    /* ↓↓↓ ここが原因！padding-top: 90px; の下に、さらに padding: 20px 15px 80px; が設定されている。 */
-    padding: 20px 15px 80px; 
+    /* 上: 95px, 左右: 15px, 下: 80px */
+    padding: 95px 15px 80px; 
 }
 
 /* 💡 【追加】タイトルとボタンを横並びにするコンテナ */
