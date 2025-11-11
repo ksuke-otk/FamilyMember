@@ -136,30 +136,30 @@
         
         // family_member.html用の関数だが、テンプレートに残しておく
         function showSection(sectionId, element) {
-            console.warn('showSection: top.htmlでは showAlbumSection を使用してください。');
+           console.warn('showSection: top.htmlでは showAlbumSection を使用してください。');
         }
         
         // 削除モーダル関連 (この画面では未使用だが、他の画面との共通化のため残す)
         function showDeleteModal(memberName, memberId) {
-            memberToDeleteId = memberId;
-            document.getElementById('modal-message').textContent = `メンバーを削除しますか？`;
-            document.getElementById('delete-modal').style.display = 'flex';
+            memberToDeleteId = memberId;
+            document.getElementById('modal-message').textContent = `メンバーを削除しますか？`;
+            document.getElementById('delete-modal').style.display = 'flex';
         }
         
         function hideDeleteModal() {
-            memberToDeleteId = null;
-            document.getElementById('delete-modal').style.display = 'none';
+            memberToDeleteId = null;
+            document.getElementById('delete-modal').style.display = 'none';
         }
         
         function deleteMemberConfirmed() {
-            if (memberToDeleteId) {
-                const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
-                if (memberElement) {
-                    memberElement.remove();
-                }
-                alert(`ID ${memberToDeleteId} のメンバーを削除しました。`);
-            }
-            hideDeleteModal();
+            if (memberToDeleteId) {
+                const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
+                if (memberElement) {
+                memberElement.remove();
+                }
+                alert(`ID ${memberToDeleteId} のメンバーを削除しました。`);
+            }
+            hideDeleteModal();
         }
         
         /**
@@ -169,25 +169,25 @@
          * @param {Event} event - クリックイベント
          */
         function handleAlbumItemClick(item, event) {
-            // サムネイル画像（photo-item）内のクリックは、個別の詳細遷移を優先するため、親要素の処理をスキップ
-            if (event.target.closest('.photo-item')) {
-                return;
-            }
-            
-            const selectedItems = document.querySelectorAll('.member-item.selected-item');
-            const dataId = item.getAttribute('data-id');
-        
-            // 既に一つでも選択されているアイテムがある場合 -> 選択モード
-            if (selectedItems.length > 0) {
-                // ナビゲーションを阻止し、選択をトグル
-                event.preventDefault();
-                event.stopPropagation();
-                toggleItemSelection(item);
-            } else {
-                // 選択中のアイテムが他にない場合 -> 詳細画面へ遷移
-                // 修正箇所: 遷移先を picture_detail.html に修正
-                location.href = `picture_detail.html?id=${dataId}`;
-            }
+            // サムネイル画像（photo-item）内のクリックは、個別の詳細遷移を優先するため、親要素の処理をスキップ
+            if (event.target.closest('.photo-item')) {
+                return;
+            }
+            
+            const selectedItems = document.querySelectorAll('.member-item.selected-item');
+            const dataId = item.getAttribute('data-id');
+    
+            // 既に一つでも選択されているアイテムがある場合 -> 選択モード
+            if (selectedItems.length > 0) {
+                // ナビゲーションを阻止し、選択をトグル
+                event.preventDefault();
+                event.stopPropagation();
+                toggleItemSelection(item);
+            } else {
+                // 選択中のアイテムが他にない場合 -> 詳細画面へ遷移
+                // 修正箇所: 遷移先を picture_detail.html に修正
+                location.href = `picture_detail.html?id=${dataId}`;
+            }
         }
         
         /**
@@ -195,17 +195,17 @@
          * @param {HTMLElement} item - クリックされた .member-item 要素
          */
         function toggleItemSelection(item) {
-            // .member-item に .selected-item クラスを付け外し
-            item.classList.toggle('selected-item');
-            
-            // 内部のチェックボックスの状態を同期
-            const checkbox = item.querySelector('.album-checkbox');
-            if (checkbox) {
-                checkbox.checked = item.classList.contains('selected-item');
-            }
+            // .member-item に .selected-item クラスを付け外し
+            item.classList.toggle('selected-item');
+            
+            // 内部のチェックボックスの状態を同期
+            const checkbox = item.querySelector('.album-checkbox');
+            if (checkbox) {
+                checkbox.checked = item.classList.contains('selected-item');
+            }
         
-            // 全選択チェックボックスの状態も更新
-            updateSelectAllCheckbox();
+            // 全選択チェックボックスの状態も更新
+            updateSelectAllCheckbox();
         }
         
         /**
@@ -213,38 +213,38 @@
          * @param {HTMLElement} item - 変更された .member-item 要素
          */
         function updateItemSelection(item) {
-            const checkbox = item.querySelector('.album-checkbox');
-            if (checkbox.checked) {
-                item.classList.add('selected-item');
-            } else {
-                item.classList.remove('selected-item');
-            }
-            updateSelectAllCheckbox();
+            const checkbox = item.querySelector('.album-checkbox');
+            if (checkbox.checked) {
+                item.classList.add('selected-item');
+            } else {
+                item.classList.remove('selected-item');
+            }
+            updateSelectAllCheckbox();
         }
         
         /**
          * 全選択チェックボックス (select-all-checkbox) の状態を、現在のリストアイテムの選択状況に基づいて更新
          */
         function updateSelectAllCheckbox() {
-            const allItems = document.querySelectorAll('.member-item');
-            const selectedItems = document.querySelectorAll('.member-item.selected-item');
-            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            const allItems = document.querySelectorAll('.member-item');
+            const selectedItems = document.querySelectorAll('.member-item.selected-item');
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
         
-            if (!selectAllCheckbox) return;
+            if (!selectAllCheckbox) return;
         
-            if (allItems.length === 0) {
-                selectAllCheckbox.checked = false;
-                selectAllCheckbox.indeterminate = false;
-            } else if (selectedItems.length === allItems.length) {
-                selectAllCheckbox.checked = true;
-                selectAllCheckbox.indeterminate = false;
-            } else if (selectedItems.length > 0) {
-                selectAllCheckbox.checked = false;
-                selectAllCheckbox.indeterminate = true;
-            } else {
-                selectAllCheckbox.checked = false;
-                selectAllCheckbox.indeterminate = false;
-            }
+            if (allItems.length === 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            } else if (selectedItems.length === allItems.length) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false;
+            } else if (selectedItems.length > 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            }
         }
         
         /**
@@ -252,24 +252,24 @@
          * @param {boolean} isChecked - 全選択チェックボックスの状態 (true: 全選択, false: 全解除)
          */
         function toggleSelectAll(isChecked) {
-            const allItems = document.querySelectorAll('.member-item');
-            allItems.forEach(item => {
-                const checkbox = item.querySelector('.album-checkbox');
-                if (checkbox) {
-                    checkbox.checked = isChecked;
-                    if (isChecked) {
-                        item.classList.add('selected-item');
-                    } else {
-                        item.classList.remove('selected-item');
-                    }
-                }
-            });
-            // 全選択/全解除に合わせて、全選択チェックボックスのchecked状態も更新
-            const selectAllCheckbox = document.getElementById('select-all-checkbox');
-            if (selectAllCheckbox) {
-                selectAllCheckbox.checked = isChecked;
-                selectAllCheckbox.indeterminate = false;
-            }
+            const allItems = document.querySelectorAll('.member-item');
+            allItems.forEach(item => {
+              const checkbox = item.querySelector('.album-checkbox');
+                 if (checkbox) {
+                     checkbox.checked = isChecked;
+                    if (isChecked) {
+                        item.classList.add('selected-item');
+                    } else {
+                        item.classList.remove('selected-item');
+                    }
+                }
+            });
+            // 全選択/全解除に合わせて、全選択チェックボックスのchecked状態も更新
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = isChecked;
+                selectAllCheckbox.indeterminate = false;
+            }
         }
         
         /**
@@ -278,12 +278,12 @@
          * @param {HTMLElement} element - 変更された select 要素
          */
         function showAlbumSection(albumId, element) {
-            console.log(`アルバムを切り替え: ${albumId}`);
+            console.log(`アルバムを切り替え: ${albumId}`);
         
-            const list = document.querySelector('.member-list');
-            list.innerHTML = ''; // リストをクリア (実際のロード処理をシミュレーション)
+            const list = document.querySelector('.member-list');
+            list.innerHTML = ''; // リストをクリア (実際のロード処理をシミュレーション)
         
-            const clickHandler = "handleAlbumItemClick(this, event)"; 
+            const clickHandler = "handleAlbumItemClick(this, event)"; 
         
 // ダミーコンテンツの再描画
 if (albumId === 'all') {
@@ -393,8 +393,8 @@ if (albumId === 'all') {
         `;
     }
         
-            // アルバム切り替え後、選択状態をリセット
-            toggleSelectAll(false);
+            // アルバム切り替え後、選択状態をリセット
+            toggleSelectAll(false);
         }
         
         
@@ -402,61 +402,60 @@ if (albumId === 'all') {
          * 選択された写真IDと情報を収集し、ダウンロード画面に遷移する
          */
         function updateDownloadUrl() {
-            const selectedItems = document.querySelectorAll('.member-item.selected-item');
-            if (selectedItems.length === 0) {
-                alert('ダウンロードする写真・動画を選択してください。');
-                return;
-            }
+            const selectedItems = document.querySelectorAll('.member-item.selected-item');
+            if (selectedItems.length === 0) {
+                alert('ダウンロードする写真・動画を選択してください。');
+                return;
+            }
         
-            // 選択されたアルバムID、アルバム名、写真数を収集
-            const selectedData = [];
-            selectedItems.forEach(item => {
-                const albumId = item.getAttribute('data-id');
-                const photoCountAttr = item.getAttribute('data-photo-count');
-                
-                // .nameからアルバム名を取得し、(n枚)の表記を削除
-                const albumName = item.querySelector('.name').textContent.replace(/\s\(\d+枚\)/, '').trim(); 
-                
-                // photoCountが存在しない場合や無効な場合は1とする
-                const photoCount = parseInt(photoCountAttr, 10) || 1; 
+            // 選択されたアルバムID、アルバム名、写真数を収集
+            const selectedData = [];
+            selectedItems.forEach(item => {
+                const albumId = item.getAttribute('data-id');
+                const photoCountAttr = item.getAttribute('data-photo-count');
+         
+                // .nameからアルバム名を取得し、(n枚)の表記を削除
+                const albumName = item.querySelector('.name').textContent.replace(/\s\(\d+枚\)/, '').trim(); 
+         
+                // photoCountが存在しない場合や無効な場合は1とする
+                const photoCount = parseInt(photoCountAttr, 10) || 1; 
         
-                if (albumId) {
-                    // フォーマット: [アルバムID]:[アルバム名 (URLエンコード)]:[写真数]
-                    selectedData.push(`${albumId}:${encodeURIComponent(albumName)}:${photoCount}`);
-                }
-            });
-            
-            if (selectedData.length === 0) {
-                alert('ダウンロードする写真・動画を選択してください。');
-                return;
-            }
-            
-            // データをURLにエンコードして遷移
-            const selectedIdsParam = selectedData.join(',');
-            location.href = `download.html?items=${selectedIdsParam}`;
+                if (albumId) {
+                // フォーマット: [アルバムID]:[アルバム名 (URLエンコード)]:[写真数]
+                    selectedData.push(`${albumId}:${encodeURIComponent(albumName)}:${photoCount}`);
+                }
+            });
+         
+            if (selectedData.length === 0) {
+                alert('ダウンロードする写真・動画を選択してください。');
+                return;
+            }
+          
+            // データをURLにエンコードして遷移
+            const selectedIdsParam = selectedData.join(',');
+            location.href = `download.html?items=${selectedIdsParam}`;
         }
         
         
         // ページ読み込み時またはBFCacheからの復元時 (履歴で戻った時) に実行
         document.addEventListener('pageshow', (event) => {
-            // 画面表示時に全ての選択状態を解除します。
-            toggleSelectAll(false);
+            // 画面表示時に全ての選択状態を解除します。
+            toggleSelectAll(false);
         });
         
         // 初回ロード時、またはリセットパラメータ付きでアクセスされた場合の処理
         document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const shouldReset = params.get('reset') === 'true';
+            const params = new URLSearchParams(window.location.search);
+            const shouldReset = params.get('reset') === 'true';
         
-            if (shouldReset) {
-                // チェックボックスと選択状態をすべて解除
-                toggleSelectAll(false);
+            if (shouldReset) {
+                // チェックボックスと選択状態をすべて解除
+                toggleSelectAll(false);
         
-                // 履歴のURLから reset=true を消す（再読み込み時に再リセットしないため）
-                history.replaceState(null, '', 'top.html');
-            } 
+                // 履歴のURLから reset=true を消す（再読み込み時に再リセットしないため）
+                history.replaceState(null, '', 'top.html');
+            } 
         });
-            </script>
+            </script>
 </body>
 </html>
-
