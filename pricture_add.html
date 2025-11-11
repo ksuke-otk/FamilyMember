@@ -14,8 +14,7 @@
         
         <header class="top-bar">
             <div class="header-left">
-                <a href="top.html" class="icon-button back-button" onclick="showCancelModal(event)">キャンセル</a>
-            </div>
+                <a href="top.html" class="icon-button back-button" onclick="showCancelModal(event)">キャンセル</a>            </div>
             <div class="header-center"><h1>写真を追加</h1></div>
             <div class="header-right">
                 </div>
@@ -40,12 +39,12 @@
 
 
                 <div class="form-group">
-                    <label for="photo-caption">キャプション (任意)</label>
-                    <textarea id="photo-caption" name="caption" rows="3" placeholder="写真に関するコメントを入力..."></textarea>
+                    <label for="photo-caption">題名</label>
+                    <textarea id="photo-caption" name="caption" rows="3" placeholder="写真に関する題名を入力..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="photo-date">撮影日 (自動取得されない場合)</label>
+                    <label for="photo-date">撮影日 </label>
                     <input type="date" id="photo-date" name="date">
                 </div>
                 
@@ -86,16 +85,7 @@
             <a href="family_member.html" class="nav-item"><span class="icon">⚙️</span>設定</a>
         </nav>
 
-        <div id="cancel-modal" class="modal-overlay" style="display: none;">
-            <div class="modal-content">
-                <p id="modal-message">写真の追加を中止しますか？<br>入力した内容は破棄されます。</p>
-                <div class="modal-buttons">
-                    <button class="secondary-button" onclick="hideCancelModal()">いいえ</button>
-                    <button class="danger-button" onclick="cancelConfirmed()">はい</button>
-                </div>
-            </div>
-        </div>
-
+        
     </div>
 
     <script>
@@ -172,6 +162,8 @@
                 console.log("必須項目が未入力です。");
                 return;
             }
+
+
             
             // FormDataに選択されたファイルリストを追加 (アップロードシミュレーション用)
             const formData = new FormData(form);
@@ -189,25 +181,38 @@
             location.href = 'top.html';
         }
 
-        // キャンセル確認モーダルの表示 (aタグのデフォルト動作を停止)
+        // 💡 キャンセルボタンの処理をconfirm()によるポップアップに変更
+                function showCancelConfirmation(event) {
+            // aタグのデフォルトの遷移動作を阻止
+            event.preventDefault(); 
+            
+            // 標準の確認ポップアップ (confirm) を表示
+            const isConfirmed = confirm("写真の追加を中止しますか？\n入力した内容は破棄されます。");
+
+            // ユーザーが「OK」を押した場合 (true) のみ遷移を実行
+            if (isConfirmed) {
+                // アルバムトップ画面に戻る
+                location.href = 'top.html';
+            }
+        }
+
+        // キャンセルボタンの処理を alert() から confirm() に変更
         function showCancelModal(event) {
-             // 💡 修正: これにより、aタグのデフォルトの遷移動作が阻止され、モーダルが表示されます。
-             event.preventDefault(); 
-             document.getElementById('cancel-modal').style.display = 'flex';
-        }
+        // 💡 修正: aタグのデフォルトの遷移動作を阻止
+        event.preventDefault(); 
+        
+        // 標準の確認ポップアップ (confirm) を表示
+        const isConfirmed = confirm("写真の追加を中止しますか？\n入力した内容は破棄されます。");
 
-        // キャンセル確認モーダルの非表示
-        function hideCancelModal() {
-            document.getElementById('cancel-modal').style.display = 'none';
-        }
-
-        // キャンセル実行
-        function cancelConfirmed() {
-            hideCancelModal();
+        // ユーザーが「OK」を押した場合 (true) のみ遷移を実行
+        if (isConfirmed) {
             // アルバムトップ画面に戻る
             location.href = 'top.html';
         }
-        
+        // 「キャンセル」を押した場合は何もしない (フォームに留まる)
+        } 
+
+
         // ファイルの必須状態を制御する（ファイルがない場合に required を設定）
         function updateFileRequiredState() {
             const fileInput = document.getElementById('file-input');
@@ -258,6 +263,21 @@
             // 初期ロード時にバリデーションを適用
             updateKidValidation();
         });
+
+        // DOMContentLoadedリスナー内の不要なモーダル処理を削除/修正
+    document.addEventListener('DOMContentLoaded', () => {
+        // ... (既存の子どもチェックボックスのバリデーションロジックはそのまま維持) ...
+        
+        // 💡 削除: モーダルのDOM操作は不要
+        // document.getElementById('cancel-modal').style.display = 'none'; 
+        
+        // (中略)
+
+        // ファイル選択 input の初期状態を設定
+        updateFileRequiredState(); 
+
+        // ... (子どものrequired属性の削除とカスタムバリデーションロジックは維持) ...
+    });
     </script>
 </body>
 </html>
