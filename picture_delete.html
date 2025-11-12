@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>写真削除</title>
+    <link rel="stylesheet" href="vivi_album_style.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <header class="top-bar">
+            <div class="header-left">
+                <a href="picture_detail.html" class="icon-button back-button">キャンセル</a>
+            </div>
+            <div class="header-center"><h1>写真削除</h1></div>
+            <div class="header-right">
+                </div>
+        </header>
+
+        <main class="main-content form-page">
+            <p class="description-text">削除したい写真を選択し、「削除」ボタンを押してください。<br>（この操作は元に戻せません）</p>
+
+            <div class="delete-selection-area">
+                <div class="select-all-group">
+                    <label>
+                        <input type="checkbox" id="select-all-photos" onclick="toggleSelectAll()">
+                        すべて選択
+                    </label>
+                    <span class="photo-count">選択中: <span id="selected-count">1</span>枚</span>
+                </div>
+                
+                <hr style="border-top: 1px solid var(--border-color); margin: 15px 0;">
+
+                <div class="photo-list" id="photo-delete-list">
+                    <div class="photo-item">
+                        <label class="photo-select-label">
+                            <input type="checkbox" name="delete_photo" value="1" >
+                        </label>
+                        <div class="photo-details">
+                            <img src="path/to/photo_detail_image.jpg" alt="写真プレビュー" class="photo-thumbnail">
+                        </div>
+                    </div>
+
+                    <div class="photo-item">
+                        <label class="photo-select-label">
+                            <input type="checkbox" name="delete_photo" value="2">
+                        </label>
+                        <div class="photo-details">
+                            <img src="path/to/another_photo.jpg" alt="写真プレビュー" class="photo-thumbnail">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="danger-button primary-button" style="margin-top: 30px; margin-bottom: 40px;" onclick="showDeleteConfirmation()">
+                選択した写真を削除
+            </button>
+            
+            <div id="delete-modal" class="modal-overlay" style="display:none;">
+                <div class="modal-content">
+                    <p id="delete-modal-message">
+                        選択した写真を完全に削除しますか？
+                        <br>この操作は元に戻せません。
+                    </p>
+                    <div class="modal-buttons">
+                        <button class="button-yes" onclick="deleteConfirmed()">はい</button>
+                        <button class="button-no" onclick="hideDeleteModal()">いいえ</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item"><span class="icon">⚙️</span>設定</a>
+        </nav>
+
+    </div>
+    <script>
+        // ----------------------------------------------------
+        // 💡 削除確認モーダル処理
+        // ----------------------------------------------------
+        function showDeleteConfirmation() {
+        // 削除対象が選択されているかチェック
+             const checkedCount = document.querySelectorAll('input[name="delete_photo"]:checked').length;
+        if (checkedCount === 0) {
+               alert("削除する写真を選択してください。");
+                return;
+        }
+    
+            const messageElement = document.getElementById('delete-modal-message');
+            messageElement.innerHTML = `選択した写真（${checkedCount}枚）を完全に削除しますか？<br>この操作は元に戻せません。`;
+
+            document.getElementById('delete-modal').style.display = 'flex';
+        }
+
+        function hideDeleteModal() {
+           document.getElementById('delete-modal').style.display = 'none';
+        }
+
+        function deleteConfirmed() {
+        // 実際の削除処理（シミュレーション）
+            console.log('選択された写真を削除しました。');
+           // alert('写真を削除しました。');
+    
+        // 💡 【ここから追加・修正】削除後にチェックボックスの状態をリセット 
+            const selectAllCheckbox = document.getElementById('select-all-photos');
+            const photoCheckboxes = document.querySelectorAll('input[name="delete_photo"]');
+ 
+        // 1. 全選択チェックボックスのチェックを外す
+        if (selectAllCheckbox) {
+             selectAllCheckbox.checked = false;
+        }
+
+         // 2. 個別の写真チェックボックスのチェックを外す
+             photoCheckboxes.forEach(checkbox => {
+             checkbox.checked = false;
+        });
+
+        // 3. 選択枚数表示をリセット（0にする）
+            updateSelectedCount(); // これを呼ぶことで自動的に0枚と表示される
+        // 💡 【ここまで追加・修正】
+
+        // 削除後、写真詳細画面に戻る（またはアルバムトップに戻る）
+            location.href = 'picture_delete.html'; 
+        }
+
+        // ----------------------------------------------------
+        // 💡 全選択/全解除のトグル
+        // ----------------------------------------------------
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('select-all-photos');
+            const photoCheckboxes = document.querySelectorAll('input[name="delete_photo"]');
+            const isChecked = selectAllCheckbox.checked;
+
+            photoCheckboxes.forEach(checkbox => {
+                checkbox.checked = isChecked;
+            });
+            updateSelectedCount();
+        }
+
+        // ----------------------------------------------------
+        // 💡 選択枚数の更新
+        // ----------------------------------------------------
+        function updateSelectedCount() {
+            const checkedCount = document.querySelectorAll('input[name="delete_photo"]:checked').length;
+            document.getElementById('selected-count').textContent = checkedCount;
+
+            // すべて選択チェックボックスの状態を更新
+            const photoCheckboxes = document.querySelectorAll('input[name="delete_photo"]');
+            const totalCount = photoCheckboxes.length;
+            document.getElementById('select-all-photos').checked = (checkedCount === totalCount && totalCount > 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 各写真のチェックボックスにイベントリスナーを追加
+            const photoCheckboxes = document.querySelectorAll('input[name="delete_photo"]');
+            photoCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedCount);
+            });
+            updateSelectedCount(); // 初期表示時のカウントを更新
+        });
+    </script>
+</body>
+</html>
