@@ -1451,3 +1451,209 @@ body {
     padding: 5px 10px;
     /* icon-buttonの標準スタイルを適用 */
 }
+/* ==================================== */
+/* 📝 モーダル共通スタイル (写真編集画面用) */
+/* 家族設定画面系のモーダルに合わせたデザイン */
+/* ==================================== */
+
+/* モーダル背景 (画面全体を覆い、中央にモーダルを表示) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* 最前面に表示 */
+}
+
+/* モーダル本体 */
+.modal-content {
+    background-color: #fff;
+    padding: 30px 25px; /* 上下のパディングを多めにし、横幅を調整 */
+    border-radius: 10px;
+    width: 85%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content p {
+    font-size: 1.0em;
+    font-weight: 500;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    color: #333; /* テキストカラーを濃いめに */
+}
+
+/* モーダル内のボタンエリア */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between; /* 均等な間隔 */
+    gap: 15px; /* ボタン間の間隔 */
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 10px 5px;
+    border-radius: 6px; /* 角を少し丸める */
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+/* 実行アクションボタン (例: 「はい」) */
+/* 家族招待画面の青いボタン */
+.modal-buttons .button-yes {
+    background-color: var(--primary-color, #5bc0de); /* 少し水色がかった青 */
+    color: #fff;
+}
+.modal-buttons .button-yes:hover {
+    background-color: #46b8da;
+}
+
+/* キャンセルアクションボタン (例: 「いいえ」) */
+/* 家族招待画面のグレーのボタン */
+.modal-buttons .button-no {
+    background-color: #e0e0e0;
+    color: #888;
+    border: 1px solid #ccc;
+}
+.modal-buttons .button-no:hover {
+    background-color: #d0d0d0;
+}
+
+/* 削除モーダルのボタン */
+/* secondary-button: 二次的なアクション/キャンセル (button-noと似た色だが、削除モーダル用) */
+.modal-buttons .secondary-button {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* 💡 修正箇所: 削除実行ボタン (水色に変更) */
+.modal-buttons .danger-button {
+    background-color: var(--primary-color, #5bc0de); /* 水色に変更 */
+    color: #fff;
+}
+.modal-buttons .danger-button:hover {
+    background-color: #46b8da;
+}
+/* ==================================== */
+/* 📝 picture_delete.html 専用スタイル */
+/* ==================================== */
+
+/* ページ上部の説明テキスト */
+.main-content .description-text {
+    font-size: 0.9em;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* 削除選択エリア */
+.delete-selection-area {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* すべて選択グループ */
+.select-all-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.select-all-group label {
+    font-size: 1em;
+    padding-left: 0;
+}
+
+.select-all-group input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* 選択枚数表示 */
+.photo-count {
+    color: var(--primary-color, #5bc0de);
+    font-size: 0.9em;
+}
+
+/* 写真リスト内の個別のアイテム */
+.photo-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+}
+
+.photo-item:last-child {
+    border-bottom: none;
+}
+
+.photo-select-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: normal; /* 太字解除 */
+    cursor: pointer;
+}
+
+.photo-select-label input[type="checkbox"] {
+    margin-right: 15px;
+    transform: scale(1.2); /* チェックボックスを少し大きく */
+}
+
+.photo-title {
+    font-size: 0.95em;
+    color: #333;
+    flex-grow: 1;
+}
+
+.photo-details {
+    display: flex;
+    align-items: center;
+    margin-left: 30px; /* チェックボックスの分インデント */
+    font-size: 0.8em;
+    color: #999;
+}
+
+.photo-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+/* 削除ボタンの色を統一 (写真編集画面の修正内容に合わせる) */
+.danger-button.primary-button {
+    background-color: var(--primary-color, #5bc0de); 
+    /* primary-buttonを継承しているが、念のため上書き */
+}
+/* モーダル内のボタンエリア */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between; /* 均等な間隔 */
+    gap: 15px; /* ボタン間の間隔 */
+}
+/* 実行アクションボタン (例: 「はい」) */
+.modal-buttons .button-yes {
+    background-color: var(--primary-color, #5bc0de); /* 水色 */
+    color: #fff;
+}
+/* キャンセルアクションボタン (例: 「いいえ」) */
+.modal-buttons .button-no {
+    background-color: #e0e0e0; /* 薄い灰色 */
+    color: #888;
+    border: 1px solid #ccc;
+}
