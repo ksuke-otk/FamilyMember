@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vivi - ログアウト</title>
+    <link rel="stylesheet" href="vivi_login_logout_style.css">
+    <link rel="stylesheet" href="vivi_album_style.css"> 
+</head>
+<body>
+    <div class="app-container">
+        
+        <header class="top-bar">
+            <div class="header-left">
+                <a href="family_member.html" class="icon-button back-button">&lt; 戻る</a>
+            </div>
+            <div class="header-center"><h1>ログアウト</h1></div>
+            <div class="header-right"></div>
+        </header>
+
+        <main class="main-content form-page">
+            
+            <div class="logout-box">
+                <p class="logout-message">
+                    ログアウトすると、次回ご利用時に<br>再度ログインが必要です。
+                </p>
+                <p class="confirmation-text">
+                    ログアウトしますか？
+                </p>
+                
+                <div class="button-group">
+                    <button type="button" class="primary-button logout-button" onclick="handleLogout()">
+                        ログアウト
+                    </button>
+
+                </div>
+            </div>
+            
+        </main>
+        
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item active"><span class="icon">⚙️</span>設定</a>
+        </nav>
+
+    </div>
+    
+    <script>
+        function handleLogout() {
+            // ログアウト処理のシミュレーション
+            console.log('ログアウトを実行します。');
+            //alert('ログアウトしました。');
+            
+            // ログアウト後、ログイン画面へ遷移
+            location.href = 'login.html'; 
+        }
+    </script>
+</body>
+</html>

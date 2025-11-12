@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vivi - ログイン</title>
+    <link rel="stylesheet" href="vivi_login_logout_style.css">
+</head>
+<body>
+    <div class="login-container">
+        
+        <header class="login-header">
+            <h1>vivi</h1>
+        </header>
+
+        <main class="login-main">
+            
+            <div class="login-box">
+                <h2>ログイン</h2>
+                
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="email">メールアドレス</label>
+                        <input type="email" id="email" name="email" placeholder="mail@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">パスワード</label>
+                        <input type="password" id="password" name="password" placeholder="パスワードを入力" required>
+                    </div>
+                    
+                    <button type="submit" class="primary-button login-button">
+                        ログイン
+                    </button>
+                    
+                    <div class="link-area">
+                        <a href="password_reset.html" class="sub-link">パスワードを忘れた場合</a>
+                    </div>
+                </form>
+            </div>
+            
+        </main>
+        
+        <footer class="login-footer">
+            <p>アカウントをお持ちでない場合は <a href="register.html" class="sub-link">新規登録</a></p>
+        </footer>
+
+    </div>
+    
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            // ログイン処理のシミュレーション
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                console.log('ログイン試行:', email);
+                // 成功したと仮定し、アルバム一覧画面へ遷移
+               // alert('ログインしました。');
+                location.href = 'top.html'; 
+            } else {
+                alert('メールアドレスとパスワードを入力してください。');
+            }
+        }
+    </script>
+</body>
+</html>
