@@ -11,7 +11,7 @@
         
         <header class="top-bar">
             <div class="header-left">
-                <a href="photo_detail.html" class="icon-button back-button" onclick="showCancelConfirmation(event)">キャンセル</a>
+                <a href="picture_detail.html" class="icon-button back-button" onclick="showCancelConfirmation(event)">キャンセル</a>
             </div>
             <div class="header-center"><h1>写真編集</h1></div>
             <div class="header-right">
@@ -45,12 +45,11 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>写っている子ども (必須) <span class="required">*</span></label>
-                    <p style="font-size: 0.8em; color: #888; margin-top: -10px; margin-bottom: 10px;">写真に写っている子どもの名前をすべて選択してください。</p>
+                    <label>アルバム選択</label>
                     <ul class="checkbox-list" id="kids-list">
                         <li>
                             <label>
-                                <input type="checkbox" name="kid" value="hana" checked>
+                                <input type="checkbox" name="kid" value="hana">
                                 山田 花子
                             </label>
                         </li>
@@ -62,7 +61,7 @@
                         </li>
                         <li>
                             <label>
-                                <input type="checkbox" name="kid" value="jiro" checked>
+                                <input type="checkbox" name="kid" value="jiro">
                                 田中 次郎
                             </label>
                         </li>
@@ -95,7 +94,7 @@
 
             if (isConfirmed) {
                 // 写真詳細画面に戻る
-                location.href = 'photo_detail.html';
+                location.href = 'picture_detail.html';
             }
         }
 
