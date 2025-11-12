@@ -11,12 +11,9 @@
         
         <header class="top-bar">
             <div class="header-left">
-                <a href="picture_detail.html" class="icon-button back-button" onclick="showCancelConfirmation(event)">キャンセル</a>
-            </div>
+                <a href="picture_detail.html" class="icon-button back-button" onclick="showCancelModal(event)">キャンセル</a>            </div>
             <div class="header-center"><h1>写真編集</h1></div>
             <div class="header-right">
-                <button class="icon-button delete-button" onclick="confirmDeletePhoto()">
-                    <span class="icon">🗑️</span>
                 </button>
             </div>
         </header>
@@ -81,36 +78,53 @@
         </nav>
 
     </div>
+<div id="cancel-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <p id="cancel-modal-message">写真の編集を中止しますか？<br>入力した内容は破棄されます。</p>
+            <div class="modal-buttons">
+                <button class="button-yes" onclick="cancelConfirmed()">はい</button>
+                <button class="button-no" onclick="hideCancelModal()">いいえ</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         // ----------------------------------------------------
-        // 💡 キャンセルボタンの処理 (写真追加画面のロジックを流用)
+        // 💡 キャンセルボタンの処理 (カスタムモーダル)
         // ----------------------------------------------------
-        function showCancelConfirmation(event) {
+        function showCancelModal(event) {
             event.preventDefault(); 
-            
-            // 変更破棄の確認ポップアップ
-            const isConfirmed = confirm("写真の編集を中止しますか？\n変更内容は破棄されます。");
+            document.getElementById('cancel-modal').style.display = 'flex';
+        }
 
-            if (isConfirmed) {
-                // 写真詳細画面に戻る
-                location.href = 'picture_detail.html';
-            }
+        function hideCancelModal() {
+            // 「いいえ」を押下した場合、モーダルを閉じる
+            document.getElementById('cancel-modal').style.display = 'none';
+        }
+
+        function cancelConfirmed() {
+            // 「はい」を押下した場合、写真詳細画面に遷移
+            location.href = 'picture_detail.html';
         }
 
         // ----------------------------------------------------
-        // 💡 写真削除ボタンの処理
+        // 💡 写真削除ボタンの処理 (カスタムモーダル)
         // ----------------------------------------------------
-        function confirmDeletePhoto() {
-            // 写真削除の確認ポップアップ
-            const isConfirmed = confirm("この写真を完全に削除しますか？\nこの操作は元に戻せません。");
+        function showDeleteModal() {
+             document.getElementById('delete-modal').style.display = 'flex';
+        }
 
-            if (isConfirmed) {
-                // 削除処理のシミュレーション
-                console.log('写真を削除しました。');
-                // 削除後、アルバムトップ画面に戻る
-                location.href = 'top.html';
-            }
+        function hideDeleteModal() {
+            // 「キャンセル」を押下した場合、モーダルを閉じる
+            document.getElementById('delete-modal').style.display = 'none';
+        }
+
+        function deleteConfirmed() {
+            // 削除処理のシミュレーション
+            console.log('写真を削除しました。');
+            // 削除後、アルバムトップ画面に戻る
+            location.href = 'top.html';
         }
 
         // ----------------------------------------------------
@@ -139,7 +153,7 @@
             console.log('写真情報を更新します...');
             
             // 成功後、写真詳細画面に戻る
-            location.href = 'photo_detail.html';
+            location.href = 'picture_detail.html';
         }
 
         // ----------------------------------------------------
