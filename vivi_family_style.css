@@ -65,6 +65,10 @@ body {
     justify-content: space-around;
     background: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /* 💡 修正点: スクロールしても固定する */
+    position: sticky;
+    top: 51px; /* ヘッダーの高さ (top-bar の高さの合計) の直下に配置 */
+    z-index: 9; /* top-bar (z-index: 10) の下に配置 */
 }
 
 .member-tabs .tab {
@@ -1084,4 +1088,27 @@ body {
   margin-right: 10px;
   /* アイコンの色はボタンの現在のcolorプロパティを継承 */
 }
+/* ==================================== */
+/* 📝 ログアウトボタン用スタイル */
+/* ==================================== */
 
+.logout-link-button {
+  /* primary-buttonと同様に幅いっぱいに表示 */
+  width: 100%; 
+  padding: 12px;
+  background: none;
+  color: var(--danger-color, #e74c3c); /* 危険色 (赤) を使用 */
+  border: 1px solid var(--danger-color, #e74c3c);
+  border-radius: var(--radius);
+  font-weight: bold;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-top: 30px; /* 権限情報から少し間隔を空ける */
+  margin-bottom: 20px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.logout-link-button:hover {
+  background-color: var(--danger-color, #e74c3c);
+  color: #fff;
+}
