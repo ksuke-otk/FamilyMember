@@ -1,158 +1,159 @@
-/* ==================================== */
-/* 📝 vivi_login_logout_style.css */
-/* ログイン/ログアウト/新規登録画面用スタイル */
-/* ==================================== */
+/* =============================== */
+/* 🌈 家族アルバムvivi - ログイン画面 */
+/* =============================== */
 
-/* 共通変数 (viviの主要な色) */
 :root {
-    --primary-color: #5bc0de; /* 水色系 (ボタン、アクティブな要素) */
-    --primary-dark: #46b8da;
-    --header-bg: #5bc0de; /* ヘッダーの背景色 */
+    --primary-color: #6ec6ff;    /* 優しい水色 */
+    --accent-color: #ffb6c1;     /* ピンクアクセント */
+    --bg-gradient: linear-gradient(135deg, #d9f1ff, #ffeaf0);
     --text-color: #333;
-    --sub-text-color: #666;
-    --border-color: #ddd;
-    --background-color: #f4f4f7; /* 背景の薄い灰色 */
+    --box-bg: #ffffff;
+    --shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-/* 基本リセット */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    font-family: "Rounded Mplus 1c", "Hiragino Sans", sans-serif;
+    background: var(--bg-gradient);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* 画面全体を覆う */
+    min-height: 100vh;
+    color: var(--text-color);
 }
 
-/* ログインコンテナ (モバイル画面サイズをシミュレート) */
+/* ログインカード全体 */
 .login-container {
-    width: 100%;
-    max-width: 420px; /* スマートフォン程度の最大幅 */
-    background-color: #fff;
-    min-height: 100vh; /* 縦方向いっぱいに広げる */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
+    width: 95%;
+    max-width: 400px;
+    background-color: var(--box-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    animation: fadeIn 1s ease;
 }
 
-/* ヘッダー (アルバム一覧などに合わせた色とデザイン) */
-.login-header {
-    background-color: var(--header-bg);
-    color: #fff;
-    padding: 20px 0;
+/* ヘッダー */
+header {
+    background: var(--primary-color);
+    color: white;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 25px 10px;
+    border-bottom: 4px solid var(--accent-color);
 }
 
-.login-header h1 {
+header h1 {
     margin: 0;
     font-size: 1.8em;
-    font-weight: bold;
+    letter-spacing: 1px;
 }
 
-/* メインコンテンツエリア */
-.login-main {
-    padding: 30px 20px;
-    flex-grow: 1; /* 残りのスペースを埋める */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* 上部から要素を配置 */
+/* メイン部分 */
+main {
+    padding: 30px 25px 40px;
 }
 
-/* ログインボックス (フォーム全体) */
-.login-box {
-    width: 100%;
-    max-width: 350px;
-    padding: 25px;
-    background-color: #fff;
-    border-radius: 8px;
-    /* 影はコンテナに付いているため不要 */
-}
-
-.login-box h2 {
-    font-size: 1.5em;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 30px;
+h2 {
     text-align: center;
+    color: var(--text-color);
+    font-size: 1.4em;
+    margin-bottom: 25px;
 }
 
-/* フォームグループ */
+/* 入力フォーム */
 .form-group {
     margin-bottom: 20px;
 }
 
-.form-group label {
+label {
     display: block;
-    font-size: 0.9em;
-    color: var(--sub-text-color);
-    margin-bottom: 5px;
-    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+    color: #555;
 }
 
-/* 入力フィールド */
-.form-group input[type="email"],
-.form-group input[type="password"] {
+input[type="email"],
+input[type="password"] {
     width: 100%;
-    padding: 12px 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 1em;
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
     box-sizing: border-box;
-    transition: border-color 0.2s;
+    font-size: 1em;
+    background-color: #fafafa;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.form-group input:focus {
+input:focus {
     border-color: var(--primary-color);
     outline: none;
+    box-shadow: 0 0 6px rgba(110,198,255,0.6);
 }
 
-/* プライマリボタン (viviの青いボタン) */
+/* ログインボタン */
 .primary-button {
     width: 100%;
-    padding: 14px 20px;
-    background-color: var(--primary-color);
-    color: #fff;
+    background: var(--primary-color);
+    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 30px;
+    padding: 14px;
     font-size: 1.1em;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s;
+    box-shadow: 0 4px 10px rgba(110,198,255,0.3);
+    transition: background 0.2s, transform 0.1s;
 }
 
 .primary-button:hover {
-    background-color: var(--primary-dark);
+    background: #5bb8f2;
 }
 
-/* リンクエリア */
+.primary-button:active {
+    transform: translateY(1px);
+}
+
+/* パスワードリセットリンク */
 .link-area {
-    margin-top: 15px;
     text-align: center;
+    margin-top: 15px;
 }
 
-.sub-link {
-    color: var(--primary-color);
-    font-size: 0.9em;
+.link-area a {
+    color: var(--accent-color);
     text-decoration: none;
+    font-size: 0.9em;
 }
 
-.sub-link:hover {
+.link-area a:hover {
     text-decoration: underline;
 }
 
-/* フッター (新規登録リンク) */
-.login-footer {
+/* フッター */
+footer {
     text-align: center;
-    padding: 15px 20px;
+    background-color: #fafafa;
+    padding: 15px;
     border-top: 1px solid #eee;
     font-size: 0.9em;
-    color: var(--sub-text-color);
 }
+
+footer a {
+    color: var(--primary-color);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* やさしい登場アニメーション */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* ==================================== */
 /* 📝 ログアウト画面 (logout.html) 用スタイル追記 */
 /* ==================================== */
