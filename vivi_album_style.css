@@ -1438,6 +1438,7 @@ body {
     margin-right: 10px;
     border: 1px solid #ddd;
 }
+
 /* 削除ボタンの色を統一 (写真編集画面の修正内容に合わせる) */
 .danger-button.primary-button {
     background-color: var(--primary-color, #5bc0de); /* 💡 水色適用 */
