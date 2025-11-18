@@ -1,136 +1,138 @@
 *, *::before, *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :root {
-    --primary-color: #79c2d0;
-    --primary-dark: #5fa5b1;
-    --background-color: #f4f4f4;
-    --text-color: #333;
-    --light-gray: #ccc;
-    --border-color: #eee;
-    --danger-color: #e74c3c;
-    --radius: 12px;
+  --primary-color: #6ec6ff;    /* 💡 統一配色: メインカラー (ログイン画面、アルバム一覧画面と統一) */
+  --primary-dark: #58a9e6;     /* 💡 統一配色: 濃いメインカラー (ログイン画面、アルバム一覧画面と統一) */
+  --secondary-accent: #ffb6c1; /* 💡 統一配色: アクセントカラー (アルバム一覧画面から追加) */
+  --background-color: linear-gradient(135deg, #d9f1ff, #ffeaf0); /* 💡 統一配色: 背景グラデーション */
+  --text-color: #333;
+  --light-gray: #ccc;
+  --border-color: #eee;
+  --danger-color: #e74c3c;
+  --radius: 12px;
 
-    --admin-bg: #f9e2e2;
-    --admin-text: #e74c3c;
-    --post-bg: #e6f6e9;
-    --post-text: #27ae60;
-    --view-bg: #ebf5f9;
-    --view-text: #3498db;
+  --admin-bg: #f9e2e2;
+  --admin-text: #e74c3c;
+  --post-bg: #e6f6e9;
+  --post-text: #27ae60;
+  --view-bg: #ebf5f9;
+  --view-text: #3498db;
 }
 
 body {
-    font-family: "Segoe UI", "Hiragino Sans", sans-serif;
-    margin: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    overflow-x: hidden;
+  font-family: "Segoe UI", "Hiragino Sans", sans-serif;
+  margin: 0;
+  /* 💡 background-color を background に変更し、グラデーションを適用 */
+  background: var(--background-color);
+  color: var(--text-color);
+  overflow-x: hidden;
 }
 
 .app-container {
-    width: 100%;
-    max-width: 450px;
-    background: #fff;
-    margin: 0 auto;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 450px;
+  background: #fff;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-    background: var(--primary-color);
-    color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background: var(--primary-color);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .top-bar h1 {
-    width: 100%;
-    text-align: center;
-    font-size: 1.1em;
-    margin: 0;
-    font-weight: bold;
-    letter-spacing: 0.5px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.1em;
+  margin: 0;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
 
 .member-tabs {
-    display: flex;
-    justify-content: space-around;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    /* 💡 修正点: スクロールしても固定する */
-    position: sticky;
-    top: 51px; /* ヘッダーの高さ (top-bar の高さの合計) の直下に配置 */
-    z-index: 9; /* top-bar (z-index: 10) の下に配置 */
+  display: flex;
+  justify-content: space-around;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  /* 💡 修正点: スクロールしても固定する */
+  position: sticky;
+  top: 51px; /* ヘッダーの高さ (top-bar の高さの合計) の直下に配置 */
+  z-index: 9; /* top-bar (z-index: 10) の下に配置 */
 }
 
 .member-tabs .tab {
-    flex-grow: 1;
-    padding: 15px 0;
-    border: none;
-    background: none;
-    font-weight: 600;
-    color: #777;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
+  flex-grow: 1;
+  padding: 15px 0;
+  border: none;
+  background: none;
+  font-weight: 600;
+  color: #777;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
 }
 
 .member-tabs .tab.active {
-    color: var(--primary-color);
-    border-bottom: 3px solid var(--primary-color);
-    background-color: rgba(121, 194, 208, 0.08);
+  color: var(--secondary-accent);
+  border-bottom: 3px solid var(--secondary-accent);
+  background-color: rgba(110, 198, 255, 0.08); /* 💡 primary-color #6ec6ff に合わせて修正 */
 }
 
 .main-content {
-    flex-grow: 1;
-    padding: 20px 15px 80px;
+  flex-grow: 1;
+  padding: 20px 15px 80px;
 }
 
 .section-title {
-    border-left: 5px solid var(--primary-color);
-    padding-left: 8px;
-    margin: 20px 0 15px;
-    font-size: 1.1em;
+  border-left: 5px solid var(--primary-color);
+  padding-left: 8px;
+  margin: 20px 0 15px;
+  font-size: 1.1em;
 }
 
 .permission-info-box {
-    background: #fff;
-    border-radius: var(--radius);
-    padding: 15px 20px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 15px 20px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
 
 .permission-title {
-    border-left: 3px solid var(--primary-color);
-    padding-left: 5px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  border-left: 3px solid var(--primary-color);
+  padding-left: 5px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .permission-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    border-bottom: 1px dashed rgba(0,0,0,0.1);
-    padding-bottom: 5px;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+  padding-bottom: 5px;
 }
 
 .permission-label {
-    min-width: 65px;
-    font-size: 0.8em;
-    text-align: center;
-    font-weight: bold;
-    border-radius: 4px;
-    padding: 3px 6px;
-    margin-right: 10px;
+  min-width: 65px;
+  font-size: 0.8em;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 3px 6px;
+  margin-right: 10px;
 }
 
 .permission-label.admin { background: var(--admin-bg); color: var(--admin-text); }
@@ -138,55 +140,55 @@ body {
 .permission-label.view { background: var(--view-bg); color: var(--view-text); }
 
 .primary-button {
-    background: var(--primary-color);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    padding: 12px;
-    font-weight: bold;
-    width: 100%;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: background-color 0.2s;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.2s;
 }
 
 .primary-button:hover {
-    background-color: var(--primary-dark);
+  background-color: var(--primary-dark);
 }
 
 .member-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .member-item {
-    background: #fff;
-    border-radius: var(--radius);
-    margin-bottom: 10px;
-    padding: 15px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    position: relative;
-    cursor: pointer;
+  background: #fff;
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  padding: 15px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  position: relative;
+  cursor: pointer;
 }
 
 .member-item .name {
-    font-size: 1.1em;
-    font-weight: 500;
+  font-size: 1.1em;
+  font-weight: 500;
 }
 
 .member-item .role {
-    font-size: 0.85em;
-    color: #777;
+  font-size: 0.85em;
+  color: #777;
 }
 
 .edit-icon, .delete-icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--light-gray);
-    cursor: pointer;
-    font-size: 1.2em;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--light-gray);
+  cursor: pointer;
+  font-size: 1.2em;
 }
 
 .edit-icon { right: 40px; }
@@ -196,919 +198,389 @@ body {
 .delete-icon:hover { color: var(--danger-color); }
 
 .bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    border-top: 1px solid var(--border-color);
-    background: #fff;
-    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
-    padding: 5px 0;
-    position: sticky;
-    bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid var(--border-color);
+  background: #fff;
+  box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+  padding: 5px 0;
+  position: sticky;
+  bottom: 0;
 }
 
 .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #888;
-    text-decoration: none;
-    font-size: 0.8em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #888;
+  text-decoration: none;
+  font-size: 0.8em;
 }
 
 .nav-item.active {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .nav-item .icon {
-    font-size: 1.5em;
-    margin-bottom: 2px;
+  font-size: 1.5em;
+  margin-bottom: 2px;
 }
 
 /* モーダル */
+/* 💡 他の画面と統一 */
 .modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); /* 💡 濃い背景色に統一 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* 💡 z-indexを大きく統一 */
 }
 
 .modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: var(--radius);
-    text-align: center;
-    width: 80%;
-    max-width: 300px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  background: #fff;
+  padding: 24px; /* 💡 paddingを統一 */
+  border-radius: 16px; /* 💡 radiusを統一 */
+  text-align: center;
+  width: 80%;
+  max-width: 320px; /* 💡 max-widthを統一 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* 💡 shadowを統一 */
+}
+
+.modal-content p { 
+  font-size: 16px; 
+  margin-bottom: 20px; 
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px; /* 💡 gapを統一 */
 }
 
 .modal-buttons button {
-    padding: 10px 20px;
-    border-radius: 6px;
-    border: none;
-    margin: 0 10px;
-    cursor: pointer;
+  flex: 1; /* 💡 buttonに flex: 1 を適用 */
+  padding: 10px 0;
+  border-radius: 10px; /* 💡 radiusを統一 */
+  border: none;
+  margin: 0; /* 💡 marginをリセット */
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
 }
 
 .button-yes {
-    background: var(--primary-color);
-    color: #fff;
-}
-
-.button-yes:hover {
-    background: var(--primary-dark);
-}
-
-.button-no {
-    background: #f0f0f0;
-    color: #333;
-}
-
-/* ------------------------------
-   家族招待画面専用スタイル
------------------------------- */
-
-/* フォームページ全体 */
-.form-page {
-    padding: 20px;
-    background-color: #f8f9fa;
-  }
-  
-  /* 入力フォームのカード風レイアウト */
-  #invite-family-form {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  }
-  
-  /* 入力説明文 */
-  .form-instruction {
-    font-size: 15px;
-    color: #555;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-  
-  /* フォームグループ */
-  .form-group {
-    margin-bottom: 16px;
-  }
-  
-  .form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #444;
-  }
-  
-  .form-group input,
-  .form-group select,
-  .form-group input[type="date"] { /* ← 【追記】: input[type="date"]を明示的に追加 */
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    background-color: #fafafa;
-    transition: border-color 0.2s;
-    
-  }
-
-/* date型のinputに、ブラウザのデフォルトスタイルをリセットするプロパティを修正 */
-.form-group input[type="date"] {
-  -webkit-appearance: none; /* iOS Safari用 */
-  -moz-appearance: none;      /* Firefox用 */
-  appearance: none;           /* 標準プロパティ */
-  background-image: 10px;     /* カレンダーアイコンを非表示（縦幅ずれの原因の一つ） */
-  /* padding-right: 12px; は削除済み */
-}
-
-/* フォーム項目にフォーカスが当たった時のスタイル（dateを含む） */
-.form-group input:focus,
-.form-group select:focus,
-.form-group input[type="date"]:focus { /* ← dateがすでに含まれていますが、念のため再確認 */
-    border-color: var(--primary-color);
-    outline: none;
-    background-color: #fff;
-}
-  
-  .form-group input:focus,
-  .form-group select:focus {
-    border-color: #5b9bd5;
-    outline: none;
-    background-color: #fff;
-  }
-  
-  .required {
-    color: #e74c3c;
-  }
-  
-  /* ボタンエリア */
-  .form-actions {
-    margin-top: 24px;
-    text-align: center;
-  }
-  
-  /* ボタンの大サイズ（家族メンバー画面と統一） */
-  .large-button {
-    width: 100%;
-    padding: 14px 0;
-    font-size: 17px;
-    font-weight: bold;
-    border-radius: 12px;
-  }
-  
-  /* キャンセルボタン（ヘッダー右上） */
-  .cancel-button {
-    background: none;
-    border: none;
-    color: #5b9bd5;
-    font-size: 15px;
-    cursor: pointer;
-    margin-right: 12px;
-  }
-  
-  .cancel-button:hover {
-    text-decoration: underline;
-  }
-  
-  /* モーダル統一 */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-  }
-  
-  .modal-content {
-    background: #fff;
-    border-radius: 16px;
-    padding: 24px;
-    text-align: center;
-    width: 80%;
-    max-width: 320px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
-  
-  .modal-content p {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  
-  .modal-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-  }
-  
-  .button-yes, .button-no {
-    flex: 1;
-    padding: 10px 0;
-    border-radius: 10px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  
-  .button-yes {
-    background-color: #5b9bd5;
-    color: white;
-  }
-  
-  .button-no {
-    background-color: #ddd;
-    color: #333;
-  }
-  
-  .button-yes:hover {
-    background-color: #4685c3;
-  }
-  
-  .button-no:hover {
-    background-color: #c0c0c0;
-  }
-  
-
-  /* ------------------------------
-   メンバー詳細画面専用スタイル
------------------------------- */
-
-/* 詳細セクション全体 */
-.detail-section {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    margin-top: 20px;
-    font-size: 15px;
-    color: #333;
-  }
-  
-  /* 各項目ブロック */
-  .detail-group {
-    margin-bottom: 18px;
-  }
-  
-  .detail-group:last-child {
-    margin-bottom: 0;
-  }
-  
-  .detail-group label {
-    display: block;
-    font-weight: 600;
-    color: #555;
-    font-size: 0.95em;
-    margin-bottom: 6px;
-  }
-  
-  /* 値部分 */
-  .detail-value {
-    background: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 1em;
-    color: #333;
-    line-height: 1.5;
-  }
-  
-/* 権限の色区分（修正版） */
-.permission-admin {
-    color: #e74c3c; /* 🔴 管理者は文字だけ赤 */
-    font-weight: 600;
-  }
-  
-  .permission-post {
-    color: #27ae60; /* 緑：投稿可能 */
-    font-weight: 600;
-  }
-  
-  .permission-view {
-    color: #3498db; /* 青：閲覧のみ */
-    font-weight: 600;
-  }
-  
-  
-  /* ヘッダーの戻るボタン・編集ボタン */
-  .back-button {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  
-  .back-button .icon {
-    margin-right: 4px;
-    font-size: 1.2em;
-    vertical-align: middle;
-  }
-  
-  .icon-button.edit-button {
-    background: none;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 1.3em;
-    padding: 6px 8px;
-    transition: opacity 0.2s;
-  }
-  
-  .icon-button.edit-button:hover {
-    opacity: 0.8;
-  }
-  
-  /* モバイル対応微調整 */
-  @media (max-width: 480px) {
-    .detail-section {
-      padding: 16px;
-    }
-  
-    .detail-group label {
-      font-size: 0.9em;
-    }
-  
-    .detail-value {
-      font-size: 0.95em;
-      padding: 8px 10px;
-    }
-  }
-  
-  /* ------------------------------
-   メンバー情報編集画面専用スタイル
------------------------------- */
-
-/* 編集フォーム全体 */
-#edit-family-form {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    font-size: 15px;
-    color: #333;
-  }
-  
-  /* 各フォーム項目 */
-  #edit-family-form .form-group {
-    margin-bottom: 16px;
-  }
-  
-  #edit-family-form label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #444;
-  }
-  
-  #edit-family-form input,
-  #edit-family-form select {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    background-color: #fafafa;
-    transition: border-color 0.2s;
-  }
-  
-  #edit-family-form input:focus,
-  #edit-family-form select:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    background-color: #fff;
-  }
-  
-  .required {
-    color: var(--danger-color);
-  }
-  
-  /* ボタンエリア */
-  #edit-family-form .form-actions {
-    margin-top: 24px;
-    text-align: center;
-  }
-  
-  /* 完了ボタン（統一デザイン） */
-  #edit-family-form .primary-button.large-button {
-    width: 100%;
-    padding: 14px 0;
-    font-size: 17px;
-    font-weight: bold;
-    border-radius: 12px;
-    background-color: var(--primary-color);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  #edit-family-form .primary-button.large-button:hover {
-    background-color: var(--primary-dark);
-  }
-  
-  /* キャンセルボタン（右上）統一 */
-  .cancel-button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 15px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .cancel-button:hover {
-    text-decoration: underline;
-  }
-  
-  /* 権限プルダウン強調 */
-  /*#family-permission option[value="admin"] {
-    color: var(--danger-color); 
-    font-weight: bold;
-  }
-  
-  #family-permission option[value="post"] {
-    color: var(--post-text);
-  }
-  
-  #family-permission option[value="view"] {
-    color: var(--view-text);
-  }*/
-  
-  /* モバイル対応微調整 */
-  @media (max-width: 480px) {
-    #edit-family-form {
-      padding: 16px;
-    }
-  
-    #edit-family-form input,
-    #edit-family-form select {
-      font-size: 14px;
-    }
-  }
-  
-
-  /* ------------------------------
-   子ども登録画面専用スタイル
------------------------------- */
-
-/* フォームページ全体 */
-#invite-kid-form {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    font-size: 15px;
-    color: #333;
-  }
-  
-  /* 入力説明文（統一デザイン） */
-  #invite-kid-form .form-instruction {
-    font-size: 15px;
-    color: #555;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-  
-  /* フォーム項目 */
-  #invite-kid-form .form-group {
-    margin-bottom: 16px;
-  }
-  
-  #invite-kid-form label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #444;
-  }
-  
-  #invite-kid-form input,
-  #invite-kid-form select,
-  #invite-kid-form input[type="date"] { /* ← 【修正】: input[type="date"]を明示的に追加 */
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    background-color: #fafafa;
-    transition: border-color 0.2s, background-color 0.2s;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: none; /* dateフィールドのデフォルトアイコンを非表示 */
-  }
-
-  /* プレースホルダーの色を薄いグレーに設定（全input/selectに適用） */
-#invite-kid-form input::placeholder,
-#edit-family-form input::placeholder,
-#invite-kid-form select::placeholder, /* selectには通常プレースホルダーは使えませんが、念のため */
-#edit-family-form select::placeholder {
- color: #aaa; /* 薄いグレー */
- opacity: 1; /* iOSで薄くなりすぎないように調整 */
-}
-  
-  #invite-kid-form input:focus,
-  #invite-kid-form select:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    background-color: #fff;
-  }
-  
-  .required {
-    color: var(--danger-color);
-  }
-  
-  /* 完了ボタン（統一デザイン） */
-  #invite-kid-form .form-actions {
-    margin-top: 24px;
-    text-align: center;
-  }
-  
-  #invite-kid-form .primary-button.large-button {
-    width: 100%;
-    padding: 14px 0;
-    font-size: 17px;
-    font-weight: bold;
-    border-radius: 12px;
-    background-color: var(--primary-color);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  #invite-kid-form .primary-button.large-button:hover {
-    background-color: var(--primary-dark);
-  }
-  
-  /* キャンセルボタン（ヘッダー右上・統一） */
-  .cancel-button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 15px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .cancel-button:hover {
-    text-decoration: underline;
-  }
-  
-  /* モーダル統一（他画面と揃える） */
-  #cancel-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-  }
-  
-  #cancel-modal .modal-content {
-    background: #fff;
-    border-radius: 16px;
-    padding: 24px;
-    text-align: center;
-    width: 80%;
-    max-width: 320px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
-  
-  #cancel-modal .modal-content p {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  
-  #cancel-modal .modal-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-  }
-  
-  #cancel-modal .button-yes,
-  #cancel-modal .button-no {
-    flex: 1;
-    padding: 10px 0;
-    border-radius: 10px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  
-  #cancel-modal .button-yes {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
-  #cancel-modal .button-no {
-    background-color: #ddd;
-    color: #333;
-  }
-  
-  #cancel-modal .button-yes:hover {
-    background-color: var(--primary-dark);
-  }
-  
-  #cancel-modal .button-no:hover {
-    background-color: #c0c0c0;
-  }
-  
-  /* モバイル対応微調整 */
-  @media (max-width: 480px) {
-    #invite-kid-form {
-      padding: 16px;
-    }
-  
-    #invite-kid-form input,
-    #invite-kid-form select {
-      font-size: 14px;
-    }
-  
-    #invite-kid-form .primary-button.large-button {
-      font-size: 16px;
-    }
-  }
-  
-  /* ------------------------------
-   子ども情報編集画面専用スタイル
------------------------------- */
-
-/* 編集フォーム全体 */
-#edit-family-form {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    font-size: 15px;
-    color: #333;
-  }
-  
-  /* 各フォーム項目 */
-  #edit-family-form .form-group {
-    margin-bottom: 16px;
-  }
-  
-  #edit-family-form label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #444;
-  }
-  
-  #edit-family-form input,
-  #edit-family-form select,
-  #edit-family-form input[type="date"] { /* ← 【修正】: input[type="date"]を明示的に追加 */
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    background-color: #fafafa;
-    transition: border-color 0.2s, background-color 0.2s;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: none; /* dateフィールドのデフォルトアイコンを非表示 */
-  }
-  
-/* プレースホルダーの色を薄いグレーに設定（編集画面にも適用） */
-#edit-family-form input::placeholder,
-#edit-family-form select::placeholder {
- color: #aaa; /* 薄いグレー */
- opacity: 1; 
-}
-
-  #edit-family-form input:focus,
-  #edit-family-form select:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    background-color: #fff;
-  }
-  
-  .required {
-    color: var(--danger-color);
-  }
-  
-  /* 完了ボタン（統一デザイン） */
-  #edit-family-form .form-actions {
-    margin-top: 24px;
-    text-align: center;
-  }
-  
-  #edit-family-form .primary-button.large-button {
-    width: 100%;
-    padding: 14px 0;
-    font-size: 17px;
-    font-weight: bold;
-    border-radius: 12px;
-    background-color: var(--primary-color);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  #edit-family-form .primary-button.large-button:hover {
-    background-color: var(--primary-dark);
-  }
-  
-  /* キャンセルボタン（右上） */
-  .cancel-button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 15px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .cancel-button:hover {
-    text-decoration: underline;
-  }
-  
-  /* モーダル統一 */
-  #cancel-modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-  }
-  
-  #cancel-modal .modal-content {
-    background: #fff;
-    border-radius: 16px;
-    padding: 24px;
-    text-align: center;
-    width: 80%;
-    max-width: 320px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
-  
-  #cancel-modal .modal-content p {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  
-  #cancel-modal .modal-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-  }
-  
-  #cancel-modal .button-yes,
-  #cancel-modal .button-no {
-    flex: 1;
-    padding: 10px 0;
-    border-radius: 10px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  
-  #cancel-modal .button-yes {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
-  #cancel-modal .button-no {
-    background-color: #ddd;
-    color: #333;
-  }
-  
-  #cancel-modal .button-yes:hover {
-    background-color: var(--primary-dark);
-  }
-  
-  #cancel-modal .button-no:hover {
-    background-color: #c0c0c0;
-  }
-  
-  /* モバイル対応微調整 */
-  @media (max-width: 480px) {
-    #edit-family-form {
-      padding: 16px;
-    }
-  
-    #edit-family-form input,
-    #edit-family-form select {
-      font-size: 14px;
-    }
-  
-    #edit-family-form .primary-button.large-button {
-      font-size: 16px;
-    }
-  }
-  
-
-  /* ... (既存の CSS は省略) ... */
-
-
-/* ------------------------------
-   メンバー詳細画面専用スタイル - 追記・修正
------------------------------- */
-
-/* ヘッダーの編集ボタンと統一されたデザイン */
-.icon-button.delete-button-icon {
-    background: none;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 1.3em;
-    padding: 6px 8px;
-    transition: opacity 0.2s;
-    /* 編集ボタンと縦位置を合わせる */
-    margin-left: 5px; 
-}
-
-.icon-button.delete-button-icon:hover {
-    opacity: 0.8;
-}
-
-/* ヘッダー右側の子要素を左から右に並べるための調整 */
-.top-bar .header-right {
-    display: flex;
-    align-items: center;
-}
-
-
-
-/* ------------------------------
-   成長記録ボタンの独自アクションボタン
------------------------------- */
-
-.secondary-button {
-  /* 既存のsecondary-buttonクラスをアクションボタンとして再定義 */
-  background: #e9ecef; /* 明るいグレーの背景 */
-  color: var(--primary-dark); /* メインカラーのテキスト */
-  border: 1px solid var(--primary-color); /* メインカラーの枠線 */
-  border-radius: var(--radius);
-  padding: 12px;
-  font-weight: bold;
-  width: 100%;
-  cursor: pointer;
-  margin: 30px 0 20px; /* 上下にマージンを追加して目立たせる */
-  transition: all 0.2s;
-  display: flex; /* アイコンとテキストを横並びにする */
-  align-items: center;
-  justify-content: center; /* 中央寄せ */
-  font-size: 1.05em;
-}
-
-.secondary-button:hover {
-  background-color: var(--primary-color); /* ホバーで色を反転 */
+  background: var(--primary-color);
   color: #fff;
 }
 
-.secondary-button .icon {
-  /* アイコンのスタイル調整 */
+.button-no {
+  background: #e9ecef; /* 明るいグレーの背景 */
+  color: var(--text-color);
+  border: 1px solid #ccc; /* 枠線を追加 */
+}
+
+.button-yes:hover {
+  background-color: var(--primary-dark);
+}
+
+.button-no:hover {
+  background-color: #dee2e6;
+}
+
+/* ===============================
+ 子ども詳細、子ども追加・編集画面用
+ =============================== */
+
+/* 詳細画面のグループ */
+.detail-section {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.detail-group {
+  border-bottom: 1px dashed var(--border-color);
+  padding: 10px 0;
+}
+
+.detail-group:last-child {
+  border-bottom: none;
+}
+
+.detail-group label {
+  display: block;
+  font-size: 0.85em;
+  color: #777;
+  margin-bottom: 2px;
+}
+
+.detail-group .detail-value {
+  font-size: 1.1em;
+  font-weight: 500;
+  margin: 0;
+  padding-left: 5px;
+}
+
+/* アクションボタン (成長記録、編集、削除) */
+.action-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.1s;
+}
+
+.action-link:hover {
+  background-color: #f8f9fa;
+}
+
+.action-link .label {
+  font-weight: 500;
+  font-size: 1.05em;
+}
+
+.action-link .icon {
+  color: var(--primary-color);
   font-size: 1.4em;
-  margin-right: 10px;
-  /* アイコンの色はボタンの現在のcolorプロパティを継承 */
+}
+
+.edit-button, .delete-button-icon {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.edit-button .icon, .delete-button-icon .icon {
+  font-size: 1.2em;
+}
+
+.delete-button-icon {
+  color: #fff; /* ヘッダーの削除アイコンは白 */
+}
+
+/* ===============================
+ フォームページ (追加・編集画面)
+ =============================== */
+
+.form-page {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.form-instruction {
+  text-align: center;
+  color: #777;
+  margin-bottom: 30px;
+  font-size: 0.9em;
+}
+
+/* 各フォーム項目 */
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  background-color: #fafafa;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  background-color: #fff;
+}
+
+.required {
+  color: var(--danger-color);
+  font-weight: normal;
+}
+
+/* ボタンエリア */
+.form-actions {
+  margin-top: 24px;
+  text-align: center;
+}
+
+/* ボタンの大サイズ（家族メンバー画面と統一） */
+.large-button {
+  width: 100%;
+  padding: 14px 0;
+  font-size: 17px;
+  font-weight: bold;
+  border-radius: 12px;
+}
+
+/* キャンセルボタン（ヘッダー右上） */
+.cancel-button {
+  background: none;
+  border: none;
+  color: #fff; /* 💡 ヘッダーのキャンセルボタンは白に統一 */
+  font-size: 15px;
+  cursor: pointer;
+  margin-right: 12px;
+}
+
+.cancel-button:hover {
+  text-decoration: underline;
+}
+
+/* =================================
+ 成長記録画面 (growth_view.html) 用
+ ================================= */
+
+.growth-section {
+  padding: 0;
+}
+
+.kid-name-display {
+  font-size: 1.4em;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0 20px;
+  color: var(--primary-dark);
+}
+
+.growth-chart-box {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.record-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.record-date {
+  font-size: 0.9em;
+  color: #777;
+  min-width: 80px;
+}
+
+.record-value {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.record-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.record-actions button {
+  background: none;
+  border: none;
+  color: var(--primary-dark);
+  cursor: pointer;
+  font-size: 0.9em;
+  padding: 5px;
+}
+
+.record-actions button.delete {
+  color: var(--danger-color);
+}
+
+/* ------------------------------
+ 成長記録ボタンの独自アクションボタン
+------------------------------ */
+
+.secondary-button {
+/* 既存のsecondary-buttonクラスをアクションボタンとして再定義 */
+background: #e9ecef; /* 明るいグレーの背景 */
+color: var(--primary-dark); /* メインカラーのテキスト */
+border: 1px solid var(--primary-color); /* メインカラーの枠線 */
+border-radius: var(--radius);
+padding: 12px;
+font-weight: bold;
+width: 100%;
+cursor: pointer;
+margin: 30px 0 20px; /* 上下にマージンを追加して目立たせる */
+transition: all 0.2s;
+display: flex; /* アイコンとテキストを横並びにする */
+align-items: center;
+justify-content: center; /* 中央寄せ */
+font-size: 1.05em;
+}
+
+.secondary-button:hover {
+background-color: var(--primary-dark); /* 💡 primary-dark を適用 */
+color: #fff;
+}
+
+.secondary-button .icon {
+/* アイコンのスタイル調整 */
+font-size: 1.4em;
+margin-right: 10px;
+/* アイコンの色はボタンの現在のcolorプロパティを継承 */
 }
 /* ==================================== */
 /* 📝 ログアウトボタン用スタイル */
 /* ==================================== */
 
-.logout-link-button {
-  /* primary-buttonと同様に幅いっぱいに表示 */
-  width: 100%; 
-  padding: 12px;
-  background: none;
-  color: var(--danger-color, #e74c3c); /* 危険色 (赤) を使用 */
-  border: 1px solid var(--danger-color, #e74c3c);
+.logout-link {
+  display: block;
+  text-align: center;
+  font-size: 1.0em;
+  color: var(--danger-color);
+  margin-top: 30px;
+  padding: 10px;
+  text-decoration: none;
+  border: 1px solid var(--danger-color);
   border-radius: var(--radius);
-  font-weight: bold;
-  font-size: 1.1em;
-  cursor: pointer;
-  margin-top: 30px; /* 権限情報から少し間隔を空ける */
-  margin-bottom: 20px;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s;
 }
 
-.logout-link-button:hover {
-  background-color: var(--danger-color, #e74c3c);
+.logout-link:hover {
+  background-color: var(--danger-color);
   color: #fff;
 }
