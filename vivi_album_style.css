@@ -6,6 +6,8 @@
 *, *::before, *::after {
     box-sizing: border-box;
 }
+
+
 :root {
 /* 💡 ログイン画面のCSS変数に統一 */
     --primary-color: #6ec6ff;    /* メインカラー (水色) */
@@ -1459,4 +1461,5 @@ body {
     background-color: #e0e0e0; /* 薄い灰色 */
     color: #888;
     border: 1px solid #ccc;
+
 }
