@@ -567,20 +567,23 @@ margin-right: 10px;
 /* 📝 ログアウトボタン用スタイル */
 /* ==================================== */
 
-.logout-link {
-  display: block;
-  text-align: center;
-  font-size: 1.0em;
-  color: var(--danger-color);
-  margin-top: 30px;
-  padding: 10px;
-  text-decoration: none;
-  border: 1px solid var(--danger-color);
+.logout-link-button {
+  /* primary-buttonと同様に幅いっぱいに表示 */
+  width: 100%; 
+  padding: 12px;
+  background: none;
+  color: var(--danger-color, #e74c3c); /* 危険色 (赤) を使用 */
+  border: 1px solid var(--danger-color, #e74c3c);
   border-radius: var(--radius);
-  transition: background-color 0.2s;
+  font-weight: bold;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-top: 30px; /* 権限情報から少し間隔を空ける */
+  margin-bottom: 20px;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.logout-link:hover {
-  background-color: var(--danger-color);
+.logout-link-button:hover {
+  background-color: var(--danger-color, #e74c3c);
   color: #fff;
 }
