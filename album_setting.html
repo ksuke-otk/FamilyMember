@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - アルバム</title>
+    <link rel="stylesheet" href="vivi_album_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left"></div> 
+            <div class="header-center"><h1>アルバム一覧</h1></div>
+            <div class="header-right"></div>
+            <a href="family_member.html" class="nav-item"><span class="icon">⚙️</span></a>
+
+ 
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item"><span class="icon">👪</span>家族</a>
+        </nav>
+    </div>
+
+    <script>
+        /**
+         * 家族アルバムvivi - アルバム一覧ページ (top.html) スクリプト
+         * * 主な機能:
+         * 1. アルバムアイテムの選択/選択解除 (選択モード)
+         * 2. 全選択チェックボックスの状態管理
+         * 3. プルダウンによるアルバムコンテンツの切り替え (ダミーデータ)
+         * 4. ダウンロード処理のための選択データ収集と画面遷移
+         * 5. ページ遷移時の選択状態リセット
+         */
+        
+        // 共通スクリプト（削除モーダル等が含まれていても問題なし）
+        let memberToDeleteId = null;
+        
+        // family_member.html用の関数だが、テンプレートに残しておく
+        function showSection(sectionId, element) {
+           console.warn('showSection: top.htmlでは showAlbumSection を使用してください。');
+        }
+        
+        // 削除モーダル関連 (この画面では未使用だが、他の画面との共通化のため残す)
+        function showDeleteModal(memberName, memberId) {
+            memberToDeleteId = memberId;
+            document.getElementById('modal-message').textContent = `メンバーを削除しますか？`;
+            document.getElementById('delete-modal').style.display = 'flex';
+        }
+        
+        function hideDeleteModal() {
+            memberToDeleteId = null;
+            document.getElementById('delete-modal').style.display = 'none';
+        }
+        
+        function deleteMemberConfirmed() {
+            if (memberToDeleteId) {
+                const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
+                if (memberElement) {
+                memberElement.remove();
+                }
+                alert(`ID ${memberToDeleteId} のメンバーを削除しました。`);
+            }
+            hideDeleteModal();
+        }
+        
+        /**
+         * リストアイテムのクリック制御
+         * 既に選択アイテムがあれば選択をトグル、なければ詳細画面に遷移。
+         * @param {HTMLElement} item - クリックされた .member-item 要素
+         * @param {Event} event - クリックイベント
+         */
+        function handleAlbumItemClick(item, event) {
+            // サムネイル画像（photo-item）内のクリックは、個別の詳細遷移を優先するため、親要素の処理をスキップ
+            if (event.target.closest('.photo-item')) {
+                return;
+            }
+            
+            const selectedItems = document.querySelectorAll('.member-item.selected-item');
+            const dataId = item.getAttribute('data-id');
+    
+            // 既に一つでも選択されているアイテムがある場合 -> 選択モード
+            if (selectedItems.length > 0) {
+                // ナビゲーションを阻止し、選択をトグル
+                event.preventDefault();
+                event.stopPropagation();
+                toggleItemSelection(item);
+            } else {
+                // 選択中のアイテムが他にない場合 -> 詳細画面へ遷移
+                // 修正箇所: 遷移先を picture_detail.html に修正
+                location.href = `picture_detail.html?id=${dataId}`;
+            }
+        }
+        
+        /**
+         * リストアイテムの選択状態をトグルする
+         * @param {HTMLElement} item - クリックされた .member-item 要素
+         */
+        function toggleItemSelection(item) {
+            // .member-item に .selected-item クラスを付け外し
+            item.classList.toggle('selected-item');
+            
+            // 内部のチェックボックスの状態を同期
+            const checkbox = item.querySelector('.album-checkbox');
+            if (checkbox) {
+                checkbox.checked = item.classList.contains('selected-item');
+            }
+        
+            // 全選択チェックボックスの状態も更新
+            updateSelectAllCheckbox();
+        }
+        
+        /**
+         * チェックボックスの状態に基づいてリストアイテムの選択状態を更新する (主にチェックボックスクリック時)
+         * @param {HTMLElement} item - 変更された .member-item 要素
+         */
+        function updateItemSelection(item) {
+            const checkbox = item.querySelector('.album-checkbox');
+            if (checkbox.checked) {
+                item.classList.add('selected-item');
+            } else {
+                item.classList.remove('selected-item');
+            }
+            updateSelectAllCheckbox();
+        }
+        
+        /**
+         * 全選択チェックボックス (select-all-checkbox) の状態を、現在のリストアイテムの選択状況に基づいて更新
+         */
+        function updateSelectAllCheckbox() {
+            const allItems = document.querySelectorAll('.member-item');
+            const selectedItems = document.querySelectorAll('.member-item.selected-item');
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+        
+            if (!selectAllCheckbox) return;
+        
+            if (allItems.length === 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            } else if (selectedItems.length === allItems.length) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false;
+            } else if (selectedItems.length > 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            }
+        }
+        
+        /**
+         * 全てのリストアイテムの選択/全解除を行う
+         * @param {boolean} isChecked - 全選択チェックボックスの状態 (true: 全選択, false: 全解除)
+         */
+        function toggleSelectAll(isChecked) {
+            const allItems = document.querySelectorAll('.member-item');
+            allItems.forEach(item => {
+              const checkbox = item.querySelector('.album-checkbox');
+                 if (checkbox) {
+                     checkbox.checked = isChecked;
+                    if (isChecked) {
+                        item.classList.add('selected-item');
+                    } else {
+                        item.classList.remove('selected-item');
+                    }
+                }
+            });
+            // 全選択/全解除に合わせて、全選択チェックボックスのchecked状態も更新
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = isChecked;
+                selectAllCheckbox.indeterminate = false;
+            }
+        }
+        
+        /**
+         * アルバムコンテンツの切り替え (プルダウン対応)
+         * @param {string} albumId - 切り替えるアルバムのID ('all', 'ichiro', 'yoshiko'など)
+         * @param {HTMLElement} element - 変更された select 要素
+         */
+        function showAlbumSection(albumId, element) {
+            console.log(`アルバムを切り替え: ${albumId}`);
+        
+            const list = document.querySelector('.member-list');
+            list.innerHTML = ''; // リストをクリア (実際のロード処理をシミュレーション)
+        
+            const clickHandler = "handleAlbumItemClick(this, event)"; 
+        
+// ダミーコンテンツの再描画
+if (albumId === 'all') {
+        list.innerHTML = `
+        <li class="member-item" onclick="${clickHandler}" data-id="1" data-photo-count="3">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">七五三 (3枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=001'">
+                        <img src="placeholder_1.jpg" alt="写真1" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=002'">
+                        <img src="placeholder_2.jpg" alt="写真2" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=003'">
+                        <img src="placeholder_3.jpg" alt="写真3" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-11</span>
+            </div>
+        </li>
+        <li class="member-item" onclick="${clickHandler}" data-id="2" data-photo-count="2">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">運動会 (2枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=004'">
+                        <img src="placeholder_4.jpg" alt="写真4" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=005'">
+                        <img src="placeholder_5.jpg" alt="写真5" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-10</span>
+            </div>
+        </li>
+        <li class="member-item" onclick="${clickHandler}" data-id="3" data-photo-count="5">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">夏の海旅行 (5枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=006'">
+                        <img src="placeholder_6.jpg" alt="写真6" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=007'">
+                        <img src="placeholder_7.jpg" alt="写真7" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=008'">
+                        <img src="placeholder_8.jpg" alt="写真8" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-8</span>
+            </div>
+        </li>
+        `;
+    } else if (albumId === 'ichiro') {
+        // 💡 修正後: <li class="member-item" onclick="${clickHandler}" ...> の形式に戻す
+        list.innerHTML = `
+        <li class="member-item" onclick="${clickHandler}" data-id="1" data-photo-count="3">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">一郎くんの七五三 (3枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=001'">
+                        <img src="placeholder_1.jpg" alt="写真1" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=002'">
+                        <img src="placeholder_2.jpg" alt="写真2" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=003'">
+                        <img src="placeholder_3.jpg" alt="写真3" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-11</span>
+            </div>
+        </li>
+        `;
+    } else if (albumId === 'yoshiko') {
+        // 💡 修正後: <li class="member-item" onclick="${clickHandler}" ...> の形式に戻す
+        list.innerHTML = `
+        <li class="member-item" onclick="${clickHandler}" data-id="2" data-photo-count="2">
+            <div class="checkbox-area">
+                <input type="checkbox" class="album-checkbox" onclick="event.stopPropagation(); updateItemSelection(this.closest('.member-item'))">
+            </div>
+            <div class="info">
+                <span class="name">良子ちゃんの運動会 (2枚)</span><br>
+                <div class="photo-grid">
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=004'">
+                        <img src="placeholder_4.jpg" alt="写真4" class="photo-thumbnail">
+                    </div>
+                    <div class="photo-item" onclick="location.href='picture_detail.html?id=005'">
+                        <img src="placeholder_5.jpg" alt="写真5" class="photo-thumbnail">
+                    </div>
+                </div>
+                <span class="role">2024-10</span>
+            </div>
+        </li>
+        `;
+    }
+        
+            // アルバム切り替え後、選択状態をリセット
+            toggleSelectAll(false);
+        }
+        
+        
+        /**
+         * 選択された写真IDと情報を収集し、ダウンロード画面に遷移する
+         */
+        function updateDownloadUrl() {
+            const selectedItems = document.querySelectorAll('.member-item.selected-item');
+            if (selectedItems.length === 0) {
+                alert('ダウンロードする写真・動画を選択してください。');
+                return;
+            }
+        
+            // 選択されたアルバムID、アルバム名、写真数を収集
+            const selectedData = [];
+            selectedItems.forEach(item => {
+                const albumId = item.getAttribute('data-id');
+                const photoCountAttr = item.getAttribute('data-photo-count');
+         
+                // .nameからアルバム名を取得し、(n枚)の表記を削除
+                const albumName = item.querySelector('.name').textContent.replace(/\s\(\d+枚\)/, '').trim(); 
+         
+                // photoCountが存在しない場合や無効な場合は1とする
+                const photoCount = parseInt(photoCountAttr, 10) || 1; 
+        
+                if (albumId) {
+                // フォーマット: [アルバムID]:[アルバム名 (URLエンコード)]:[写真数]
+                    selectedData.push(`${albumId}:${encodeURIComponent(albumName)}:${photoCount}`);
+                }
+            });
+         
+            if (selectedData.length === 0) {
+                alert('ダウンロードする写真・動画を選択してください。');
+                return;
+            }
+          
+            // データをURLにエンコードして遷移
+            const selectedIdsParam = selectedData.join(',');
+            location.href = `download.html?items=${selectedIdsParam}`;
+        }
+        
+        
+        // ページ読み込み時またはBFCacheからの復元時 (履歴で戻った時) に実行
+        document.addEventListener('pageshow', (event) => {
+            // 画面表示時に全ての選択状態を解除します。
+            toggleSelectAll(false);
+        });
+        
+        // 初回ロード時、またはリセットパラメータ付きでアクセスされた場合の処理
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const shouldReset = params.get('reset') === 'true';
+        
+            if (shouldReset) {
+                // チェックボックスと選択状態をすべて解除
+                toggleSelectAll(false);
+        
+                // 履歴のURLから reset=true を消す（再読み込み時に再リセットしないため）
+                history.replaceState(null, '', 'top.html');
+            } 
+        });
+            </script>
+</body>
+</html>
