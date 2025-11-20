@@ -73,7 +73,10 @@ label {
 }
 
 input[type="email"],
-input[type="password"] {
+input[type="password"] ,
+input[type="family-name"],
+input[type="famiry-relation"]
+{
     width: 100%;
     padding: 12px 14px;
     border: 2px solid #e0e0e0;
