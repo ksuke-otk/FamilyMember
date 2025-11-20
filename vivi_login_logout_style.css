@@ -9,6 +9,8 @@
     --text-color: #333;
     --box-bg: #ffffff;
     --shadow: 0 8px 20px rgba(0,0,0,0.1);
+    --danger-color: #e74c3c; /* 追記 */
+
 }
 
 body {
@@ -63,6 +65,9 @@ h2 {
 /* 入力フォーム */
 .form-group {
     margin-bottom: 18px;
+
+    position: relative; 
+
 }
 
 label {
@@ -72,11 +77,10 @@ label {
     color: #555;
 }
 
+/* input要素の基本スタイル（プルダウン矢印なし） */
 input[type="email"],
-input[type="password"] ,
-input[type="family-name"],
-input[type="famiry-relation"]
-{
+input[type="password"],
+input[type="text"] {
     width: 100%;
     padding: 12px 14px;
     border: 2px solid #e0e0e0;
@@ -87,11 +91,78 @@ input[type="famiry-relation"]
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+/* select要素のスタイル（プルダウン矢印あり） */
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 1em;
+    background-color: #fafafa;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    
+    /*  プルダウン矢印を消してカスタムアイコンを表示 */
+    appearance: none; 
+    -webkit-appearance: none; 
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M287%2069.9L146.2%20208.7%205.4%2069.9z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 0.6em auto;
+}
+
 input:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 6px rgba(110,198,255,0.6);
 }
+
+.required {
+    color: var(--danger-color);
+    font-weight: normal;
+  }
+/* 追加フィールドの非表示スタイル */
+#other-relation-input-group {
+    display: none;
+  }
+/* ================================================= */
+/* ⭐ パスワード入力欄とボタンのレイアウト修正 (ここが重要) ⭐ */
+/* ================================================= */
+
+/* パスワード表示トグルボタンのスタイル */
+.password-toggle {
+    /* form-group (position: relative) を基準に絶対配置 */
+    position: absolute; 
+    right: 5px; /* 入力フィールドの右端から5px */
+    
+    /* ラベルの高さと入力フィールドのborder/paddingを考慮して、入力フィールドの垂直中央に配置 */
+    /* ラベルの下から入力フィールドが始まるため、topは入力フィールドの真ん中を指すよう調整が必要です */
+    top: calc(18px + 50%); /* labelの高さの目安(約24px) + inputの高さの半分 */
+    transform: translateY(-50%); /* ボタン自体を上方向に半分の高さだけ移動させて中央揃えにする */
+    
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px; 
+    color: #888;
+    line-height: 1;
+    z-index: 10;
+}
+
+/* パスワード入力フィールドの右側に、ボタンのスペースを確保する */
+input[type="password"] {
+    /* 余裕を持たせて右側のパディングを確保 */
+    padding-right: 45px; 
+}
+
+.password-toggle svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ================================================= */
+/* ⭐ パスワード入力欄とボタンのレイアウト修正 (ここまで) ⭐ */
+/* ================================================= */
 
 /* ログインボタン */
 .primary-button {
@@ -183,7 +254,44 @@ footer a:hover {
         padding: 20px 15px 30px;
     }
 }
+/* ==================================== */
+/* 📝 新規登録画面の戻るボタンのスタイル */
+/* ==================================== */
+.back-link {
+    /* ログインコンテナ内のヘッダーの左上に絶対配置 */
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 0.9em;
+    color: var(--text-color); /* 通常のテキスト色 */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    z-index: 10; /* 他の要素より手前に表示 */
+}
 
+.back-link:hover {
+    background-color: #f0f0f0; /* ホバーで背景を薄くする */
+}
+
+.back-link .icon {
+    margin-right: 5px;
+    font-size: 1.1em;
+}
+
+/* 画面が小さいときは「ログイン画面へ戻る」を非表示にし、アイコンだけにする調整 */
+@media (max-width: 400px) {
+    .back-link {
+        left: 10px;
+        top: 15px;
+    }
+    .back-link span:not(.icon) { /* アイコン以外のテキストを非表示 */
+        display: none;
+    }
+}
 /* ==================================== */
 /* 📝 ログアウト画面 (logout.html) 用スタイル追記 */
 /* ==================================== */
