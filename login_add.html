@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vivi - ログイン</title>
+    <link rel="stylesheet" href="vivi_login_logout_style.css">
+</head>
+<body>
+    <div class="login-container">
+        <header>
+            <h1>家族アルバム vivi 📷</h1>
+        </header>
+        <main>
+            <h2>家族新規登録</h2>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">メールアドレス</label>
+                    <input type="email" id="email" name="email" placeholder="mail@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <input type="password" id="password" name="password" placeholder="パスワードを入力" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="family-name">名前</label>
+                    <input type="family-name" id="family-name" name="family-name" placeholder="例: 山田 太郎">
+                </div>
+
+                <div class="form-group">
+                <label for="family-relation">関係性 </label>
+                <select id="family-relation" name="family-relation" required>
+                    <option value="">選択してください</option>
+                    <option value="father">父</option>
+                    <option value="mother">母</option>
+                    <option value="grandfather">祖父</option>
+                    <option value="grandmother">祖母</option>
+                    <option value="child">子ども</option>
+                </select>
+                </div>
+
+                <button type="submit" class="primary-button">ログイン</button>
+
+
+            </form>
+        </main>
+
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                console.log('ログイン成功:', email);
+                location.href = 'top.html';
+            } else {
+                alert('メールアドレスとパスワードを入力してください。');
+            }
+        }
+    </script>
+</body>
+</html>
