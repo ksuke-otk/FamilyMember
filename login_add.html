@@ -8,12 +8,15 @@
 </head>
 <body>
     <div class="login-container">
-        
         <header>
+
             <h1>家族アルバム vivi 📷</h1>
         </header>
         <main>
             <h2>家族新規登録</h2>
+<!--            <a href="login.html" class="back-link">
+                <span class="icon">＜</span> ログイン画面へ戻る
+            </a>-->
             <form id="login-form" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="email">メールアドレス</label>
@@ -21,28 +24,41 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">パスワード</label>
+                    <label for="password">パスワード </label>
+                    <!-- 注: password-input-wrapperは削除し、form-groupに position: relative を適用します -->
                     <input type="password" id="password" name="password" placeholder="パスワードを入力" required>
+                        
+                    <!-- パスワード表示切替ボタン (form-groupを基準に絶対配置されます) -->
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility()">
+                        <!-- SVGアイコン (Lucide icon: Eye) -->
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
                 </div>
 
                 <div class="form-group">
                     <label for="family-name">名前</label>
-                    <input type="family-name" id="family-name" name="family-name" placeholder="例: 山田 太郎">
+                    <input type="text" id="family-name" name="family-name" placeholder="例: 山田 太郎">
                 </div>
 
                 <div class="form-group">
                 <label for="family-relation">関係性 </label>
-                <select id="family-relation" name="family-relation" required>
+                <select id="family-relation" name="family-relation" required onchange="toggleOtherRelationInput()">
                     <option value="">選択してください</option>
                     <option value="father">父</option>
                     <option value="mother">母</option>
-                    <option value="grandfather">祖父</option>
-                    <option value="grandmother">祖母</option>
-                    <option value="child">子ども</option>
+                    <option value="other">その他</option>
                 </select>
                 </div>
-
-                <button type="submit" class="primary-button">ログイン</button>
+                <!--  関係性 (その他) の入力フィールド (初期状態は非表示) -->
+                <div class="form-group" id="other-relation-input-group">
+                    <label for="other-relation">その他の関係性 (具体的に)</label>
+                    <!--  name属性を付けて、フォーム送信時にデータが渡るようにします -->
+                    <input type="text" id="other-relation" name="other-relation" placeholder="例: 祖父,叔母,従兄弟など">
+                </div>
+                <button type="submit" class="primary-button">新規登録</button>
 
 
             </form>
@@ -51,18 +67,106 @@
     </div>
 
     <script>
-        function handleLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+                /**
+         * パスワードの入力タイプを 'password' と 'text' の間で切り替え、
+         * それに応じてアイコンも切り替えます。
+         */
+         function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
             
-            if (email && password) {
-                console.log('ログイン成功:', email);
-                location.href = 'top.html';
+            // 目を閉じたアイコン (Lucide icon: EyeOff) のSVGパス
+            const eyeOffSvg = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.96 9.96 0 0 1 12 4c7 0 11 8 11 8a18.45 18.45 0 0 1-5.06 5.94"></path><path d="M10.94 11.94A2.5 2.5 0 0 0 12 14c.73 0 1.4-.2 1.94-.56"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            
+            // 目を開いたアイコン (Lucide icon: Eye) のSVGパス
+            const eyeOnSvg = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = eyeOffSvg; // 目を閉じたアイコンを表示
             } else {
-                alert('メールアドレスとパスワードを入力してください。');
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = eyeOnSvg; // 目を開いたアイコンを表示
             }
         }
+        //  関係性プルダウンの値に応じて、追加の入力フィールドの表示/非表示を切り替える関数
+        function toggleOtherRelationInput() {
+            const selectElement = document.getElementById('family-relation');
+            const otherInputGroup = document.getElementById('other-relation-input-group');
+            const otherInput = document.getElementById('other-relation');
+
+            if (selectElement.value === 'other') {
+                // 'その他' が選択された場合
+                otherInputGroup.style.display = 'block';
+                // 必須属性を追加
+                otherInput.setAttribute('required', 'required'); 
+                // スクロールして新しい入力欄が見えるようにする（モバイル対応）
+                otherInputGroup.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            } else {
+                // それ以外が選択された場合
+                otherInputGroup.style.display = 'none';
+                // 必須属性を削除
+                otherInput.removeAttribute('required'); 
+                // 値をクリア
+                otherInput.value = ''; 
+            }
+        }
+
+        // ログイン処理（ダミー）
+        function handleLogin(event) {
+            event.preventDefault();
+            const form = document.getElementById('login-form'); // フォーム要素を取得
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const relation = document.getElementById('family-relation').value;
+            const otherRelation = document.getElementById('other-relation').value;
+
+            // 必須入力のチェック 
+            if (!email || !password || !relation || (relation === 'other' && !otherRelation)) {
+                //  alert() は使えないため、コンソールエラーで代替します。
+                console.error('エラー: すべての必須フィールドを入力してください。');
+                
+                //  ユーザーにエラーを伝えるための簡易的な視覚的フィードバック（ボタンの色変更など）
+                const button = document.querySelector('.primary-button');
+                button.style.backgroundColor = 'var(--danger-color)';
+                setTimeout(() => {
+                    button.style.backgroundColor = 'var(--primary-color)';
+                }, 1000);
+
+                return; 
+            }
+            
+            console.log('--- フォームデータ ---');
+            console.log('メールアドレス:', email);
+            console.log('パスワード:', '********');
+            console.log('名前:', document.getElementById('family-name').value);
+            
+            if (relation === 'other') {
+                console.log('関係性:', otherRelation);
+            } else {
+                console.log('関係性:', relation);
+            }
+
+            // ★★★ 修正箇所: フォームをリセット ★★★
+            form.reset(); 
+            // リセット後、'その他'の入力欄が非表示になるように再度切り替え関数を呼び出す
+            toggleOtherRelationInput();
+
+
+            
+            // 登録成功とみなし、次のページへ遷移 
+            console.log('登録成功: 認証とユーザー登録が完了しました。');
+            location.href = 'login.html';
+        }
+        
+        // ページロード時に関数呼び出しを紐づけ
+        window.onload = function() {
+            // プルダウンにイベントリスナーを設定
+            document.getElementById('family-relation').addEventListener('change', toggleOtherRelationInput);
+            // 初期状態を適用
+            toggleOtherRelationInput(); 
+        };
     </script>
 </body>
 </html>
