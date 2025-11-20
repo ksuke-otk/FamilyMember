@@ -6,8 +6,6 @@
 *, *::before, *::after {
     box-sizing: border-box;
 }
-
-
 :root {
 /* 💡 ログイン画面のCSS変数に統一 */
     --primary-color: #6ec6ff;    /* メインカラー (水色) */
@@ -1279,6 +1277,75 @@ body {
     padding: 5px 10px;
     /* icon-buttonの標準スタイルを適用 */
 }
+/* ==================================
+    💡 モーダル関連の共通スタイル
+   ================================== */
+/* 画面全体を覆う半透明のオーバーレイ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* モーダルのコンテンツボックス */
+.modal-content {
+    background: white;
+    padding: 25px 20px;
+    border-radius: var(--radius);
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content p {
+    margin: 0 0 20px 0;
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+/* モーダル内のボタンコンテナ */
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+/* 「はい」ボタン (危険なアクション) */
+.modal-buttons .button-yes {
+    background-color: var(--danger-color); /* 赤色 */
+    color: white;
+}
+.modal-buttons .button-yes:hover {
+    background-color: #c0392b;
+}
+
+/* 「いいえ」ボタン (キャンセル) */
+.modal-buttons .button-no {
+    background-color: #ecf0f1; /* 薄い灰色 */
+    color: var(--text-color);
+}
+.modal-buttons .button-no:hover {
+    background-color: #ddd;
+}
 /* ==================================== */
 /* 📝 モーダル共通スタイル (写真編集画面用) */
 /* 家族設定画面系のモーダルに合わせたデザイン */
@@ -1461,5 +1528,4 @@ body {
     background-color: #e0e0e0; /* 薄い灰色 */
     color: #888;
     border: 1px solid #ccc;
-
 }
