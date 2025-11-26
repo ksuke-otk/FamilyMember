@@ -20,7 +20,7 @@
         </header>
 
         <main class="main-content form-page">
-            <form id="invite-family-form" onsubmit="handleInvite(event)">
+            <form id="invite-family-form" onsubmit="handleConfirm(event)">
                 <p class="form-instruction">招待したい家族の情報を入力してください。</p>
 
                 <div class="form-group">
@@ -36,7 +36,7 @@
                         <option value="mother">母</option>
                         <option value="grandfather">祖父</option>
                         <option value="grandmother">祖母</option>
-                        <option value="child">子ども</option>
+                        <option value="child">その他</option>
                     </select>
                 </div>
 
@@ -50,7 +50,7 @@
                     </select>
                 </div>
                 
-                <div class="form-actions">
+                <div class="form-actions" action="member_add_confirm.html" method="GET">
                     <button type="submit" class="primary-button large-button">完了</button>
                 </div>
             </form>
@@ -75,61 +75,65 @@
         </div>
     </div>
     <script>
-                // メンバーIDを取得する（ここではシミュレーションのため固定）
-                const urlParams = new URLSearchParams(window.location.search);
-                const memberId = urlParams.get('id') || '1'; // デフォルトID
+                // メンバーIDを取得する（ここではシミュレーションのため固定）
+                const urlParams = new URLSearchParams(window.location.search);
+                const memberId = urlParams.get('id') || '1'; // デフォルトID
         
-                function showCancelModal() {
-                    document.getElementById('cancel-modal').style.display = 'flex';
-                }
+                function showCancelModal() {
+                    document.getElementById('cancel-modal').style.display = 'flex';
+                }
         
-                function hideCancelModal() {
-                    // 「いいえ」を押下した場合、モーダルを閉じる
-                    document.getElementById('cancel-modal').style.display = 'none';
-                }
+                function hideCancelModal() {
+                    // 「いいえ」を押下した場合、モーダルを閉じる
+                    document.getElementById('cancel-modal').style.display = 'none';
+                }
         
-                function cancelEditConfirmed() {
-                    // 「はい」を押下した場合、家族メンバー画面に遷移
-                    location.href = 'family_member.html';
-                }
+                function cancelEditConfirmed() {
+                    // 「はい」を押下した場合、家族メンバー画面に遷移
+                    location.href = 'family_member.html';
+                }
                 
                 /**
-                 * 完了ボタン押下時の処理 (家族招待)
+                 * 完了ボタン押下時の処理 (確認画面への遷移)
                  * @param {Event} event 
                  */
-                function handleInvite(event) {
-                    // フォームのデフォルトの送信動作をキャンセル
-                    event.preventDefault(); 
+                function handleConfirm(event) {
+                    event.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
                     
-                    // フォームのデータを取得 (ここではシミュレーション)
                     const form = event.target;
-                    const name = form.elements['family-name'].value;
-                    const relation = form.elements['family-relation'].value;
-                    const permission = form.elements['family-permission'].value;
-        
-                    // 招待処理のシミュレーション
-                    console.log(`招待を完了しました: 名前=${name}, 関係性=${relation}, 権限=${permission}`);
-                    //alert(`${name} さんを招待しました。`); // 完了メッセージ表示
-        
-                    // 家族メンバー画面に遷移
-                    location.href = 'family_member.html';
                     
-                    // ★もし、処理が完了するまで待機する場合は以下のようにする
-                    // setTimeout(() => {
-                    //     location.href = 'family_member.html';
-                    // }, 500); 
+                    // 必須項目のバリデーションチェック
+                    if (!form.checkValidity()) {
+                        // バリデーションエラーがある場合、ブラウザがエラーメッセージを表示し、処理を中断
+                        return;
+                    }
+                    
+                    // フォームのデータを取得
+                    const name = form.elements['name'].value;
+                    const relation = form.elements['relation'].value;
+                    const permission = form.elements['permission'].value;
+        
+                    // データをURLパラメータとして確認画面に渡す
+                    const params = new URLSearchParams({
+                        name: name,
+                        relation: relation,
+                        permission: permission
+                    });
+                    
+                    // 確認画面に遷移
+                    location.href = `member_add_confirmation.html?${params.toString()}`;
                 }
-                
-                // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
-                document.addEventListener('DOMContentLoaded', () => {
-                    // 実際にはAPIからデータを取得し、フォーム要素に設定する処理が入る
-                    // 例として、URLにid=2があれば、関係性を母に変更する
-                    if (memberId === '2') {
-                        document.getElementById('family-name').value = '妻の名前';
-                        document.getElementById('family-relation').value = 'mother';
-                        document.getElementById('family-permission').value = 'post';
-                    }
-                });
+                
+                // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
+                document.addEventListener('DOMContentLoaded', () => {
+                    // 実際にはAPIからデータを取得し、フォーム要素に設定する処理が入る
+                    // 例として、URLにid=2があれば、関係性を母に変更する
+                    if (memberId === '2') {
+                        document.getElementById('family-name').value = '妻の名前';
+                        document.getElementById('family-relation').value = 'mother';
+                        document.getElementById('family-permission').value = 'post';
+                    }
+                });
             </script>
 
 </body>
