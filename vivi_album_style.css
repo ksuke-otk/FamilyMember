@@ -1529,3 +1529,99 @@ body {
     color: #888;
     border: 1px solid #ccc;
 }
+/* ==================================
+   📝 写真追加確認画面 (picture_add_confirmation.html) 用スタイル
+   ================================== */
+
+/* フォームページ共通のメインコンテンツ設定は既存の .main-content .form-page に依存 */
+
+/* 確認情報コンテナ */
+.confirmation-section {
+    background-color: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* 確認項目のグループ */
+.confirmation-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.confirmation-group:last-child {
+    border-bottom: none;
+}
+
+.confirmation-label {
+    font-weight: bold;
+    color: var(--text-color);
+    flex-shrink: 0; /* 幅を固定 */
+    margin-right: 15px;
+}
+
+.confirmation-value {
+    color: #555;
+    text-align: right;
+    word-break: break-word; /* 長い値の折り返し */
+}
+
+/* プレビューエリア */
+.confirmation-photo-preview {
+    text-align: center;
+    padding: 15px 0;
+    margin-bottom: 20px;
+}
+
+.confirmation-photo-preview img {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px; /* プレビューの最大高さを制限 */
+    border-radius: var(--radius);
+    object-fit: contain;
+    border: 1px solid var(--light-gray);
+}
+
+/* タグの表示（子ども、フリーワードなど） */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end; /* 右寄せにする */
+    gap: 8px; /* タグ間のスペース */
+}
+
+.tag-item {
+    background-color: var(--secondary-accent); /* アクセントカラーを使用 */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+/* 確定ボタン（送信ボタン）は既存の .primary-button に依存 */
+
+/* 縦並びのボタンのグループ */
+.button-group-vertical {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px; /* ボタン間の間隔 */
+    margin-top: 30px;
+}
+
+/* primary-buttonの共通スタイル (幅を100%にする設定が重要) */
+.primary-button {
+    /* ... その他のスタイル ... */
+    width: 100%; /* これで幅が親要素いっぱいに広がる */
+    /* ... その他のスタイル ... */
+}
+
+/* 修正ボタンのデザイン (白背景、水色枠線、水色文字) */
+.secondary-color-button {
+    background-color: #fff; 
+    color: var(--primary-color); 
+    border: 1px solid var(--primary-color); 
+}
