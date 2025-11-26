@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - 写真編集確認</title>
+    <link rel="stylesheet" href="vivi_album_style.css"> 
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left">
+            </div>
+            <div class="header-center"><h1>写真編集確認</h1></div>
+            <div class="header-right"></div>
+        </header>
+
+        <main class="main-content form-page">
+            <div class="confirmation-box">
+                <p style="text-align: center; font-weight: bold;">
+                    以下の内容で写真を編集します。よろしいですか？
+                </p>
+                
+                <div class="confirmation-photo-preview">
+                    <img id="confirm-photo-preview" src="path/to/current/photo.jpg" alt="編集写真プレビュー">
+                </div>
+
+                <div class="detail-group">
+                    <label>題名</label>
+                    <p class="detail-value" id="confirm-caption"></p>
+                </div>
+
+                <div class="detail-group">
+                    <label>撮影日</label>
+                    <p class="detail-value" id="confirm-date"></p>
+                </div>
+
+                <div class="detail-group">
+                    <label>アルバム</label>
+                    <div class="tag-list" id="confirm-kids-list">
+                        </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="primary-button" onclick="handleEditConfirmed()">
+                        <span class="icon">✓</span> 変更を確定する
+                    </button>
+                    <button type="button" class="primary-button secondary-color-button" onclick="backToEdit()">
+                        修正する
+                   </button>
+                </div>
+            </div>
+        </main>
+        
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item"><span class="icon">👪</span>家族</a>
+        </nav>
+    </div>
+
+    <script>
+        // 💡 編集画面で利用可能な子どもの名前のマッピング (編集画面のHTMLに合わせる)
+        const kidMap = {
+            'hana': '山田 花子',
+            'taro': '佐藤 太郎',
+            'jiro': '田中 次郎'
+        };
+
+        // ----------------------------------------------------
+        // 💡 確定ボタン押下時の処理 (最終更新処理)
+        // ----------------------------------------------------
+        function handleEditConfirmed() {
+            // 実際はここでAPIコールなどが行われます
+            console.log('写真情報の最終更新を完了しました。');
+            
+            // 編集完了後、写真詳細画面に遷移
+            location.href = 'picture_detail.html';
+        }
+
+        // ----------------------------------------------------
+        // 💡 修正ボタン押下時の処理 (前の画面に戻る)
+        // ----------------------------------------------------
+        function backToEdit() {
+            // 現在のURLパラメータをそのまま引き継いで前の画面に戻る
+            // picture_edit.html に戻り、フォームにデータを再設定できるようにする
+            location.href = `picture_edit.html${window.location.search}`;
+        }
+
+
+        // ----------------------------------------------------
+        // 💡 URLパラメータからデータを取得し、画面に表示
+        // ----------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            
+            const caption = params.get('caption') || '（未入力）';
+            const date = params.get('date') || '（未入力）';
+            const kidsParam = params.get('kids') || '';
+            const kidsArray = kidsParam ? kidsParam.split(',') : [];
+
+            // 画面表示
+            document.getElementById('confirm-caption').textContent = caption;
+            document.getElementById('confirm-date').textContent = date;
+            
+            // 子どもタグの表示
+            const kidsListElement = document.getElementById('confirm-kids-list');
+            if (kidsArray.length > 0) {
+                kidsListElement.innerHTML = kidsArray.map(kidValue => {
+                    const kidName = kidMap[kidValue] || `(${kidValue})`; // マッピングから名前を取得
+                    return `<span class="tag-item">${kidName}</span>`;
+                }).join('');
+            } else {
+                kidsListElement.innerHTML = '<span class="tag-item" style="background-color:#ccc;">選択なし</span>';
+            }
+            
+            // プレビュー画像はここでは静的に "path/to/current/photo.jpg" のままにします。
+            // 実際のアプリケーションでは、IDなどから実際の画像のURLを取得する必要があります。
+            // document.getElementById('confirm-photo-preview').src = actualPhotoUrl; 
+        });
+    </script>
+</body>
+</html>

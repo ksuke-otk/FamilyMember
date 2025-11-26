@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - アップロード確認</title>
+    <link rel="stylesheet" href="vivi_album_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left">
+            </div>
+            <div class="header-center"><h1>アップロード確認</h1></div>
+            <div class="header-right"></div>
+        </header>
+
+        <main class="main-content form-page">
+            <div class="confirmation-box">
+                <p style="text-align: center; font-weight: bold; color: var(--danger-color);">
+                    以下の内容で写真をアップロードします。よろしいですか？
+                </p>
+
+                <div class="detail-group">
+                    <label>ファイル数</label>
+                    <p class="detail-value" id="file-count-display"></p>
+                </div>
+
+                <div class="detail-group">
+                    <label>題名</label>
+                    <p class="detail-value" id="caption-display"></p>
+                </div>
+
+                <div class="detail-group">
+                    <label>アルバム</label>
+                    <p class="detail-value" id="kids-display"></p>
+                </div>
+                
+                <div class="button-group-vertical">
+                    <button type="button" class="primary-button" onclick="confirmUpload()">
+                        アップロードを実行
+                    </button>
+                    <button type="button" class="primary-button secondary-color-button" onclick="location.href='pricture_add.html'">
+                        修正する
+                   </button>
+                </div>
+            </div>
+        </main>
+        
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item"><span class="icon">👪</span>家族</a>
+        </nav>
+    </div>
+
+    <script>
+        // アップロード確認を実行し、トップ画面へ遷移
+        function confirmUpload() {
+            // 実際はここでアップロードAPIを呼び出す
+            console.log('アップロードを実行しました。');
+           // alert('写真のアップロードが完了しました！'); 
+            
+            // アップロード完了後、アルバムトップへ遷移
+            location.href = 'top.html';
+        }
+
+        // URLパラメータからデータを取得し、画面に表示
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            
+            const fileCount = params.get('file_count') || '0';
+            const caption = params.get('caption') || '（情報なし）';
+            const kids = params.get('kids') || '（選択なし）';
+
+            document.getElementById('file-count-display').textContent = `${fileCount} 枚`;
+            document.getElementById('caption-display').textContent = caption;
+            
+            // 子どもタグはカンマ区切りを改行区切りに変換
+            document.getElementById('kids-display').innerHTML = kids.replace(/,/g, '<br>');
+        });
+    </script>
+</body>
+</html>

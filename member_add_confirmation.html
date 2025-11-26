@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - 家族招待確認</title>
+    <link rel="stylesheet" href="vivi_family_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+           <div class="header-left">
+           </div>
+           <div class="header-center"><h1>家族招待確認</h1></div>
+           <div class="header-right"></div>
+        </header>
+
+        <main class="main-content form-page">
+            <h2 class="section-title">以下の内容で招待しますか？</h2>
+            
+            <section class="detail-section confirm-section">
+                <div class="detail-group">
+                    <label>名前</label>
+                    <p class="detail-value" id="confirm-name">（表示エリア）</p>
+                </div>
+                <div class="detail-group">
+                    <label>関係性</label>
+                    <p class="detail-value" id="confirm-relation">（表示エリア）</p>
+                </div>
+                <div class="detail-group">
+                    <label>権限</label>
+                    <p class="detail-value permission-view" id="confirm-permission">（表示エリア）</p>
+                </div>
+            </section>
+            
+            <div class="button-group confirm-button-group">
+                <button type="button" class="primary-button" onclick="location.href='family_member.html'">
+                    招待を確定する
+                </button>
+                <button type="button" class="secondary-button" onclick="location.href='member_add.html'">
+                    修正する
+                </button>
+            </div>
+        </main>
+        </div>
+    
+    <script>
+        /**
+         * URLパラメータ (GET) から値を取得し、確認画面に表示する
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            
+            // フォームから渡された値を取得
+            const name = params.get('name') || '未入力';
+            const relationValue = params.get('relation');
+            const permissionValue = params.get('permission');
+
+            // 権限のテキストとクラスを決定
+            let permissionText = '';
+            let permissionClass = '';
+            
+            switch (permissionValue) {
+                case 'admin':
+                    permissionText = '管理者';
+                    permissionClass = 'permission-admin';
+                    break;
+                case 'post':
+                    permissionText = '写真投稿・閲覧';
+                    permissionClass = 'permission-post';
+                    break;
+                case 'view':
+                    permissionText = '閲覧のみ';
+                    permissionClass = 'permission-view';
+                    break;
+                default:
+                    permissionText = '未設定';
+                    permissionClass = 'permission-view';
+            }
+
+            // 関係性のテキストを決定 (member_add.htmlのoption値に合わせる)
+            let relationText = '';
+            const relationOptions = {
+                'father': '父',
+                'mother': '母',
+                'grandparent_father': '祖父',
+                'grandparent_mother': '祖母',
+                'other': 'その他' // 'その他'の場合は、別途テキストを受け取る必要があるが、ここでは簡略化
+            };
+            relationText = relationOptions[relationValue] || relationValue || '未入力';
+
+
+            // 画面に値をセット
+            document.getElementById('confirm-name').textContent = name;
+            document.getElementById('confirm-relation').textContent = relationText;
+            
+            const permissionElement = document.getElementById('confirm-permission');
+            permissionElement.textContent = permissionText;
+            permissionElement.className = `detail-value ${permissionClass}`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - 子ども登録確認</title>
+    <link rel="stylesheet" href="vivi_family_style.css"> 
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="header-left">
+
+            </div>                 
+                <div class="header-center"><h1>子ども登録確認</h1></div>
+            <div class="header-right">
+            </div>
+        </header>
+
+        <main class="main-content form-page">
+            <p class="form-instruction">以下の内容で子どもを登録します。よろしいですか？</p>
+
+            <section class="confirm-section">
+                <div class="detail-group">
+                    <label>名前</label>
+                    <p class="detail-value" id="confirm-name"></p>
+                </div>
+                
+                <div class="detail-group">
+                    <label>性別</label>
+                    <p class="detail-value" id="confirm-gender"></p>
+                </div>
+                
+                <div class="detail-group">
+                    <label>誕生日</label>
+                    <p class="detail-value" id="confirm-birthday"></p>
+                </div>
+            </section>
+            
+            <div class="confirm-button-group">
+                <button type="button" class="primary-button large-button" onclick="handleRegistration()">登録完了</button>
+                
+                <button type="button" id="back-to-edit" class="secondary-button large-button" onclick="goToEditPage()" style="margin-top: 15px;">
+                    <span class="icon"></span> 修正する
+                </button> 
+            </div>
+            
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+            <a href="family_member.html" class="nav-item active"><span class="icon">👪</span>家族</a>
+        </nav> 
+    </div>
+    
+    <script>
+
+        // 性別の値を日本語に変換するマップ (確認画面表示用)
+        const genderMap = {
+            'boy': '男の子',
+            'girl': '女の子',
+            'other': 'その他'
+        };
+
+        let kidData = {}; // 登録データを保持するオブジェクト
+
+        /**
+         * 修正ボタン押下時の処理 (kids_add.htmlへデータを渡して戻る)
+         */
+         function goToEditPage() {
+            // kidDataはloadConfirmationDataで既にセットされていることを前提とする
+            if (kidData.name !== undefined) {
+                const name = kidData.name;
+                const genderValue = kidData.gender;
+                const birthday = kidData.birthday;
+
+                // kids_add.html に現在のデータをURLパラメータとして渡し、遷移する
+                location.href = `kids_add.html?name=${encodeURIComponent(name)}&gender=${genderValue}&birthday=${birthday}`;
+            } else {
+                // データがない場合は、単に kids_add.html に戻る
+                location.href = 'kids_add.html';
+            }
+        }
+
+        /**
+         * URLパラメータからデータを取得し、画面に表示
+         */
+        function loadConfirmationData() {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name') || '（未入力）';
+            const genderValue = params.get('gender') || '';
+            const birthday = params.get('birthday') || '（未入力）';
+            
+            // データを保持
+            kidData = { name, gender: genderValue, birthday };
+
+            // 修正ボタンのリンクを、取得したデータを持たせて前の画面に戻すように設定
+            /*document.getElementById('back-to-edit').href = 
+                `kids_add.html?name=${encodeURIComponent(name)}&gender=${genderValue}&birthday=${birthday}`;
+             */
+            // 画面表示
+            document.getElementById('confirm-name').textContent = name;
+            document.getElementById('confirm-gender').textContent = genderMap[genderValue] || genderValue || '（未選択）';
+            document.getElementById('confirm-birthday').textContent = birthday;
+        }
+
+        /**
+         * 登録完了ボタン押下時の処理 (最終登録処理)
+         * 💡 元々 kids_add.html にあったロジックをここに移動しました。
+         */
+        function handleRegistration() {
+            // 登録処理のシミュレーション（実際はここでAPIコールなどが行われます）
+            console.log(`子どもを登録しました: 名前=${kidData.name}, 性別=${kidData.gender}, 誕生日=${kidData.birthday}`);
+            
+           // alert(`${kidData.name} ちゃん/くんをアルバムに登録しました。`); 
+            
+            // 家族メンバー画面に遷移し、子どもタブをアクティブにする
+            location.href = 'family_member.html?tab=kid';
+        }
+
+        // ページ読み込み時に実行
+        document.addEventListener('DOMContentLoaded', loadConfirmationData);
+    </script>
+</body>
+</html>

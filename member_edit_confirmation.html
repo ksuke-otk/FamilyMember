@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家族アルバムvivi - メンバー情報編集確認</title>
+    <link rel="stylesheet" href="vivi_family_style.css"> 
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+           <div class="header-left">
+           </div>
+           <div class="header-center"><h1>メンバー情報編集確認</h1></div>
+           <div class="header-right"></div>
+        </header>
+
+        <main class="main-content form-page">
+            <h2 class="section-title">以下の内容に編集しますか？</h2>
+            
+            <section class="detail-section confirm-section">
+                <div class="detail-group">
+                    <label>名前</label>
+                    <p class="detail-value" id="confirm-name">（表示エリア）</p>
+                </div>
+                <div class="detail-group">
+                    <label>関係性</label>
+                    <p class="detail-value" id="confirm-relation">（表示エリア）</p>
+                </div>
+                <div class="detail-group">
+                    <label>権限</label>
+                    <p class="detail-value permission-view" id="confirm-permission">（表示エリア）</p>
+                </div>
+            </section>
+            
+            <div class="form-actions">
+                 <button type="button" class="primary-button large-button" onclick="handleUpdateConfirmed()">
+                    更新完了
+                 </button>
+                 <button type="button" class="secondary-button" onclick="history.back()">
+                    修正する
+                 </button>
+            </div>
+        </main>
+        
+        <nav class="bottom-nav">
+             <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+             <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+             <a href="family_member.html" class="nav-item active"><span class="icon">👪</span>家族</a>
+        </nav>
+    </div>
+
+    <script>
+        let currentMemberId;
+
+        /**
+         * 最終的な更新処理を実行し、メンバー詳細画面に遷移
+         */
+        function handleUpdateConfirmed() {
+            // 💡 更新処理のシミュレーション
+            console.log(`ID ${currentMemberId} のメンバー情報を最終的に更新しました。`);
+            // alert('メンバー情報を更新しました。');
+
+            // メンバー詳細画面に遷移
+            location.href = `member_detail.html?id=${currentMemberId}`;
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            // メンバー情報とIDを取得
+            currentMemberId = params.get('id') || '1'; // 編集対象のID
+            const name = params.get('name') || '（未入力）';
+            const relationValue = params.get('relation') || '';
+            const permissionValue = params.get('permission') || '';
+
+            // 権限の表示テキストとクラスを決定
+            let permissionText = '';
+            let permissionClass = '';
+            switch (permissionValue) {
+                case 'admin':
+                    permissionText = '管理者';
+                    permissionClass = 'permission-admin';
+                    break;
+                case 'post':
+                    permissionText = '写真投稿・閲覧';
+                    permissionClass = 'permission-post';
+                    break;
+                case 'view':
+                    permissionText = '閲覧のみ';
+                    permissionClass = 'permission-view';
+                    break;
+                default:
+                    permissionText = '未設定';
+                    permissionClass = 'permission-view';
+            }
+
+            // 関係性のテキストを決定 (member_edit.htmlのoption値に合わせる)
+            let relationText = '';
+            const relationOptions = {
+                'father': '父',
+                'mother': '母',
+                'grandfather': '祖父',
+                'grandmother': '祖母',
+                'child': '子ども'
+            };
+            relationText = relationOptions[relationValue] || relationValue || '未入力';
+
+
+            // 画面に値をセット
+            document.getElementById('confirm-name').textContent = name;
+            document.getElementById('confirm-relation').textContent = relationText;
+            
+            const permissionElement = document.getElementById('confirm-permission');
+            permissionElement.textContent = permissionText;
+            permissionElement.className = `detail-value ${permissionClass}`;
+        });
+    </script>
+</body>
+</html>
