@@ -91,30 +91,40 @@
                     location.href = 'family_member.html';
                 }
                 
-                /**
-                 * 完了ボタン押下時の処理 (メンバー情報編集)
-                 * @param {Event} event 
-                 */
-                function handleEdit(event) {
-                    // フォームのデフォルトの送信動作をキャンセル
-                    event.preventDefault(); 
-                    
-                    // メンバーIDを再取得
-                    const currentMemberId = urlParams.get('id') || '1'; 
-                    
-                    // フォームのデータを取得 (ここではシミュレーション)
-                    const form = event.target;
-                    const name = form.elements['family-name'].value;
-                    const relation = form.elements['family-relation'].value;
-                    const permission = form.elements['family-permission'].value;
+/**
+     * 完了ボタン押下時の処理 (メンバー情報編集)
+     * 💡 変更点: メンバー詳細画面ではなく、確認画面に遷移するように変更
+     * @param {Event} event 
+     */
+     function handleEdit(event) {
+        event.preventDefault(); 
         
-                    // 更新処理のシミュレーション
-                    console.log(`ID ${currentMemberId} のメンバー情報を更新しました: 名前=${name}, 関係性=${relation}, 権限=${permission}`);
-                    //alert(`メンバー ${name} さんの情報を更新しました。`); // 完了メッセージ表示
+        // メンバーIDを再取得
+        const currentMemberId = urlParams.get('id') || '1'; 
         
-                    // メンバー詳細画面に遷移 (IDを付与)
-                    location.href = `member_detail.html?id=${currentMemberId}`;
-                }
+        // フォームのデータを取得 (ここではシミュレーション)
+        const form = event.target;
+        
+        if (!form.checkValidity()) {
+            console.log("必須項目が未入力です。");
+            return; 
+        }
+
+        const name = form.elements['family-name'].value;
+        const relation = form.elements['family-relation'].value;
+        const permission = form.elements['family-permission'].value;
+
+        // データをURLパラメータとして確認画面に渡す (メンバーIDも渡す)
+        const params = new URLSearchParams({
+            id: currentMemberId, // 編集対象のID
+            name: name,
+            relation: relation,
+            permission: permission
+        });
+
+        // 確認画面に遷移
+        location.href = `member_edit_confirmation.html?${params.toString()}`;
+    }
         
                 
                 // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
