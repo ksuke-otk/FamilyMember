@@ -20,8 +20,7 @@
         </header>
 
         <main class="main-content form-page">
-            <form id="invite-kid-form" onsubmit="handleKidRegistration(event)">
-                <p class="form-instruction">アルバムに登録する子どもの情報を入力してください。</p>
+            <form id="invite-kid-form" onsubmit="handleConfirm(event)">                <p class="form-instruction">アルバムに登録する子どもの情報を入力してください。</p>
 
                 <div class="form-group">
                     <label for="kid-name">名前 <span class="required">*</span></label>
@@ -32,8 +31,8 @@
                     <label for="kid-gender">性別 <span class="required">*</span></label>
                     <select id="kid-gender" name="gender" required>
                         <option value="">選択してください</option>
-                        <option value="female">女の子</option>
-                        <option value="male">男の子</option>
+                        <option value="girl">女の子</option>
+                        <option value="boy">男の子</option>
                     </select>
                 </div>
 
@@ -91,34 +90,37 @@
                 }
                 
                 /**
-                 * 完了ボタン押下時の処理 (子ども登録)
-                 * @param {Event} event 
-                 */
-                function handleKidRegistration(event) {
-                    // フォームのデフォルトの送信動作をキャンセル
-                    event.preventDefault(); 
-                    
-                    const form = event.target;
-        
-                    // 必須項目のバリデーションをチェック
-                    if (!form.checkValidity()) {
-                        console.log("必須項目が未入力です。");
-                        // バリデーションエラーがある場合、ブラウザがエラーメッセージを表示し、ここで処理を中断
-                        return; 
-                    }
-                    
-                    // フォームのデータを取得 (ここではシミュレーション)
-                    const name = form.elements['kid-name'].value;
-                    const gender = form.elements['kid-gender'].value;
-                    const birthday = form.elements['kid-birthday'].value;
-        
-                    // 登録処理のシミュレーション
-                    console.log(`子どもを登録しました: 名前=${name}, 性別=${gender}, 誕生日=${birthday}`);
-                    //alert(`${name} ちゃん/くんをアルバムに登録しました。`); // 完了メッセージ表示
-        
-                    // 家族メンバー画面に遷移
-                    location.href = 'family_member.html?tab=kid';
-                    }
+                * 完了ボタン押下時の処理 (確認画面への遷移)
+                * 💡 既存の handleKidRegistration 関数を置き換え、確認画面へ遷移するように修正しました。
+                * @param {Event} event 
+                */
+                function handleConfirm(event) {
+                         event.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
+    
+                         const form = event.target;
+    
+                 // 必須項目のバリデーションチェック
+                if (!form.checkValidity()) {
+                      console.log("必須項目が未入力です。");
+                      // バリデーションエラーがある場合、ブラウザがエラーメッセージを表示し、処理を中断
+                       return; 
+                }
+    
+                 // フォームのデータを取得 (IDでアクセスする既存のロジックを踏襲)
+                const name = form.elements['kid-name'].value;
+                const gender = form.elements['kid-gender'].value;
+                const birthday = form.elements['kid-birthday'].value;
+
+                // データをURLパラメータとして確認画面に渡す 
+                const params = new URLSearchParams({
+                     name: name,
+                     gender: gender,
+                     birthday: birthday
+                });
+
+                // 確認画面に遷移
+                location.href = `kids_add_confirmation.html?${params.toString()}`;
+                }
         
                 
                  // ページ読み込み時にフォームの初期値をURLパラメータやデータに応じて設定する処理
