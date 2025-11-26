@@ -127,50 +127,85 @@
             location.href = 'top.html';
         }
 
-        // ----------------------------------------------------
-        // 💡 フォームの送信（更新）処理
-        // ----------------------------------------------------
-        function handleUpdate(event) {
-            event.preventDefault();
-            const form = event.target;
+// ----------------------------------------------------
+        // 💡 フォームの送信（確認画面へ遷移）処理
+        // ----------------------------------------------------
+        function handleUpdate(event) {
+            event.preventDefault();
+            const form = event.target;
 
-            // 子どもタグの必須チェックをカスタムで実行 (写真追加画面から流用)
-            const kidsCheckboxes = form.querySelectorAll('input[name="kid"]');
-            const isKidSelected = Array.from(kidsCheckboxes).some(checkbox => checkbox.checked);
+            // 子どもタグの必須チェックをカスタムで実行
+            const kidsCheckboxes = form.querySelectorAll('input[name="kid"]');
+            const isKidSelected = Array.from(kidsCheckboxes).some(checkbox => checkbox.checked);
 
-            if (!isKidSelected) {
-                alert("写っている子どもを最低一人選択してください。");
-                return;
+            if (!isKidSelected) {
+                alert("写っている子どもを最低一人選択してください。");
+                return;
+            }
+
+            // 必須項目チェック (ブラウザ標準のrequired属性で大半は処理されます)
+            if (!form.checkValidity()) {
+                console.log("必須項目が未入力です。");
+                return;
+            }
+            
+            // フォームデータを取得
+            const caption = form.elements['caption'].value;
+            const date = form.elements['date'].value;
+            // 選択された子どもをカンマ区切り文字列にする
+            const selectedKids = Array.from(kidsCheckboxes)
+                                    .filter(checkbox => checkbox.checked)
+                                    .map(checkbox => checkbox.value)
+                                    .join(',');
+
+            // データをURLパラメータとして確認画面に渡す
+            const params = new URLSearchParams({
+                caption: caption,
+                date: date,
+                kids: selectedKids
+            });
+
+            // 確認画面に遷移
+            location.href = `picture_edit_confirmation.html?${params.toString()}`;
+        }
+
+// ----------------------------------------------------
+        // 💡 フォームの初期値設定（確認画面から戻った場合など）
+        // ----------------------------------------------------
+        function loadPictureData() {
+            const params = new URLSearchParams(window.location.search);
+            
+            const caption = params.get('caption');
+            const date = params.get('date');
+            const kidsParam = params.get('kids');
+            const kidsArray = kidsParam ? kidsParam.split(',') : [];
+
+            // URLパラメータから値があればフォームに設定 (確認画面からの戻りを想定)
+            if (caption !== null) {
+                document.getElementById('photo-caption').value = caption;
+            }
+            if (date !== null) {
+                document.getElementById('photo-date').value = date;
             }
 
-            // 必須項目チェック (ブラウザ標準のrequired属性で大半は処理されます)
-            if (!form.checkValidity()) {
-                console.log("必須項目が未入力です。");
-                return;
+            // 子どもタグのチェック状態を設定
+            if (kidsArray.length > 0) {
+                const kidsCheckboxes = document.querySelectorAll('input[name="kid"]');
+                kidsCheckboxes.forEach(checkbox => {
+                    // URLパラメータに含まれていればチェックを入れる
+                    checkbox.checked = kidsArray.includes(checkbox.value);
+                });
             }
-            
-            // 更新処理のシミュレーション
-            console.log('写真情報を更新します...');
-            
-            // 成功後、写真詳細画面に戻る
-            location.href = 'picture_detail.html';
         }
 
-        // ----------------------------------------------------
-        // 💡 子どもタグ付けのカスタムバリデーションロジック
-        // ----------------------------------------------------
-        document.addEventListener('DOMContentLoaded', () => {
-            const kidsCheckboxes = document.querySelectorAll('input[name="kid"]');
-            const form = document.getElementById('picture-edit-form');
-            
-            // (必須チェックロジックは写真追加画面と同様に実装を推奨しますが、
-            // 以下のロジックは写真追加画面で定義されたものを流用するため、ここでは省略します。
-            // 必要に応じて picture_add.html のカスタムバリデーションロジックを移植してください。)
-            
-            // フォームのバリデーションを簡略化するため、今回はチェックボックスのカスタムバリデーションは省略し、
-            // handleUpdate関数内でのalertのみに頼ります。
-            
-        });
+
+        // ----------------------------------------------------
+        // 💡 ページロード時の処理
+        // ----------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            // 確認画面から戻った際のデータ復元
+            loadPictureData(); 
+        });
     </script>
 </body>
 </html>
