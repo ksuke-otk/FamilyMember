@@ -3,12 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>AR身長測定画面</title>
-    <link rel="stylesheet" href="vivi_ar_style.css"> 
+    <title>AR身長測定</title>
+
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           ベーススタイル
+           ========================================= */
+        body {
+            background-color: #6ec6ff; /* Slate 900 */
+            color: #f8fafc;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            height: 100dvh; /* ダイナミックビューポートの高さ */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* スクロール禁止 */
+        }
+
+        /* =========================================
+           カメラセクション (上部 60%)
+           ========================================= */
+        #camera-section {
+            position: relative;
+            flex: 6; /* 画面の6割 */
+            background: #000;
+            overflow: hidden;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        #camera-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #video, #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ステータスバッジ（画面上の警告など） */
+        .status-overlay {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .status-overlay.warning {
+            border-color: #f59e0b; /* Amber */
+            color: #fcd34d;
+        }
+
+        .status-overlay.ready {
+            border-color: #22c55e; /* Green */
+            color: #4ade80;
+            background: rgba(20, 83, 45, 0.8);
+        }
+
+        /* =========================================
+           コントロールセクション (下部 40%)
+           ========================================= */
+        #controls-section {
+            flex: 4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #d9f1ff, #ffeaf0);/* Slate 800 */
+        }
+
+        /* 入力エリア */
+        .inputs-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: #334155;
+            border: 1px solid #475569;
+            color: white;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: #3b82f6;
+        }
+
+        /* 結果表示エリア */
+        .result-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            padding: 15px 20px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            margin: 10px 0;
+        }
+
+        .height-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-feature-settings: "tnum";
+            color: #38bdf8; /* Sky Blue */
+        }
+
+        .height-unit {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-left: 4px;
+        }
+
+        .distance-info {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .distance-val {
+            font-weight: bold;
+            font-feature-settings: "tnum";
+            color: white;
+        }
+
+        /* アクションボタンエリア */
+        .action-grid {
+            display: flex;
+            gap: 12px;
+            height: 64px;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        #main-btn {
+            flex: 3;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border-radius: 16px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #main-btn.recording {
+            background: linear-gradient(135deg, #ef4444, #dc2626); /* Red for Stop */
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+        }
+
+        .sub-btn {
+            flex: 1;
+            background: #334155;
+            color: #e2e8f0;
+            border-radius: 16px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =========================================
+           モーダル & トースト
+           ========================================= */
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            padding: 20px;
+        }
+
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid #334155;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+
+        #toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 99px;
+            font-weight: bold;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 200;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* テーブルスタイル */
+        #history-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #cbd5e1;
+        }
+        #history-table th {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 2px solid #334155;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+        #history-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #334155;
+        }
+        /* --- ボトムナビゲーション --- */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--border-color);
+    background: #fff;
+    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    padding: 5px 0;
+    position: sticky;
+    bottom: 0;
+}
+    </style>
 </head>
 <body>
 
@@ -45,7 +332,8 @@
             <span class="height-unit">cm</span>
         </div>
         <div class="distance-info">
-            距離: <span id="dist-val" class="distance-val">--</span> m<br>
+            距離: <span id="dist-val" class="distance-val">--</span> m
+
             <span style="font-size:0.75rem; opacity:0.7;">(目標: 2.00m)</span>
         </div>
     </div>
@@ -89,6 +377,12 @@
         <button onclick="closeModal('photo-modal')" class="w-full p-4 bg-blue-600 rounded-xl font-bold text-white shadow-lg active:scale-95 transition">OK</button>
     </div>
 </div>
+
+<nav class="bottom-nav">
+    <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
+    <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
+    <a href="family_member.html" class="nav-item"><span class="icon">👪</span>家族</a>
+</nav>
 
 <script>
     // ==========================================
@@ -221,16 +515,18 @@
             video.srcObject = stream;
             await new Promise(r => video.onloadedmetadata = r);
             resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
+window.addEventListener('resize', resizeCanvas);
             resetApp();
         } catch (e) {
             alert("カメラの起動に失敗しました: " + e.message);
         }
     }
+
     function resizeCanvas() {
         overlay.width = video.videoWidth;
         overlay.height = video.videoHeight;
     }
+
     function resetApp() {
         state = 'INIT';
         Z_ref = null;
@@ -238,9 +534,11 @@
         distVal.innerText = '--';
         updateUI('INIT');
     }
+
     function updateUI(appState) {
         // クラスをリセットして再適用
         statusBadge.className = 'status-overlay';
+
         if (appState === 'INIT') {
             statusBadge.classList.add('warning');
             statusBadge.innerText = '⚠ 2m地点で補正してください';
@@ -257,6 +555,7 @@
             mainBtn.classList.add('recording');
         }
     }
+
     // ==========================================
     // MediaPipe & Logic
     // ==========================================
@@ -269,12 +568,15 @@
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
     });
+
     pose.onResults(onResults);
+
     async function loop() {
         if (!video.videoWidth) return;
         await pose.send({ image: video });
         animationId = requestAnimationFrame(loop);
     }
+
     // --- Main Button Logic ---
     mainBtn.onclick = () => {
         Sound.click(); // Click sound
@@ -291,11 +593,14 @@
             animationId = null;
         }
     };
+
     function onResults(results) {
         ctx.clearRect(0, 0, overlay.width, overlay.height);
         if (!results.poseLandmarks) return;
+
         const landmarks = results.poseLandmarks;
         const currentHeadZ = Math.abs(landmarks[0].z);
+
         // 1. Calibration
         if (state === 'CALIBRATING') {
             calibZBuffer.push(currentHeadZ);
@@ -308,6 +613,7 @@
             ctx.beginPath();
             ctx.arc(cx, cy, 50, -Math.PI/2, (Math.PI*2*pct) - Math.PI/2);
             ctx.stroke();
+
             if (calibZBuffer.length >= CALIB_FRAMES) {
                 Z_ref = calibZBuffer.reduce((a, b) => a + b, 0) / calibZBuffer.length;
                 state = 'MEASURING';
@@ -318,29 +624,37 @@
             }
             return;
         }
+
         // 2. Measuring
         if (state === 'MEASURING') {
             const distM = (TARGET_DIST * Z_ref) / currentHeadZ;
             distVal.innerText = distM.toFixed(2);
+
             if (Math.abs(distM - TARGET_DIST) < 0.1) {
                 distVal.style.color = '#4ade80';
             } else {
                 distVal.style.color = '#94a3b8'; // gray
             }
+
             const heightData = calculateHeight(landmarks, distM);
+
             if (heightData) {
                 heightHistory.push(heightData.val);
                 if (heightHistory.length > HISTORY_SIZE) heightHistory.shift();
                 const smoothH = heightHistory.reduce((a,b)=>a+b,0) / heightHistory.length;
+
                 heightVal.innerText = smoothH.toFixed(1);
                 drawAR(heightData.top, heightData.bottom, smoothH);
+
                 // Auto Capture
                 const isStable = lastHeadZ && Math.abs(currentHeadZ - lastHeadZ) < 0.02;
                 const isDistOK = Math.abs(distM - TARGET_DIST) < 0.05;
+
                 if (!autoCaptureLocked && isStable && isDistOK && heightHistory.length >= HISTORY_SIZE) {
                     autoCaptureLocked = true;
                     statusBadge.innerText = "📸 自動撮影...";
                     mainBtn.innerText = "📸 保存中...";
+
                     setTimeout(() => {
                         Sound.shutter(); // Auto Shutter Sound
                         captureAndSave();
@@ -354,18 +668,23 @@
             }
         }
     }
+
     function calculateHeight(lm, dist) {
         const ankleY = (lm[27].y + lm[28].y) / 2;
         const eyeY = (lm[2].y + lm[5].y) / 2;
         if (ankleY > 0.98 || eyeY < 0.02) return null;
+
         const hipY = (lm[23].y + lm[24].y) / 2;
         const headTopY = eyeY - ((hipY - eyeY) * 0.5);
         const footBottomY = ankleY + 0.03;
+
         const pxHeight = (footBottomY - headTopY) * overlay.height;
         const realViewHeight = 2 * dist * Math.tan((DEFAULT_FOV / 2) * Math.PI / 180);
         const hCm = (pxHeight / overlay.height) * realViewHeight * 100;
+
         return { val: hCm, top: headTopY * overlay.height, bottom: footBottomY * overlay.height };
     }
+
     function drawAR(top, bottom, val) {
         const x = overlay.width / 2;
         ctx.strokeStyle = 'rgba(56, 189, 248, 0.9)'; // Sky Blue
@@ -375,15 +694,18 @@
         ctx.moveTo(x, top);
         ctx.lineTo(x, bottom);
         ctx.stroke();
+
         ctx.fillStyle = 'white';
         ctx.beginPath(); ctx.arc(x, top, 6, 0, 2*Math.PI); ctx.fill();
         ctx.beginPath(); ctx.arc(x, bottom, 6, 0, 2*Math.PI); ctx.fill();
+
         // 数値をAR上にも表示する場合
         /*
         ctx.font = "bold 32px Inter";
         ctx.fillText(val.toFixed(1) + "cm", x + 20, (top + bottom) / 2);
         */
     }
+
     // ==========================================
     // Storage & Modal
     // ==========================================
@@ -391,27 +713,33 @@
         const name = nameInput.value || "名無し";
         const h = parseFloat(heightVal.innerText);
         if (isNaN(h)) return;
+
         const c = document.createElement('canvas');
         c.width = video.videoWidth;
         c.height = video.videoHeight;
         const cx = c.getContext('2d');
         cx.drawImage(video, 0, 0);
+
         cx.fillStyle = "rgba(0,0,0,0.5)";
         cx.fillRect(0, c.height - 120, c.width, 120);
         cx.fillStyle = "white";
         cx.font = "bold 48px sans-serif";
         cx.fillText(`${name}: ${h}cm`, 40, c.height - 50);
+
         const url = c.toDataURL('image/png');
         document.getElementById('photo-preview').src = url;
         document.getElementById('photo-modal').classList.add('open');
+
         Sound.success(); // Success Sound
         showToast();
+
         fetch('/api/measurements', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ name: name, heightCm: h })
         }).catch(e => console.error(e));
     }
+
     historyBtn.onclick = () => {
         Sound.click();
         fetch('/api/measurements').then(r=>r.json()).then(data => {
@@ -432,10 +760,12 @@
             document.getElementById('history-modal').classList.add('open');
         });
     };
+
     function closeModal(id) {
         Sound.click();
         document.getElementById(id).classList.remove('open');
     }
+
     function showToast() {
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3000);
@@ -443,4 +773,3 @@
 </script>
 </body>
 </html>
- 
