@@ -295,6 +295,21 @@
             position: sticky;
             bottom: 0;
         }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.8em;
+        }
+        .nav-item.active {
+            color: var(--primary-color); /* 💡 水色適用 */
+        }
+        .nav-item .icon {
+            font-size: 1.5em;
+            margin-bottom: 2px;
+        }
         .app-container {
             width: 100%;
             max-width: 450px;
