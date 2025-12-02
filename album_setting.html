@@ -49,6 +49,21 @@
             border-radius: 4px;
             margin-left: 5px;
         }
+        /* 💡 修正箇所: 管理者一覧内の削除ボタンの位置調整 */
+        /* vivi_family_style.css で .delete-icon に position: absolute が設定されているのを打ち消す */
+        .admin-item .delete-icon {
+            position: static; /* 絶対配置を解除 */
+            transform: none; /* 中央寄せ変形を解除 */
+            margin-left: 10px; /* 左側に少し余白 */
+            color: var(--light-gray);
+            cursor: pointer;
+            font-size: 1.2em;
+            border: none;
+            background: none;
+        }
+        .admin-item .delete-icon:hover {
+            color: var(--danger-color);
+        }
     </style>
 </head>
 <body>
