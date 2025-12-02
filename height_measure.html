@@ -285,25 +285,33 @@
             border-bottom: 1px solid #334155;
         }
         /* --- ボトムナビゲーション --- */
-.bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    border-top: 1px solid var(--border-color);
-    background: #fff;
-    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
-    padding: 5px 0;
-    position: sticky;
-    bottom: 0;
-}
-.app-container {
-  width: 100%;
-  max-width: 450px;
-  background: #fff;
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid var(--border-color);
+            background: #fff;
+            box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            position: sticky;
+            bottom: 0;
+        }
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background: #fff;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        body {
+  font-family: "Segoe UI", "Hiragino Sans", sans-serif;
+  margin: 0;
+  /* 💡 background-color を background に変更し、グラデーションを適用 */
+  background: var(--background-color);
+  color: var(--text-color);
+  overflow-x: hidden;
 }
     </style>
 </head>
