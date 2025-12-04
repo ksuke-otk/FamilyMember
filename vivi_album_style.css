@@ -7,11 +7,11 @@
     box-sizing: border-box;
 }
 :root {
-/* 💡 ログイン画面のCSS変数に統一 */
-    --primary-color: #6ec6ff;    /* メインカラー (水色) */
-    --primary-dark: #58a9e6;     /* ホバー時や濃いアクセントの水色 */
-    --secondary-accent: #ffb6c1; /* アクセントカラー (薄いピンク) */
-    --background-color: linear-gradient(135deg, #d9f1ff, #ffeaf0); /* 背景グラデーション */
+    /* 統一配色 */
+    --primary-color: #6ec6ff;
+    --primary-dark: #58a9e6;
+    --secondary-accent: #ffb6c1;
+    --background-color: linear-gradient(135deg, #d9f1ff, #ffeaf0);
     --text-color: #333;
     --light-gray: #ccc;
     --border-color: #eee;
@@ -21,7 +21,6 @@
 body {
     font-family: "Segoe UI", "Hiragino Sans", sans-serif;
     margin: 0;
-/* 💡 背景グラデーションを適用 */
     background: var(--background-color);
     color: var(--text-color);
     overflow-x: hidden;
@@ -36,18 +35,21 @@ body {
     flex-direction: column;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+
 /* --- ヘッダー (top-bar) --- */
+/* 💡 修正: position: sticky に統一し、他の画面と合わせる */
 .top-bar {
-    background: var(--primary-color); /* 💡 水色適用 */
+    background: var(--primary-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 15px;
     color: #fff;
-    position: sticky;
+    position: sticky; /* fixed から sticky に変更 */
     top: 0;
     width: 100%;
     z-index: 100;
+    height: 51px; /* 高さの基準を明確化 */
 }
 .top-bar h1 {
     width: 100%;
@@ -57,24 +59,53 @@ body {
     font-weight: bold;
     letter-spacing: 0.5px;
 }
-/* ---  アルバムタブナビゲーション (album-tabs) --- */
+
+/* ヘッダー左右のエリア定義（タイトル中央寄せのため） */
+.top-bar .header-left,
+.top-bar .header-right {
+    flex-basis: 25%;
+    display: flex;
+    align-items: center;
+}
+.top-bar .header-left { justify-content: flex-start; }
+.top-bar .header-right { justify-content: flex-end; }
+.top-bar .header-center h1 { flex-grow: 1; }
+
+/* アイコンボタン */
+.icon-button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    font-size: 1em;
+    transition: opacity 0.2s;
+}
+.icon-button:hover { opacity: 0.8; }
+.icon-button.back-button .icon { margin-right: 5px; font-size: 1.2em; line-height: 1; }
+.icon-button.edit-button .icon { font-size: 1.2em; }
+
+/* --- アルバムタブナビゲーション (album-tabs) --- */
+/* 💡 修正: member-tabs と位置・高さを統一 */
 .album-tabs {
     display: flex;
-/* 💡 修正: ここにあった誤った color/border-bottom-color の設定を削除 */
     width: 100%;
     background-color: #fff;
-    border-bottom: 1px solid var(--border-color); /* 境界線の色を統一 */
+    border-bottom: 1px solid var(--border-color);
     position: sticky;
-    top: 50px; 
-    z-index: 100;
+    top: 51px; /* top-barの高さに合わせる */
+    z-index: 90;
 }
 .album-tabs .tab {
     flex-grow: 1;
     text-align: center;
-    padding: 10px 0;
+    padding: 15px 0; /* パディングを family_member.html と統一 */
     font-size: 1em;
-    font-weight: bold;
-    color: #888;
+    font-weight: 600; /* フォントウェイト統一 */
+    color: #777;
     background: none;
     border: none;
     cursor: pointer;
@@ -82,55 +113,35 @@ body {
     transition: color 0.2s, border-bottom-color 0.2s;
 }
 .album-tabs .tab.active {
-    /* 💡 修正: アクティブタブをピンク（secondary-accent）に統一 */
     color: var(--secondary-accent);
     border-bottom-color: var(--secondary-accent);
+    background-color: rgba(110, 198, 255, 0.08); /* 背景色追加 */
 }
+
 /* --- メインコンテンツ --- */
+/* 💡 修正: パディングを family_member.html (20px 15px 80px) に統一 */
 .main-content {
     flex-grow: 1;
-    padding: 95px 15px 80px; 
+    padding: 20px 15px 80px; 
 }
-/* タイトルとボタンを横並びにするコンテナ */
+
+/* --- その他のコンテンツスタイル --- */
 .title-with-button {
     display: flex;
-    justify-content: space-between; /* 両端に配置 */
-    align-items: center; /* 垂直方向の中央揃え */
-    margin-bottom: 5px; /* リストとの間隔を調整 */
-}
-/* セクションタイトル: マージンを調整し、親コンテナの高さに合わせる */
-.section-title {
-    border-left: 5px solid var(--primary-color); /* 💡 水色適用 */
-    padding-left: 8px;
-    margin: 0; /* 親コンテナでマージンを制御するためリセット */
-    font-size: 1.1em;
-    flex-grow: 1; /* タイトルが占有できるだけスペースを確保 */
-    padding-top: 5px; /* タイトルの上下のパディングを調整 */
-    padding-bottom: 5px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
 }
 .section-title {
-    border-left: 5px solid var(--primary-color); /* 💡 水色適用 */
+    border-left: 5px solid var(--primary-color);
     padding-left: 8px;
     margin: 20px 0 15px;
     font-size: 1.1em;
 }
-/* --- 情報ボックス (アルバムの説明など) --- */
-.permission-info-box {
-    background: #fff;
-    border-radius: var(--radius);
-    padding: 15px 20px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-.permission-title {
-    border-left: 3px solid var(--primary-color); /* 💡 水色適用 */
-    padding-left: 5px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-/* --- プライマリーボタン (写真追加ボタン) --- */
+
+/* プライマリーボタン */
 .primary-button {
-    background: var(--primary-color); /* 💡 水色適用 */
+    background: var(--primary-color);
     color: #fff;
     border: none;
     border-radius: var(--radius);
@@ -142,323 +153,41 @@ body {
     transition: background-color 0.2s;
 }
 .primary-button:hover {
-    background-color: var(--primary-dark); /* 💡 濃い水色適用 */
+    background-color: var(--primary-dark);
 }
-/* --- 写真/アイテムリスト --- */
-.member-list { /* リストのクラス名が member-list ですが、写真一覧として使用 */
+
+/* 写真リスト */
+.member-list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 .member-item {
+    display: flex;
+    align-items: center;
     background: #fff;
     border-radius: var(--radius);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     padding: 15px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    position: relative;
     cursor: pointer;
+}
+.member-item.selected-item {
+    background: #f7fcfd;
+    border: 1px solid var(--primary-color);
 }
 .member-item .name {
     font-size: 1.1em;
     font-weight: 500;
 }
-.member-item .role { /* 投稿日時/投稿者の情報として使用 */
+.member-item .role {
     font-size: 0.85em;
     color: #777;
 }
-/* --- ボトムナビゲーション --- */
-.bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    border-top: 1px solid var(--border-color);
-    background: #fff;
-    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
-    padding: 5px 0;
-    position: sticky;
-    bottom: 0;
-}
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #888;
-    text-decoration: none;
-    font-size: 0.8em;
-}
-.nav-item.active {
-    color: var(--primary-color); /* 💡 水色適用 */
-}
-.nav-item .icon {
-    font-size: 1.5em;
-    margin-bottom: 2px;
-}
-/* ---  アクションボタンコンテナ (追加) --- */
-.action-buttons-container {
-    display: flex;
-    flex-direction: column; /* 縦に並べる */
-    gap: 10px; /* ボタン間のスペース */
-    margin-bottom: 20px;
-}
-/* ---  ダウンロードボタン (Secondary Button) --- */
-.secondary-button {
-    background: #ffffff; /* 明るいグレーの背景 */
-    color: var(--primary-dark); /* 💡 濃い水色適用 */
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    padding: 0px;
-    font-weight: bold;
-    width: 20%;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 1em;
-}
-/* member-item を Flex にしてチェックボックスと情報を横並びにする */
-.member-item {
-    display: flex; /* Flexboxを有効化 */
-    align-items: center; /* 垂直方向の中央揃え */
-    background: #fff;
-    border-radius: var(--radius);
-    margin-bottom: 15px;
-    padding: 15px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    cursor: pointer;
-}
-/* チェックボックスのエリア */
-.checkbox-area {
-    flex-shrink: 0; /* 縮まない */
-    padding-right: 10px;
-}
-/* ---  【追加】子ども別アルバム切り替えタブ (member-tabs) --- */
-.member-tabs {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    background-color: #fff;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 15px; /* 下のコンテンツとの間隔 */
-}
-.member-tabs .tab {
-    flex-grow: 1;
-    text-align: center;
-    padding: 10px 0;
-    font-size: 0.95em; /* フォントサイズを少し小さく */
-    font-weight: 500;
-    color: #888;
-    background: none;
-    border: none;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: color 0.2s, border-bottom-color 0.2s;
-}
-.member-tabs .tab.active {
-    /* 💡 修正: アクティブタブをピンク（secondary-accent）に統一 */
-    color: var(--secondary-accent);
-    border-bottom-color: var(--secondary-accent);
-    font-weight: bold;
-}
-/* アルバムコンテンツセクション: 切り替え対象のリストを内包 */
-.album-content-section {
-    /* スタイルは主にdisplayプロパティで制御される */
-    margin-top: 10px;
-}
-/* ---  ダウンロードボタン (アイコンのみ) のスタイルを調整 --- */
-.secondary-button.icon-only-button {
-    width: auto; /* 幅をコンテンツに合わせる */
-    padding: 8px 10px; /* パディングを小さくして、タイトルと高さを合わせる */
-    border: 1px solid var(--light-gray);
-    background: #fff;
-    border-radius: 8px;
-    margin-left: 10px; /* タイトルとの間隔 */
-    line-height: 1; /* アイコンの縦位置を調整 */
-    font-size: 1.1em;
-    font-weight: normal;
-}
-.secondary-button.icon-only-button .icon {
-    margin: 0;
-    font-size: 1.2em;
-}
-/* --- 子ども別アルバム切り替えタブ (member-tabs) --- */
-.member-tabs {
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-        background-color: #fff;
-        border-bottom: 1px solid var(--border-color);
-        margin-bottom: 15px; /* 下のコンテンツとの間隔 */
-    }
-        .member-tabs .tab {
-        flex-grow: 1;
-        text-align: center;
-        padding: 10px 0;
-        font-size: 0.95em; /* フォントサイズを少し小さく */
-        font-weight: 500;
-        color: #888;
-        background: none;
-        border: none;
-        cursor: pointer;
-        border-bottom: 3px solid transparent;
-        transition: color 0.2s, border-bottom-color 0.2s;
-    }
-        .member-tabs .tab.active {
-        /* 💡 修正: アクティブタブをピンク（secondary-accent）に統一 */
-        color: var(--secondary-accent);
-        border-bottom-color: var(--secondary-accent);
-        font-weight: bold;
-    }
-        /* 💡 【追加】アルバムコンテンツセクション: 切り替え対象のリストを内包 */
-    .album-content-section {
-        /* スタイルは主にdisplayプロパティで制御される */
-        margin-top: 10px;
-    }
-    /* ------------------------------
-    カレンダービュー専用スタイル (vivi_album_style.css に追記)
------------------------------- */
-/* 月ナビゲーションコンテナ */
-.calendar-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-/* 年月表示 */
-.calendar-nav h2 {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin: 0;
-    flex-grow: 1;
-    text-align: center;
-}
-/* カレンダーグリッド */
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
-    background-color: var(--border-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    overflow: hidden;
-}
-/* 曜日ヘッダー */
-.day-header {
-    background-color: #e9ecef;
-    color: #6c757d;
-    font-size: 0.85em;
-    font-weight: bold;
-    text-align: center;
-    padding: 8px 0;
-    line-height: 1;
-}
-/* 日付セル */
-.day-cell {
-    background-color: #fff;
-    padding: 10px 5px;
-    text-align: center;
-    font-size: 1em;
-    font-weight: 500;
-    cursor: pointer;
-    min-height: 50px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.2;
-}
-/* 前月/翌月の日付 */
-.day-cell.inactive {
-    background-color: #f8f9fa;
-    color: var(--light-gray);
-    cursor: default;
-}
-/* 今日の日付 */
-.day-cell.today {
-    border: 2px solid var(--danger-color);
-    color: var(--danger-color);
-}
-/* 写真マーク (📸) */
-.photo-marker {
-    display: block;
-    font-size: 0.8em;
-    margin-top: 3px;
-    line-height: 1;
-}
-/* 日曜日 (任意) */
-.day-header:nth-child(1),
-.calendar-grid .day-cell:nth-child(7n + 1) {
-    color: var(--danger-color);
-}
-/* 土曜日 (任意) */
-.day-header:nth-child(7),
-.calendar-grid .day-cell:nth-child(7n) {
-    color: var(--primary-dark); /* 💡 濃い水色適用 */
-}
-/* ------------------------------
-   💡 プルダウン（アルバム選択）用スタイル - 追記
------------------------------- */
-.album-dropdown-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-.dropdown-label {
-    font-size: 0.9em;
-    color: #6c757d;
-    margin-right: 10px;
-    font-weight: 500;
-}
-.album-dropdown {
-    padding: 8px 12px;
-    font-size: 1em;
-    border: 1px solid var(--light-gray);
-    border-radius: 8px;
-    background-color: #fff;
-    color: var(--text-color);
-    appearance: none; /* デフォルトの矢印を非表示に（カスタム矢印用）*/
-    cursor: pointer;
-    flex-grow: 1; /* スペースを占有 */
-    max-width: 200px; /* 最大幅を設定 */
-}
-/* ------------------------------
-   💡 アルバムコンテンツの表示/非表示を管理するためのクラス
------------------------------- */
-.album-content-section {
-    margin-top: 10px;
-    /* デフォルトで非表示 */
-    display: none; 
-}
-.album-content-section.active {
-    /* アクティブなセクションは表示 */
-    display: block;
-}
-/* ------------------------------
-   💡 top.html: 写真選択/ダウンロード用スタイル - 追記
------------------------------- */
-/* 選択されたアイテムの背景色を変更 */
-.member-item.selected-item {
-    background: #f7fcfd; /* 選択時の薄い色 */
-    border: 1px solid var(--primary-color); /* 💡 水色適用 */
-}
-/* 全選択チェックボックスのコンテナ */
-.select-all-container {
-    display: flex;
-    align-items: center;
-    padding: 5px 0 15px;
-    font-size: 0.9em;
-    color: #555;
-    /* member-item のチェックボックスと位置を合わせる */
-    margin-left: 10px; 
-}
-.select-all-container input[type="checkbox"] {
-    margin-right: 5px;
-    transform: scale(1.2); /* チェックボックスを少し大きく表示 */
-}
-/* 💡 member-item の info エリアを flex-grow で広げる */
 .member-item .info {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    /* 写真グリッドのダミースタイル */
 }
 .member-item .photo-grid {
     display: flex;
@@ -477,1151 +206,285 @@ body {
     height: 100%;
     object-fit: cover;
 }
-        /* 💡 ダウンロードモーダル（画面全体を覆う）スタイル */
-        .download-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* 半透明の黒背景 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        /* 💡 モーダル本体 */
-        .download-modal-content {
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 0.3s ease-out;
-            max-height: 80vh; /* 縦長になりすぎないように */
-            overflow-y: auto;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--primary-color); /* 💡 水色適用 */
-            padding-bottom: 10px;
-        }
-        .modal-header h2 {
-            margin: 0;
-            font-size: 1.3em;
-            color: var(--primary-dark); /* 💡 濃い水色適用 */
-        }
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #888;
-        }
-        .download-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .download-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px dashed #eee;
-            font-size: 0.95em;
-        }
-        .download-item:last-child {
-            border-bottom: none;
-        }
-        .download-item .name {
-            font-weight: 500;
-            color: var(--text-color);
-        }
-        .download-item .count {
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-        .total-info {
-            border-top: 1px solid var(--light-gray);
-            padding-top: 15px;
-            margin-top: 15px;
-            font-weight: bold;
-            font-size: 1.1em;
-            text-align: right;
-        }
-        .download-button-area {
-            margin-top: 25px;
-            text-align: center;
-        }
-        /* primary-button のスタイルは vivi_family_style.css に依存 */
-        .primary-button {
-            padding: 12px 25px;
-            width: 100%;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        /* ==================================
-   写真詳細画面 (picture_detail.html) 専用スタイル
-   ================================== */
-/* 1. ヘッダーとボトムナビゲーションの下にコンテンツを配置するためのパディング調整 */
-/* ヘッダー(約45px) + コメント入力エリア(約50px) + ボトムナビゲーション(約60px)を考慮 */
-/* コメント入力エリアの高さ確保 */
-.comment-input-area {
-    /* HTML内スタイルを上書き、またはここで定義 */
-    position: fixed; /* 画面下部に固定 */
-    bottom: 60px; /* ボトムナビゲーションの上に配置 */
-    width: 100%;
-    max-width: 450px; /* app-containerの最大幅に合わせる */
-    background-color: #fff;
-    border-top: 1px solid var(--border-color);
-    padding: 10px 15px;
-    z-index: 90; 
-    /* シャドウを追加して区切りを明確に */
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.05); 
-}
-/* コメント入力フィールド */
-.comment-input-area input[type="text"] {
-    flex-grow: 1;
-    padding: 8px 15px;
-    border: 1px solid var(--light-gray);
-    border-radius: 20px;
-    margin-right: 10px;
-}
-/* 送信ボタン */
-.comment-input-area button.post-comment-btn {
-    background-color: var(--primary-color); /* 💡 水色適用 */
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 0 15px; /* 上下のパディングを調整 */
-    height: 40px; /* 入力欄と高さを揃える */
-    font-weight: bold;
-    cursor: pointer;
+.checkbox-area {
     flex-shrink: 0;
+    padding-right: 10px;
 }
-/* 2. メインコンテンツのパディング調整 */
-/* ヘッダー(約45px)とボトムナビゲーションとコメント入力エリアが重ならないようにパディングを設定 */
-.main-content.detail-page-content {
-    /* ヘッダーの高さ分を確保 */
-    padding-top: 45px; 
-    
-    /* ボトムナビゲーション(約60px) + コメント入力エリア(約50px)分を確保 */
-    /* 60px + 50px = 110px */
-    padding-bottom: 110px; 
-    
-    padding-left: 0;  /* 左右のパディングを写真に合わせるため0に設定 */
-    padding-right: 0; /* 左右のパディングを写真に合わせるため0に設定 */
-    overflow-y: auto;
-}
-/* 3. 写真表示エリアのスタイル */
-.photo-viewer {
-    width: 100%;
-    /* 写真を画面幅いっぱいに表示 */
-}
-.main-photo-container {
-    width: 100%;
-    /* 写真を最大幅で表示 */
-}
-.main-photo {
-    width: 100%;
-    /* 画面の横幅いっぱいに表示 */
-    display: block;
-    height: auto;
-}
-/* 4. 写真情報セクション */
-.picture-info-section {
-    padding: 15px;
-    border-bottom: 1px solid var(--border-color);
-}
-.photo-date, .photo-poster {
-    margin: 5px 0;
-    font-size: 0.9em;
-    color: #6c757d;
-}
-/* 5. コメントリスト */
-.comment-list-section {
-    padding: 15px;
-}
-.comment-list-section .section-title {
-    /* 既存のsection-titleを再利用し、マージンを調整 */
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-.comment-item {
-    display: flex;
-    flex-wrap: wrap; /* 要素の折り返しを許可 */
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed #eee;
-    position: relative;
-}
-.comment-item:last-child {
-    border-bottom: none;
-}
-.comment-author {
-    font-weight: bold;
-    font-size: 1em;
-    color: var(--primary-dark); /* 💡 濃い水色適用 */
-    margin: 0;
-    flex-basis: 100%; /* 1行を占有 */
-}
-.comment-text {
-    font-size: 0.95em;
-    margin: 2px 0 0;
-    flex-grow: 1; /* スペースを占有 */
-}
-.comment-timestamp {
-    font-size: 0.75em;
-    color: #999;
-    margin-left: 10px;
-}
-.delete-comment-btn {
-    background: none;
-    border: none;
-    color: var(--danger-color);
-    font-size: 1.1em;
-    cursor: pointer;
-    padding: 0;
-    margin-left: auto; /* 右端に寄せる */
-    opacity: 0.8;
-}
-/* ------------------------------
-   トップバーとボトムナビゲーションの既存スタイルの確認
-   - これらが fixed/sticky で適切に設定されていることを確認してください。
------------------------------- */
-/* top-bar: position: sticky; top: 0; z-index: 100; が必要 */
-/* bottom-nav: position: sticky; bottom: 0; z-index: 100; が必要 */
-/* vivi_album_style.css にすでに定義されているため、ここでは省略 */
-/* ==================================
-   トップ画面 (top.html) の修正スタイル
-   ================================== */
-/* アルバム名（題名）のリンクスタイルを解除し、自然な見た目にする */
-.album-title-link {
-    text-decoration: none; /* 下線を削除 */
-    color: inherit;      /* 親要素の文字色を継承 */
-    display: block;      /* クリックエリアを広げる */
-}
-/* アルバム名（題名）のフォントを太字にするなど、強調したい場合はここに追記 */
-.album-title-link .name {
-    font-weight: bold;
-    color: var(--text-color);
-}
-/* --- ヘッダー (top-bar) --- */
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-    background: var(--primary-color); /* 💡 水色適用 */
-    color: #fff;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    z-index: 100;
-}
-/* 💡 【追加/修正】ヘッダーの左右エリア */
-.top-bar .header-left,
-.top-bar .header-right {
-    /* 左右の要素の幅を制御することで、中央の h1 が中央に配置されやすくなる */
-    flex-basis: 25%; /* 例として25%を設定。必要に応じて調整してください */
-    display: flex; /* 子要素を整列 */
-    align-items: center;
-}
-/* 💡 【追加/修正】ヘッダー左側: 常に左寄せ */
-.top-bar .header-left {
-    justify-content: flex-start;
-}
-/* 💡 【修正】ヘッダー右側: 常に右寄せ */
-.top-bar .header-right {
-    justify-content: flex-end;
-}
-/* 💡 【修正】ヘッダー中央のタイトル */
-.top-bar .header-center h1 {
-    /* 中央に配置し、両端の要素によって押しつぶされないようにする */
-    flex-grow: 1; /* 残りのスペースを埋める */
-    text-align: center;
-    font-size: 1.1em;
-    margin: 0;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-}
-/* 💡 【追加】アイコンボタンの基本スタイル */
-.icon-button {
-    background: none;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex; /* アイコンとテキストを横並びにする */
-    align-items: center;
-    padding: 6px 8px;
-    font-size: 1em; /* 通常の文字サイズ */
-    transition: opacity 0.2s;
-}
-.icon-button:hover {
-    opacity: 0.8;
-}
-/* 💡 【追加】戻るボタン（アイコンと文字の間隔調整） */
-.icon-button.back-button .icon {
-    /* 家族メンバー詳細の「＜」アイコンのサイズを調整 */
-    font-size: 1.2em;
-    margin-right: 5px; /* アイコンと「戻る」の間にスペース */
-    line-height: 1;
-}
-.icon-button.edit-button .icon {
-    font-size: 1.2em; /* 鉛筆アイコンのサイズ */
-}
-/* ==================================
-   💡 写真追加画面 (picture_add.html) 専用スタイル
-   ================================== */
 
-/* フォームページ共通のメインコンテンツのパディングを調整 */
-.main-content.form-page {
-    padding-bottom: 20px; 
-    padding-top: 60px; /* ヘッダーの高さ + 少しの余白 */
-    padding-left: 15px;
-    padding-right: 15px;
-}
-/* 写真選択エリアのスタイル */
-.photo-upload-area {
-    border: 2px dashed var(--light-gray);
-    border-radius: var(--radius);
-    padding: 30px 15px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-bottom: 20px;
-    background-color: #fff;
-}
-.photo-upload-area:hover {
-    background-color: #f7fcfd; /* 薄いハイライト色 */
-    border-color: var(--primary-color); /* 💡 水色適用 */
-}
-.upload-icon {
-    font-size: 2.5em;
-    color: var(--primary-dark); /* 💡 濃い水色適用 */
-    margin-bottom: 8px;
-    display: block;
-}
-/* 写真プレビューリスト */
-.photo-list-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-    justify-content: flex-start; /* 左寄せ */
-}
-/* 個別の写真プレビューアイテム */
-.photo-preview-item {
-    width: 80px;
-    height: 80px;
-    overflow: hidden;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    position: relative; /* 削除ボタンの基準位置 */
-}
-.photo-preview-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-/* 💡 削除ボタンのスタイル */
-.remove-photo-button {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: var(--danger-color); 
-    color: white;
-    border: 2px solid white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0;
-    z-index: 10;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-/* フォーム要素 */
-.form-group {
-    margin-bottom: 20px;
-}
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 0.95em;
-    color: var(--text-color);
-}
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--light-gray);
-    border-radius: 8px;
-    font-size: 1em;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-}
-.form-group textarea {
-    resize: vertical;
-}
-/* チェックボックスのリストスタイル */
-.checkbox-list {
-    list-style: none;
-    padding: 0 10px;
-    margin: 0;
-    background: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-}
-.checkbox-list li {
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border-color);
-}
-.checkbox-list li:last-child {
-    border-bottom: none;
-}
-.checkbox-list label {
-    display: flex;
-    align-items: center;
-    font-weight: normal; 
-    cursor: pointer;
-}
-.checkbox-list input[type="checkbox"] {
-    /* 標準のチェックボックスをカスタマイズ */
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--light-gray);
-    border-radius: 4px;
-    margin-right: 10px;
-    cursor: pointer;
-    position: relative;
-    flex-shrink: 0;
-}
-.checkbox-list input[type="checkbox"]:checked {
-    border-color: var(--primary-color); /* 💡 水色適用 */
-    background-color: var(--primary-color); /* 💡 水色適用 */
-}
-/* チェックマークの視覚的表現 */
-.checkbox-list input[type="checkbox"]:checked::after {
-    content: '✓';
-    color: #fff;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 14px;
-    font-weight: bold;
-}
-/* 必須マークのスタイル */
-.required {
-    color: var(--danger-color);
-    font-weight: bold;
-    margin-left: 3px;
-}
-/* ----------------------------------
-   💡 スマートフォン対応のための基本構造 (追記: 違和感なく表示させるために必須)
-      * 固定ヘッダー/フッターとコンテンツの分離を確保
----------------------------------- */
-:root {
-    /* 🎨 カラー変数を追加 (他のファイルで定義されている前提だが、万全を期す) */
-    --primary-color: #6ec6ff;    /* 💡 水色適用 */
-    --primary-dark: #58a9e6;     /* 💡 濃い水色適用 */
-    --secondary-accent: #ffb6c1; /* 💡 ピンク適用 */
-    --background-color: linear-gradient(135deg, #d9f1ff, #ffeaf0); /* 💡 グラデーション適用 */
-    --text-color: #333;
-    --light-gray: #ccc;
-    --border-color: #eee;
-    --danger-color: #e74c3c;
-    --radius: 12px;
-}
-/* アプリコンテナ全体 - 画面中央に表示し、高さを確保 */
-.app-container {
-    width: 100%;
-    max-width: 450px; /* スマートフォンサイズに制限 */
-    background: #fff;
-    margin: 0 auto;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-/* トップバーの基本スタイル（固定化） */
-.top-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    height: 50px; /* 標準的な高さ */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--primary-color); /* 💡 水色適用 */
-    color: white;
-    padding: 0 10px;
-    max-width: 450px; /* app-containerに合わせる */
-    margin: 0 auto;
-}
-.top-bar .header-center h1 {
-    font-size: 1.1em;
-    margin: 0;
-    font-weight: bold;
-}
-.top-bar .icon-button {
-    color: white;
-    text-decoration: none;
-    font-size: 0.9em;
-    padding: 5px 8px;
-    white-space: nowrap;
-}
-/* 底部ナビゲーションバーの基本スタイル（固定化） */
+/* ボトムナビゲーション */
+/* 💡 修正: sticky に統一 */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    height: 60px; /* 標準的なモバイルナビゲーションの高さ */
-    background-color: #fff;
     border-top: 1px solid var(--border-color);
-    max-width: 450px; /* app-containerに合わせる */
-    margin: 0 auto;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    padding: 5px 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
 }
-.bottom-nav .nav-item {
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #888;
+    text-decoration: none;
+    font-size: 0.8em;
+}
+.nav-item.active { color: var(--primary-color); }
+.nav-item .icon { font-size: 1.5em; margin-bottom: 2px; }
+
+/* アクションボタンコンテナ */
+.action-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.secondary-button {
+    background: #ffffff;
+    color: var(--primary-dark);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 0px;
+    font-weight: bold;
+    width: 20%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 1em;
+}
+.secondary-button.icon-only-button {
+    width: auto;
+    padding: 8px 10px;
+    border: 1px solid var(--light-gray);
+    background: #fff;
+    border-radius: 8px;
+    margin-left: 10px;
+    line-height: 1;
+    font-size: 1.1em;
+    font-weight: normal;
+}
+.secondary-button.icon-only-button .icon { margin: 0; font-size: 1.2em; }
+
+/* 全選択チェックボックス */
+.select-all-container {
+    display: flex;
+    align-items: center;
+    padding: 5px 0 15px;
+    font-size: 0.9em;
+    color: #555;
+    margin-left: 10px; 
+}
+.select-all-container input[type="checkbox"] {
+    margin-right: 5px;
+    transform: scale(1.2);
+}
+
+/* プルダウン */
+.album-dropdown-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.dropdown-label {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-right: 10px;
+    font-weight: 500;
+}
+.album-dropdown {
+    padding: 8px 12px;
+    font-size: 1em;
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    background-color: #fff;
+    color: var(--text-color);
+    appearance: none;
+    cursor: pointer;
+    flex-grow: 1;
+    max-width: 200px;
+}
+.album-content-section { display: none; margin-top: 10px; }
+.album-content-section.active { display: block; }
+
+/* カレンダービュー */
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.calendar-nav h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: var(--border-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+.day-header {
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-size: 0.85em;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 0;
+    line-height: 1;
+}
+.day-cell {
+    background-color: #fff;
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    min-height: 50px;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-    color: #888;
-    font-size: 0.75em;
-    padding: 5px;
-    min-width: 80px;
+    line-height: 1.2;
 }
-.bottom-nav .nav-item .icon {
-    font-size: 1.5em;
-    margin-bottom: 2px;
-}
-.bottom-nav .nav-item.active {
-    color: var(--primary-color); /* 💡 水色適用 */
-}
-/* ==================================
-   💡 写真追加画面 (picture_add.html) 専用スタイル
-   ================================== */
-/* フォームページ共通のメインコンテンツのパディングを調整 */
-.main-content.form-page {
-    /* 修正点: 固定フッター(60px) + フォーム内の下マージン(20px)を確保 */
-    padding-bottom: calc(60px + 20px); 
-    padding-top: 60px; /* 既存: ヘッダーの高さ + 少しの余白 */
-    padding-left: 15px;
-    padding-right: 15px;
-}
-/* 写真選択エリアのスタイル */
-.photo-upload-area {
-    border: 2px dashed var(--light-gray);
-    border-radius: var(--radius);
-    padding: 30px 15px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-bottom: 20px;
-    background-color: #fff;
-}
-.photo-upload-area:hover {
-    background-color: #f7fcfd; /* 薄いハイライト色 */
-    border-color: var(--primary-color); /* 💡 水色適用 */
-}
-.upload-icon {
-    font-size: 2.5em;
-    color: var(--primary-dark); /* 💡 濃い水色適用 */
-    margin-bottom: 8px;
-    display: block;
-}
-/* 写真プレビューリスト */
-.photo-list-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-    justify-content: flex-start; /* 左寄せ */
-}
-/* 個別の写真プレビューアイテム */
-.photo-preview-item {
-    width: 80px;
-    height: 80px;
-    overflow: hidden;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    position: relative; /* 削除ボタンの基準位置 */
-}
-.photo-preview-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-/* 💡 削除ボタンのスタイル */
-.remove-photo-button {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: var(--danger-color); 
-    color: white;
-    border: 2px solid white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0;
-    z-index: 10;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-/* フォーム要素 */
-.form-group {
-    margin-bottom: 20px;
-}
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 0.95em;
-    color: var(--text-color);
-}
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--light-gray);
-    border-radius: 8px;
-    font-size: 1em;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-}
-.form-group textarea {
-    resize: vertical;
-}
-/* チェックボックスのリストスタイル */
-.checkbox-list {
-    list-style: none;
-    padding: 0 10px;
-    margin: 0;
-    background: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-}
-.checkbox-list li {
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border-color);
-}
-.checkbox-list li:last-child {
-    border-bottom: none;
-}
-.checkbox-list label {
-    display: flex;
-    align-items: center;
-    font-weight: normal; 
-    cursor: pointer;
-}
-.checkbox-list input[type="checkbox"] {
-    /* 標準のチェックボックスをカスタマイズ */
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--light-gray);
-    border-radius: 4px;
-    margin-right: 10px;
-    cursor: pointer;
-    position: relative;
-    flex-shrink: 0;
-}
-.checkbox-list input[type="checkbox"]:checked {
-    border-color: var(--primary-color); /* 💡 水色適用 */
-    background-color: var(--primary-color); /* 💡 水色適用 */
-}
-/* チェックマークの視覚的表現 */
-.checkbox-list input[type="checkbox"]:checked::after {
-    content: '✓';
-    color: #fff;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 14px;
-    font-weight: bold;
-}
-/* 必須マークのスタイル */
-.required {
-    color: var(--danger-color);
-    font-weight: bold;
-    margin-left: 3px;
-}
-/* --- 7. モーダルウィンドウ --- */
-/* ダウンロードモーダル（画面全体を覆う）を流用 */
-.modal-overlay { /* 既存の .download-modal-overlay を .modal-overlay として定義 */
+.day-cell.inactive { background-color: #f8f9fa; color: var(--light-gray); cursor: default; }
+.day-cell.today { border: 2px solid var(--danger-color); color: var(--danger-color); }
+.photo-marker { display: block; font-size: 0.8em; margin-top: 3px; line-height: 1; }
+.day-header:nth-child(1), .calendar-grid .day-cell:nth-child(7n + 1) { color: var(--danger-color); }
+.day-header:nth-child(7), .calendar-grid .day-cell:nth-child(7n) { color: var(--primary-dark); }
+
+/* ダウンロードモーダル */
+.download-modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; justify-content: center; align-items: center;
     z-index: 1000;
 }
-.modal-content { /* 既存の .download-modal-content を流用 */
+.download-modal-content {
     background-color: #fff;
     padding: 25px;
     border-radius: 12px;
-    width: 90%;
-    max-width: 350px; /* 少し小さめに調整 */
+    width: 90%; max-width: 400px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease-out;
-    text-align: center; /* テキスト中央揃え */
+    max-height: 80vh; overflow-y: auto;
 }
-.modal-content p#modal-message {
-    margin: 0 0 20px;
-    font-size: 1.1em;
-    line-height: 1.5;
+.modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px;
 }
-.modal-buttons {
-    display: flex;
-    justify-content: space-around;
-    gap: 15px;
+.modal-header h2 { margin: 0; font-size: 1.3em; color: var(--primary-dark); }
+.close-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #888; }
+.download-list { list-style: none; padding: 0; margin: 0; }
+.download-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 0.95em;
 }
-/* モーダル内のボタンのスタイル */
-.modal-buttons .secondary-button,
-.modal-buttons .danger-button {
-    width: 50%;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 0;
-    font-size: 1em;
-}
-/* 「いいえ」（キャンセル）ボタン - secondary-buttonの定義に依存 */
-.modal-buttons .secondary-button {
-    background: #ffffff;
-    color: var(--primary-dark); /* 💡 濃い水色適用 */
-    border: 1px solid var(--border-color);
-    transition: background-color 0.2s;
-}
-.modal-buttons .secondary-button:hover {
-    background-color: #f0f0f0;
-}
-/* 「はい」（危険な操作）ボタン */
-.danger-button {
-    background: var(--danger-color);
-    color: #fff;
-    border: 1px solid var(--danger-color);
-    transition: background-color 0.2s;
-}
-.danger-button:hover {
-    background-color: #c0392b; /* 少し濃い赤 */
-}
-/* ==================================== */
-/* 📝 写真編集 (picture_edit.html) 専用スタイル */
-/* ==================================== */
-/* 写真編集プレビューエリア */
-.photo-edit-preview {
-    width: 100%;
-    /* 写真追加エリアよりシンプルに、編集対象のサムネイルを表示 */
-    padding: 10px;
-    background-color: #f7f7f7;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    text-align: center;
-}
-.current-photo-thumbnail {
-    max-width: 100%;
-    max-height: 200px; /* 適切な高さを設定 */
-    width: auto;
-    height: auto;
-    border-radius: 4px;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto;
-}
-/* ヘッダーの削除ボタン (写真編集画面で使用) */
-.top-bar .delete-button {
-    color: var(--danger-color); /* 赤色など、削除を連想させる色 */
-    font-size: 1.2em;
-    padding: 5px 10px;
-    /* icon-buttonの標準スタイルを適用 */
-}
-/* ==================================
-    💡 モーダル関連の共通スタイル
-   ================================== */
-/* 画面全体を覆う半透明のオーバーレイ */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+.download-item:last-child { border-bottom: none; }
+.download-item .name { font-weight: 500; color: var(--text-color); }
+.download-item .count { color: #6c757d; font-size: 0.9em; }
+.total-info { border-top: 1px solid var(--light-gray); padding-top: 15px; margin-top: 15px; font-weight: bold; font-size: 1.1em; text-align: right; }
+.download-button-area { margin-top: 25px; text-align: center; }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-/* モーダルのコンテンツボックス */
+/* 共通モーダルスタイル */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex; justify-content: center; align-items: center; z-index: 1000;
+}
 .modal-content {
-    background: white;
-    padding: 25px 20px;
-    border-radius: var(--radius);
-    width: 80%;
-    max-width: 300px;
-    text-align: center;
+    background: white; padding: 25px 20px; border-radius: var(--radius);
+    width: 80%; max-width: 300px; text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
-
-.modal-content p {
-    margin: 0 0 20px 0;
-    font-size: 1em;
-    color: var(--text-color);
-}
-
-/* モーダル内のボタンコンテナ */
-.modal-buttons {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-}
-
+.modal-content p { margin: 0 0 20px 0; font-size: 1em; color: var(--text-color); }
+.modal-buttons { display: flex; justify-content: space-around; gap: 10px; }
 .modal-buttons button {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1em;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
+    flex: 1; padding: 10px; border: none; border-radius: 8px;
+    font-size: 1em; cursor: pointer; font-weight: bold; transition: background-color 0.2s;
+}
+.modal-buttons .button-yes { background-color: var(--primary-color); color: white; }
+.modal-buttons .button-no { background-color: #ecf0f1; color: var(--text-color); }
+.modal-buttons .danger-button { background-color: var(--danger-color); color: white; }
+
+/* --- 写真詳細画面 (picture_detail.html) --- */
+.comment-input-area {
+    position: fixed; bottom: 60px; width: 100%; max-width: 450px;
+    background-color: #fff; border-top: 1px solid var(--border-color);
+    padding: 10px 15px; z-index: 90; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); 
+}
+.comment-input-area input[type="text"] {
+    flex-grow: 1; padding: 8px 15px; border: 1px solid var(--light-gray);
+    border-radius: 20px; margin-right: 10px;
+}
+.comment-input-area button.post-comment-btn {
+    background-color: var(--primary-color); color: #fff; border: none;
+    border-radius: 20px; padding: 0 15px; height: 40px; font-weight: bold; cursor: pointer;
+}
+.main-content.detail-page-content {
+    padding-top: 20px; /* ヘッダー下 */
+    padding-bottom: 110px; /* フッター + コメントエリア */
+    padding-left: 0; padding-right: 0;
+}
+.photo-viewer, .main-photo-container, .main-photo { width: 100%; display: block; height: auto; }
+.picture-info-section { padding: 15px; border-bottom: 1px solid var(--border-color); }
+.photo-date { margin: 5px 0; font-size: 0.9em; color: #6c757d; }
+.comment-list-section { padding: 15px; }
+.comment-item { display: flex; flex-wrap: wrap; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; }
+.comment-author { font-weight: bold; font-size: 1em; color: var(--primary-dark); flex-basis: 100%; }
+.comment-text { font-size: 0.95em; margin: 2px 0 0; flex-grow: 1; }
+.comment-timestamp { font-size: 0.75em; color: #999; margin-left: 10px; }
+.delete-comment-btn { background: none; border: none; color: var(--danger-color); cursor: pointer; margin-left: auto; }
+
+/* --- 写真追加/編集/削除画面 (Form Pages) --- */
+/* 💡 修正: 固定フッターを考慮したパディング設定 */
+.main-content.form-page {
+    padding-bottom: 80px;
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-/* 「はい」ボタン (危険なアクション) */
-.modal-buttons .button-yes {
-    background-color: var(--danger-color); /* 赤色 */
-    color: white;
+/* その他フォームスタイルは省略せず維持してください */
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--text-color); }
+.form-group input, .form-group textarea {
+    width: 100%; padding: 10px; border: 1px solid var(--light-gray);
+    border-radius: 8px; font-size: 1em;
 }
-.modal-buttons .button-yes:hover {
-    background-color: #c0392b;
+.photo-upload-area {
+    border: 2px dashed var(--light-gray); padding: 30px 15px; text-align: center;
+    cursor: pointer; background-color: #fff; border-radius: var(--radius);
 }
-
-/* 「いいえ」ボタン (キャンセル) */
-.modal-buttons .button-no {
-    background-color: #ecf0f1; /* 薄い灰色 */
-    color: var(--text-color);
+.photo-list-preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+.photo-preview-item {
+    width: 80px; height: 80px; overflow: hidden; border-radius: 8px;
+    border: 1px solid var(--border-color); position: relative;
 }
-.modal-buttons .button-no:hover {
-    background-color: #ddd;
+.remove-photo-button {
+    position: absolute; top: -5px; right: -5px; background-color: var(--danger-color);
+    color: white; border-radius: 50%; width: 20px; height: 20px;
+    display: flex; justify-content: center; align-items: center; cursor: pointer;
 }
-/* ==================================== */
-/* 📝 モーダル共通スタイル (写真編集画面用) */
-/* 家族設定画面系のモーダルに合わせたデザイン */
-/* ==================================== */
-/* モーダル背景 (画面全体を覆い、中央にモーダルを表示) */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000; /* 最前面に表示 */
-}
-/* モーダル本体 */
-.modal-content {
-    background-color: #fff;
-    padding: 30px 25px; /* 上下のパディングを多めにし、横幅を調整 */
-    border-radius: 10px;
-    width: 85%;
-    max-width: 320px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-.modal-content p {
-    font-size: 1.0em;
-    font-weight: 500;
-    margin-bottom: 25px;
-    line-height: 1.5;
-    color: #333; /* テキストカラーを濃いめに */
-}
-/* モーダル内のボタンエリア */
-.modal-buttons {
-    display: flex;
-    justify-content: space-between; /* 均等な間隔 */
-    gap: 15px; /* ボタン間の間隔 */
-}
-.modal-buttons button {
-    flex: 1;
-    padding: 10px 5px;
-    border-radius: 6px; /* 角を少し丸める */
-    font-size: 1em;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.2s;
-}
-/* 実行アクションボタン (例: 「はい」) */
-/* 家族招待画面の青いボタン */
-.modal-buttons .button-yes {
-    background-color: var(--primary-color, #5bc0de); /* 💡 水色適用 */
-    color: #fff;
-}
-.modal-buttons .button-yes:hover {
-    background-color: #46b8da;
-}
-/* キャンセルアクションボタン (例: 「いいえ」) */
-/* 家族招待画面のグレーのボタン */
-.modal-buttons .button-no {
-    background-color: #e0e0e0;
-    color: #888;
-    border: 1px solid #ccc;
-}
-.modal-buttons .button-no:hover {
-    background-color: #d0d0d0;
-}
-/* 削除モーダルのボタン */
-/* secondary-button: 二次的なアクション/キャンセル (button-noと似た色だが、削除モーダル用) */
-.modal-buttons .secondary-button {
-    background-color: #f0f0f0;
-    color: #333;
-}
-/* 💡 修正箇所: 削除実行ボタン (水色に変更) */
-.modal-buttons .danger-button {
-    background-color: var(--primary-color, #5bc0de); /* 💡 水色適用 */
-    color: #fff;
-}
-.modal-buttons .danger-button:hover {
-    background-color: #46b8da;
-}
-/* ==================================== */
-/* 📝 picture_delete.html 専用スタイル */
-/* ==================================== */
-/* ページ上部の説明テキスト */
-.main-content .description-text {
-    font-size: 0.9em;
-    color: #666;
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    line-height: 1.5;
-}
-/* 削除選択エリア */
-.delete-selection-area {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-/* すべて選択グループ */
-.select-all-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-}
-.select-all-group label {
-    font-size: 1em;
-    padding-left: 0;
-}
-.select-all-group input[type="checkbox"] {
-    margin-right: 8px;
-}
-/* 選択枚数表示 */
-.photo-count {
-    color: var(--primary-color, #5bc0de); /* 💡 水色適用 */
-    font-size: 0.9em;
-}
-/* 写真リスト内の個別のアイテム */
-.photo-item {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    flex-direction: column;
-}
-.photo-item:last-child {
-    border-bottom: none;
-}
-.photo-select-label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    font-weight: normal; /* 太字解除 */
-    cursor: pointer;
-}
-.photo-select-label input[type="checkbox"] {
-    margin-right: 15px;
-    transform: scale(1.2); /* チェックボックスを少し大きく */
-}
-.photo-title {
-    font-size: 0.95em;
-    color: #333;
-    flex-grow: 1;
-}
-.photo-details {
-    display: flex;
-    align-items: center;
-    margin-left: 30px; /* チェックボックスの分インデント */
-    font-size: 0.8em;
-    color: #999;
-}
-.photo-thumbnail {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-right: 10px;
-    border: 1px solid #ddd;
-}
-/* 削除ボタンの色を統一 (写真編集画面の修正内容に合わせる) */
-.danger-button.primary-button {
-    background-color: var(--primary-color, #5bc0de); /* 💡 水色適用 */
-    /* primary-buttonを継承しているが、念のため上書き */
-}
-/* モーダル内のボタンエリア */
-.modal-buttons {
-    display: flex;
-    justify-content: space-between; /* 均等な間隔 */
-    gap: 15px; /* ボタン間の間隔 */
-}
-/* 実行アクションボタン (例: 「はい」) */
-.modal-buttons .button-yes {
-    background-color: var(--primary-color, #5bc0de); /* 💡 水色適用 */
-    color: #fff;
-}
-/* キャンセルアクションボタン (例: 「いいえ」) */
-.modal-buttons .button-no {
-    background-color: #e0e0e0; /* 薄い灰色 */
-    color: #888;
-    border: 1px solid #ccc;
-}
-/* ==================================
-   📝 写真追加確認画面 (picture_add_confirmation.html) 用スタイル
-   ================================== */
-
-/* フォームページ共通のメインコンテンツ設定は既存の .main-content .form-page に依存 */
-
-/* 確認情報コンテナ */
+/* 確認画面 */
 .confirmation-section {
-    background-color: #fff;
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background-color: #fff; border-radius: var(--radius); padding: 20px;
+    margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-
-/* 確認項目のグループ */
 .confirmation-group {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
+    display: flex; justify-content: space-between; padding: 10px 0;
     border-bottom: 1px dashed var(--border-color);
 }
-
-.confirmation-group:last-child {
-    border-bottom: none;
-}
-
-.confirmation-label {
-    font-weight: bold;
-    color: var(--text-color);
-    flex-shrink: 0; /* 幅を固定 */
-    margin-right: 15px;
-}
-
-.confirmation-value {
-    color: #555;
-    text-align: right;
-    word-break: break-word; /* 長い値の折り返し */
-}
-
-/* プレビューエリア */
-.confirmation-photo-preview {
-    text-align: center;
-    padding: 15px 0;
-    margin-bottom: 20px;
-}
-
-.confirmation-photo-preview img {
-    max-width: 100%;
-    height: auto;
-    max-height: 250px; /* プレビューの最大高さを制限 */
-    border-radius: var(--radius);
-    object-fit: contain;
-    border: 1px solid var(--light-gray);
-}
-
-/* タグの表示（子ども、フリーワードなど） */
-.tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end; /* 右寄せにする */
-    gap: 8px; /* タグ間のスペース */
-}
-
-.tag-item {
-    background-color: var(--secondary-accent); /* アクセントカラーを使用 */
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.85em;
-    font-weight: bold;
-}
-
-/* 確定ボタン（送信ボタン）は既存の .primary-button に依存 */
-
-/* 縦並びのボタンのグループ */
-.button-group-vertical {
-    display: flex;
-    flex-direction: column; 
-    gap: 15px; /* ボタン間の間隔 */
-    margin-top: 30px;
-}
-
-/* primary-buttonの共通スタイル (幅を100%にする設定が重要) */
-.primary-button {
-    /* ... その他のスタイル ... */
-    width: 100%; /* これで幅が親要素いっぱいに広がる */
-    /* ... その他のスタイル ... */
-}
-
-/* 修正ボタンのデザイン (白背景、水色枠線、水色文字) */
-.secondary-color-button {
-    background-color: #fff; 
-    color: var(--primary-color); 
-    border: 1px solid var(--primary-color); 
-}
+.confirmation-group:last-child { border-bottom: none; }
+.confirmation-label { font-weight: bold; color: var(--text-color); }
+.confirmation-value { color: #555; text-align: right; word-break: break-word; }
