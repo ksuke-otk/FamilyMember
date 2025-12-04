@@ -3,57 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vivi - ログアウト</title>
+    <title>vivi - ログイン</title>
     <link rel="stylesheet" href="vivi_login_logout_style.css">
-    <link rel="stylesheet" href="vivi_album_style.css"> 
+    <style>
+        /* ログインリンク用スタイル */
+        .login-link-container {
+            display: flex;
+            justify-content: flex-end; /* 右寄せ */
+            margin-bottom: 20px;
+        }
+
+        .login-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary-color, #6ec6ff); /* メインカラー */
+            font-weight: bold;
+            font-size: 0.95em;
+            padding: 8px 16px;
+            border: 1px solid var(--primary-color, #6ec6ff);
+            border-radius: 20px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .login-link:hover {
+            background-color: var(--primary-color, #6ec6ff);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(110, 198, 255, 0.3);
+        }
+
+        .login-link .icon {
+            margin-right: 6px;
+            font-size: 1.1em;
+        }
+
+        .login-link::after {
+            content: '→';
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+
+        .login-link:hover::after {
+            transform: translateX(3px);
+        }
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        
-        <header class="top-bar">
-            <div class="header-left">
-                <a href="album_setting.html" class="icon-button back-button">&lt; 戻る</a>
-            </div>
-            <div class="header-center"><h1>ログアウト</h1></div>
-            <div class="header-right"></div>
+    <div class="login-container">
+        <header>
+            <h1>家族アルバム vivi 📷</h1>
         </header>
+        <main>
+            <nav class="login-link-container">
+               <a href="login.html" class="login-link">
+                   <span class="icon">🔑</span> ログインはこちら
+               </a>
+            </nav>
 
-        <main class="main-content form-page">
-            
-            <div class="logout-box">
-                <p class="logout-message">
-                    ログアウトすると、次回ご利用時に<br>再度ログインが必要です。
-                </p>
-                <p class="confirmation-text">
-                    ログアウトしますか？
-                </p>
-                
-                <div class="button-group">
-                    <button type="button" class="primary-button logout-button" onclick="handleLogout()">
-                        ログアウト
+            <h2>家族新規登録</h2>
+
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">メールアドレス</label>
+                    <input type="email" id="email" name="email" placeholder="mail@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">パスワード </label>
+                    <input type="password" id="password" name="password" placeholder="パスワードを入力" required>
+                        
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility()">
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
                     </button>
                 </div>
-            </div>
-            
-        </main>
-        
-        <nav class="bottom-nav">
-            <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
-            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
-            <a href="family_member.html" class="nav-item active"><span class="icon">👪</span>家族</a>
-        </nav>
 
+                <div class="form-group">
+                    <label for="family-name">名前</label>
+                    <input type="text" id="family-name" name="family-name" placeholder="例: 山田 太郎">
+                </div>
+
+                <div class="form-group">
+                    <label for="family-relation">関係性 </label>
+                    <select id="family-relation" name="family-relation" required onchange="toggleOtherRelationInput()">
+                        <option value="">選択してください</option>
+                        <option value="father">父</option>
+                        <option value="mother">母</option>
+                        <option value="other">その他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="other-relation-input-group">
+                    <label for="other-relation">その他の関係性 (具体的に)</label>
+                    <input type="text" id="other-relation" name="other-relation" placeholder="例: 祖父,叔母,従兄弟など">
+                </div>
+
+                <div class="form-group">
+                    <label for="family-permission">権限 <span class="required">*</span></label>
+                    <select id="family-permission" name="permission" required>
+                        <option value="">選択してください</option>
+                        <option value="admin">管理者</option>
+                        <option value="post">投稿可能</option>
+                        <option value="view">閲覧のみ</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="primary-button">新規登録</button>
+            </form>
+        </main>
     </div>
-    
+
     <script>
-        function handleLogout() {
-            // ログアウト処理のシミュレーション
-            console.log('ログアウトを実行します。');
-            //alert('ログアウトしました。');
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
             
-            // ログアウト後、ログイン画面へ遷移
-            location.href = 'login.html'; 
+            const eyeOffSvg = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.96 9.96 0 0 1 12 4c7 0 11 8 11 8a18.45 18.45 0 0 1-5.06 5.94"></path><path d="M10.94 11.94A2.5 2.5 0 0 0 12 14c.73 0 1.4-.2 1.94-.56"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            const eyeOnSvg = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = eyeOffSvg;
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = eyeOnSvg;
+            }
         }
+
+        function toggleOtherRelationInput() {
+            const selectElement = document.getElementById('family-relation');
+            const otherInputGroup = document.getElementById('other-relation-input-group');
+            const otherInput = document.getElementById('other-relation');
+
+            if (selectElement.value === 'other') {
+                otherInputGroup.style.display = 'block';
+                otherInput.setAttribute('required', 'required'); 
+                otherInputGroup.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            } else {
+                otherInputGroup.style.display = 'none';
+                otherInput.removeAttribute('required'); 
+                otherInput.value = ''; 
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const form = document.getElementById('login-form');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const relation = document.getElementById('family-relation').value;
+            const otherRelation = document.getElementById('other-relation').value;
+            const permission = document.getElementById('family-permission').value;
+
+            // 💡 修正: バリデーションに !permission を追加
+            if (!email || !password || !relation || !permission || (relation === 'other' && !otherRelation)) {
+                console.error('エラー: すべての必須フィールドを入力してください。');
+                const button = document.querySelector('.primary-button');
+                button.style.backgroundColor = 'var(--danger-color)';
+                setTimeout(() => {
+                    button.style.backgroundColor = 'var(--primary-color)';
+                }, 1000);
+                return; 
+            }
+            
+            console.log('--- フォームデータ ---');
+            console.log('メールアドレス:', email);
+            console.log('パスワード:', '********');
+            console.log('名前:', document.getElementById('family-name').value);
+            
+            if (relation === 'other') {
+                console.log('関係性:', otherRelation);
+            } else {
+                console.log('関係性:', relation);
+            }
+            console.log('権限:', permission);
+
+            form.reset(); 
+            toggleOtherRelationInput();
+            
+            console.log('登録成功: 認証とユーザー登録が完了しました。');
+            location.href = 'login.html';
+        }
+        
+        window.onload = function() {
+            document.getElementById('family-relation').addEventListener('change', toggleOtherRelationInput);
+            toggleOtherRelationInput(); 
+        };
     </script>
 </body>
 </html>
