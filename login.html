@@ -20,8 +20,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">パスワード</label>
+                    <label for="password">パスワード </label>
+                    <!-- 注: password-input-wrapperは削除し、form-groupに position: relative を適用します -->
                     <input type="password" id="password" name="password" placeholder="パスワードを入力" required>
+                        
+                    <!-- パスワード表示切替ボタン (form-groupを基準に絶対配置されます) -->
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility()">
+                        <!-- SVGアイコン (Lucide icon: Eye) -->
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
                 </div>
 
                 <button type="submit" class="primary-button">ログイン</button>
@@ -38,6 +48,38 @@
     </div>
 
     <script>
+                        /**
+         * パスワードの入力タイプを 'password' と 'text' の間で切り替え、
+         * それに応じてアイコンも切り替えます。
+         */
+         function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            
+            // 目を閉じたアイコン (Lucide icon: EyeOff) のSVGパス
+            const eyeOffSvg = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.96 9.96 0 0 1 12 4c7 0 11 8 11 8a18.45 18.45 0 0 1-5.06 5.94"></path><path d="M10.94 11.94A2.5 2.5 0 0 0 12 14c.73 0 1.4-.2 1.94-.56"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            
+            // 目を開いたアイコン (Lucide icon: Eye) のSVGパス
+            const eyeOnSvg = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = eyeOffSvg; // 目を閉じたアイコンを表示
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = eyeOnSvg; // 目を開いたアイコンを表示
+            }
+        }
+
+        
+
+
+
+
+
+
+    　　//後で消してくださいぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃぃｌーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
         function handleLogin(event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
@@ -50,6 +92,10 @@
                 alert('メールアドレスとパスワードを入力してください。');
             }
         }
+
+        //ここまでぇぇぇぇぇぇぇぇぇぇぇぇぇぇぇーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+
     </script>
 </body>
 </html>
