@@ -49,20 +49,53 @@
             border-radius: 4px;
             margin-left: 5px;
         }
-        /* 💡 修正箇所: 管理者一覧内の削除ボタンの位置調整 */
-        /* vivi_family_style.css で .delete-icon に position: absolute が設定されているのを打ち消す */
+        /* 💡 修正箇所: 管理者一覧内の削除ボタン（テキスト版）のスタイル */
         .admin-item .delete-icon {
-            position: static; /* 絶対配置を解除 */
-            transform: none; /* 中央寄せ変形を解除 */
-            margin-left: 10px; /* 左側に少し余白 */
-            color: var(--light-gray);
+            position: static; 
+            transform: none; 
+            margin-left: 10px; 
+            color: var(--danger-color); /* 赤文字にする */
+            border: 1px solid var(--danger-color); /* 赤枠線を追加 */
+            border-radius: 6px;
+            padding: 4px 10px;
             cursor: pointer;
-            font-size: 1.2em;
-            border: none;
-            background: none;
+            font-size: 0.9em;
+            font-weight: bold;
+            background: #fff;
+            transition: all 0.2s;
         }
         .admin-item .delete-icon:hover {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+
+        /* アルバム削除エリアのスタイル */
+        .danger-zone {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #fff5f5;
+            border: 1px solid #ffcccc;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .danger-zone h3 {
             color: var(--danger-color);
+            margin-top: 0;
+            font-size: 1em;
+        }
+        .delete-all-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .delete-all-btn:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
@@ -128,6 +161,16 @@
                 </button>
                 
             </div>
+
+            <div class="danger-zone">
+                <h3>⚠️ 危険な操作</h3>
+                <p style="font-size: 0.9em; color: #555; margin-bottom: 15px;">
+                    このアルバムと保存されているすべての写真・動画を完全に削除します。この操作は取り消せません。
+                </p>
+                <button class="delete-all-btn" onclick="showDeleteAllModal()">
+                    アルバム全体を削除
+                </button>
+            </div>
             
         </main>
 
@@ -144,8 +187,8 @@
                         <input type="email" id="new-admin-email" required placeholder="mail@example.com">
                     </div>
                     <div class="modal-buttons" style="margin-top:20px;">
-                        <button type="button" class="button-no" onclick="hideAddAdminModal()">キャンセル</button>
                         <button type="submit" class="button-yes">追加</button>
+                        <button type="button" class="button-no" onclick="hideAddAdminModal()">キャンセル</button>
                     </div>
                 </form>
             </div>
@@ -157,6 +200,20 @@
                 <div class="modal-buttons">
                     <button class="button-no" onclick="hideDeleteAdminModal()">キャンセル</button>
                     <button class="button-yes danger-button" onclick="deleteAdminConfirmed()" style="background-color:var(--danger-color); color:white;">削除</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="delete-all-modal" class="modal-overlay" style="display:none;">
+            <div class="modal-content">
+                <h2 style="color: var(--danger-color); font-size: 1.2em; margin-bottom: 15px;">本当に削除しますか？</h2>
+                <p style="text-align:center; margin-bottom:20px;">
+                    アルバム内の全てのデータが失われます。<br>
+                    <strong>この操作は元に戻せません。</strong>
+                </p>
+                <div class="modal-buttons">
+                    <button class="button-no" onclick="hideDeleteAllModal()">キャンセル</button>
+                    <button class="button-yes danger-button" onclick="deleteAllAlbumConfirmed()" style="background-color:var(--danger-color); color:white;">完全に削除</button>
                 </div>
             </div>
         </div>
@@ -219,10 +276,10 @@
             
             if (section.style.display === 'block') {
                 section.style.display = 'none';
-                icon.textContent = '∨'; // 閉じた状態
+                icon.textContent = '∨'; 
             } else {
                 section.style.display = 'block';
-                icon.textContent = '∧'; // 開いた状態
+                icon.textContent = '∧'; 
             }
         }
 
@@ -237,14 +294,14 @@
                 const item = document.createElement('div');
                 item.className = 'admin-item';
                 
-                // 自分自身かどうかで表示を変える
                 const nameDisplay = admin.isSelf 
                     ? `<span class="admin-name">${admin.name}</span><span class="self-badge">あなた</span>` 
                     : `<span class="admin-name">${admin.name}</span>`;
                 
+                // 💡 修正箇所: ゴミ箱アイコンから「削除」テキストボタンに変更
                 const deleteButton = admin.isSelf 
-                    ? '' // 自分は削除できない
-                    : `<button class="icon-button delete-icon" onclick="showDeleteAdminModal('${admin.id}', '${admin.name}')">🗑️</button>`;
+                    ? '' 
+                    : `<button class="delete-icon" onclick="showDeleteAdminModal('${admin.id}', '${admin.name}')">削除</button>`;
 
                 item.innerHTML = `
                     <div class="admin-info">
@@ -260,10 +317,9 @@
         }
 
         // ---------------------------------------------------------
-        // 追加機能 (モーダル制御)
+        // 管理者追加機能 (モーダル制御)
         // ---------------------------------------------------------
         function showAddAdminModal() {
-            // フォームのリセット
             document.getElementById('new-admin-name').value = '';
             document.getElementById('new-admin-email').value = '';
             document.getElementById('add-admin-modal').style.display = 'flex';
@@ -278,7 +334,6 @@
             const name = document.getElementById('new-admin-name').value;
             const email = document.getElementById('new-admin-email').value;
 
-            // 新規管理者を追加 (シミュレーション)
             const newAdmin = {
                 id: 'admin' + Date.now(),
                 name: name,
@@ -287,14 +342,12 @@
             };
             adminList.push(newAdmin);
 
-            // リスト再描画
             renderAdminList();
             hideAddAdminModal();
-            // alert(`${name} さんを管理者に追加しました。`);
         }
 
         // ---------------------------------------------------------
-        // 削除機能 (モーダル制御)
+        // 管理者削除機能 (モーダル制御)
         // ---------------------------------------------------------
         function showDeleteAdminModal(id, name) {
             deleteTargetId = id;
@@ -309,11 +362,32 @@
 
         function deleteAdminConfirmed() {
             if (deleteTargetId) {
-                // 配列から削除
                 adminList = adminList.filter(admin => admin.id !== deleteTargetId);
                 renderAdminList();
             }
             hideDeleteAdminModal();
+        }
+
+        // ---------------------------------------------------------
+        // アルバム全体削除機能
+        // ---------------------------------------------------------
+        function showDeleteAllModal() {
+            document.getElementById('delete-all-modal').style.display = 'flex';
+        }
+
+        function hideDeleteAllModal() {
+            document.getElementById('delete-all-modal').style.display = 'none';
+        }
+
+        function deleteAllAlbumConfirmed() {
+            // 削除処理のシミュレーション
+            console.log('アルバム全体を削除しました。');
+            
+            // モーダルを閉じる
+            hideDeleteAllModal();
+
+            // ログイン画面へ遷移
+            location.href = 'login.html';
         }
     </script>
 </body>
