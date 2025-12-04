@@ -3,120 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>家族アルバムvivi - 写真編集確認</title>
-    <link rel="stylesheet" href="vivi_album_style.css"> 
+    <title>家族アルバムvivi - メンバー情報編集確認</title>
+    <link rel="stylesheet" href="vivi_family_style.css"> 
+    <style>
+        /* 💡 修正: ヘッダー左側のリンク/ボタンの下線を削除 */
+        .top-bar .header-left a, 
+        .top-bar .header-left button {
+            text-decoration: none !important; /* 強制的に下線を削除 */
+            color: #fff; /* 文字色を白に維持 */
+        }
+        /* secondary-button の上部にある form-actions の flex-direction を修正 */
+        .form-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* ボタン間の間隔 */
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
         <header class="top-bar">
-            <div class="header-left">
-            </div>
-            <div class="header-center"><h1>写真編集確認</h1></div>
-            <div class="header-right"></div>
+           <div class="header-left">
+                <button class="icon-button back-button" onclick="history.back()">＜ 修正する</button>
+           </div>
+           <div class="header-center"><h1>メンバー情報編集確認</h1></div>
+           <div class="header-right"></div>
         </header>
 
         <main class="main-content form-page">
-            <div class="confirmation-box">
-                <p style="text-align: center; font-weight: bold;">
-                    以下の内容で写真を編集します。よろしいですか？
-                </p>
-                
-                <div class="confirmation-photo-preview">
-                    <img id="confirm-photo-preview" src="path/to/current/photo.jpg" alt="編集写真プレビュー">
-                </div>
-
+            <h2 class="section-title">以下の内容に編集しますか？</h2>
+            
+            <section class="detail-section confirm-section">
                 <div class="detail-group">
-                    <label>題名</label>
-                    <p class="detail-value" id="confirm-caption"></p>
+                    <label>名前</label>
+                    <p class="detail-value" id="confirm-name">（表示エリア）</p>
                 </div>
-
                 <div class="detail-group">
-                    <label>撮影日</label>
-                    <p class="detail-value" id="confirm-date"></p>
+                    <label>関係性</label>
+                    <p class="detail-value" id="confirm-relation">（表示エリア）</p>
                 </div>
-
                 <div class="detail-group">
-                    <label>アルバム</label>
-                    <div class="tag-list" id="confirm-kids-list">
-                        </div>
+                    <label>権限</label>
+                    <p class="detail-value permission-view" id="confirm-permission">（表示エリア）</p>
                 </div>
-
-                <div class="button-group">
-                    <button type="button" class="primary-button" onclick="handleEditConfirmed()">
-                        <span class="icon">✓</span> 変更を確定する
-                    </button>
-                    <button type="button" class="primary-button secondary-color-button" onclick="backToEdit()">
-                        修正する
-                   </button>
-                </div>
+            </section>
+            
+            <div class="form-actions">
+                 <button type="button" class="primary-button large-button" onclick="handleUpdateConfirmed()">
+                    更新完了
+                 </button>
+                 <button type="button" class="secondary-button large-button" onclick="history.back()" style="margin-top: 0;">
+                    修正する
+                 </button>
             </div>
         </main>
         
         <nav class="bottom-nav">
-            <a href="top.html" class="nav-item active"><span class="icon">🖼️</span>アルバム</a>
-            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
-            <a href="family_member.html" class="nav-item"><span class="icon">👪</span>家族</a>
+             <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+             <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+             <a href="family_member.html" class="nav-item active"><span class="icon">👪</span>家族</a>
         </nav>
     </div>
 
     <script>
-        // 💡 編集画面で利用可能な子どもの名前のマッピング (編集画面のHTMLに合わせる)
-        const kidMap = {
-            'hana': '山田 花子',
-            'taro': '佐藤 太郎',
-            'jiro': '田中 次郎'
-        };
+        let currentMemberId;
 
-        // ----------------------------------------------------
-        // 💡 確定ボタン押下時の処理 (最終更新処理)
-        // ----------------------------------------------------
-        function handleEditConfirmed() {
-            // 実際はここでAPIコールなどが行われます
-            console.log('写真情報の最終更新を完了しました。');
-            
-            // 編集完了後、写真詳細画面に遷移
-            location.href = 'picture_detail.html';
+        /**
+         * 最終的な更新処理を実行し、メンバー詳細画面に遷移
+         */
+        function handleUpdateConfirmed() {
+            // 💡 更新処理のシミュレーション
+            console.log(`ID ${currentMemberId} のメンバー情報を最終的に更新しました。`);
+
+            // メンバー詳細画面に遷移
+            location.href = `member_detail.html?id=${currentMemberId}`;
         }
-
-        // ----------------------------------------------------
-        // 💡 修正ボタン押下時の処理 (前の画面に戻る)
-        // ----------------------------------------------------
-        function backToEdit() {
-            // 現在のURLパラメータをそのまま引き継いで前の画面に戻る
-            // picture_edit.html に戻り、フォームにデータを再設定できるようにする
-            location.href = `picture_edit.html${window.location.search}`;
-        }
-
-
-        // ----------------------------------------------------
-        // 💡 URLパラメータからデータを取得し、画面に表示
-        // ----------------------------------------------------
+        
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            
-            const caption = params.get('caption') || '（未入力）';
-            const date = params.get('date') || '（未入力）';
-            const kidsParam = params.get('kids') || '';
-            const kidsArray = kidsParam ? kidsParam.split(',') : [];
+            // メンバー情報とIDを取得
+            currentMemberId = params.get('id') || '1'; // 編集対象のID
+            const name = params.get('name') || '（未入力）';
+            const relationValue = params.get('relation') || '';
+            const permissionValue = params.get('permission') || '';
 
-            // 画面表示
-            document.getElementById('confirm-caption').textContent = caption;
-            document.getElementById('confirm-date').textContent = date;
-            
-            // 子どもタグの表示
-            const kidsListElement = document.getElementById('confirm-kids-list');
-            if (kidsArray.length > 0) {
-                kidsListElement.innerHTML = kidsArray.map(kidValue => {
-                    const kidName = kidMap[kidValue] || `(${kidValue})`; // マッピングから名前を取得
-                    return `<span class="tag-item">${kidName}</span>`;
-                }).join('');
-            } else {
-                kidsListElement.innerHTML = '<span class="tag-item" style="background-color:#ccc;">選択なし</span>';
+            // 権限の表示テキストとクラスを決定
+            let permissionText = '';
+            let permissionClass = '';
+            switch (permissionValue) {
+                case 'admin':
+                    permissionText = '管理者';
+                    permissionClass = 'permission-admin';
+                    break;
+                case 'post':
+                    permissionText = '写真投稿・閲覧';
+                    permissionClass = 'permission-post';
+                    break;
+                case 'view':
+                    permissionText = '閲覧のみ';
+                    permissionClass = 'permission-view';
+                    break;
+                default:
+                    permissionText = '未設定';
+                    permissionClass = 'permission-view';
             }
+
+            // 関係性のテキストを決定 (member_edit.htmlのoption値に合わせる)
+            let relationText = '';
+            const relationOptions = {
+                'father': '父',
+                'mother': '母',
+                'grandfather': '祖父',
+                'grandmother': '祖母',
+                'child': '子ども'
+            };
+            relationText = relationOptions[relationValue] || relationValue || '未入力';
+
+
+            // 画面に値をセット
+            document.getElementById('confirm-name').textContent = name;
+            document.getElementById('confirm-relation').textContent = relationText;
             
-            // プレビュー画像はここでは静的に "path/to/current/photo.jpg" のままにします。
-            // 実際のアプリケーションでは、IDなどから実際の画像のURLを取得する必要があります。
-            // document.getElementById('confirm-photo-preview').src = actualPhotoUrl; 
+            const permissionElement = document.getElementById('confirm-permission');
+            permissionElement.textContent = permissionText;
+            permissionElement.className = `detail-value ${permissionClass}`;
         });
     </script>
 </body>
