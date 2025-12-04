@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家族アルバムvivi - メンバー詳細</title>
     <link rel="stylesheet" href="vivi_family_style.css">
+    <style>
+        /* 削除ボタン用の追加スタイル */
+        .delete-action-btn {
+            background-color: #fff;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            transition: background-color 0.2s;
+        }
+        .delete-action-btn:hover {
+            background-color: #fff5f5;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -14,10 +26,7 @@
             </div>
             <div class="header-center"><h1 id="detail-title">メンバー詳細</h1></div>
             <div class="header-right">
-                <button class="icon-button edit-button" id="edit-button-link">
-                    <span class="icon">✎</span>
-                </button>
-            </div>
+                </div>
         </header>
 
         <main class="main-content">
@@ -36,18 +45,36 @@
                 </div>
             </section>
 
-            </main>
-            <nav class="bottom-nav">
-                 <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
-                 <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
-                 <a href="family_member.html" class="nav-item active"><span class="icon">👪</span>家族</a>
-            </nav>    
+            <div class="form-actions" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
+                <button type="button" class="primary-button large-button" id="edit-btn">
+                    編集
+                </button>
+                <button type="button" class="primary-button large-button delete-action-btn" id="delete-btn">
+                    削除
+                </button>
+            </div>
+
+        </main>
+
+        <nav class="bottom-nav">
+             <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
+             <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+             <a href="family_member.html" class="nav-item active"><span class="icon">👪</span>家族</a>
+        </nav>    
     </div>
 
-
+    <div id="delete-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <p id="modal-message">メンバーを削除しますか？</p>
+            <div class="modal-buttons">
+                <button class="button-yes" onclick="deleteMemberConfirmed()">はい</button>
+                <button class="button-no" onclick="hideDeleteModal()">いいえ</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // メンバーデータ定義 (変更なし)
+        // メンバーデータ定義
         const members = {
             '1': {
                 name: '私の名前',
@@ -65,14 +92,16 @@
             }
         };
 
+        // 現在表示しているメンバーIDを保持
+        let currentMemberId = null;
+
         function loadMemberDetail() {
             // URLからクエリパラメータを取得
             const params = new URLSearchParams(window.location.search);
-            const memberId = params.get('id');
-            const data = members[memberId];
+            currentMemberId = params.get('id');
+            const data = members[currentMemberId];
 
             if (!data) {
-                // データが見つからない場合の処理 (例: エラーメッセージ表示)
                 document.getElementById('detail-title').textContent = 'メンバーが見つかりません';
                 document.querySelector('.main-content').innerHTML = '<p style="text-align:center; margin-top: 50px;">指定されたメンバー情報がありません。</p>';
                 return;
@@ -80,9 +109,6 @@
 
             // 1. ヘッダーを更新
             document.getElementById('detail-title').textContent = `メンバー詳細 (${data.title_name})`;
-            document.getElementById('edit-button-link').onclick = () => {
-                location.href = `member_edit.html?id=${memberId}`;
-            };
 
             // 2. 詳細情報を更新
             document.getElementById('member-name').textContent = data.name;
@@ -92,10 +118,38 @@
             const permissionElement = document.getElementById('member-permission');
             permissionElement.textContent = data.permission;
             permissionElement.className = `detail-value ${data.permission_class}`;
+
+            // 💡 3. ボタンのリンク設定
+            // 編集ボタン
+            document.getElementById('edit-btn').onclick = () => {
+                location.href = `member_edit.html?id=${currentMemberId}`;
+            };
+            // 削除ボタン (モーダル表示)
+            document.getElementById('delete-btn').onclick = () => {
+                showDeleteModal();
+            };
+        }
+
+        // --- 削除モーダル関連処理 ---
+        function showDeleteModal() {
+            document.getElementById('delete-modal').style.display = 'flex';
+        }
+
+        function hideDeleteModal() {
+            document.getElementById('delete-modal').style.display = 'none';
+        }
+
+        function deleteMemberConfirmed() {
+            // 削除処理のシミュレーション
+            console.log(`ID ${currentMemberId} を削除しました`);
+            // モーダルを閉じる
+            hideDeleteModal();
+            // 一覧画面へ戻る
+            location.href = 'family_member.html';
         }
 
         // ページ読み込み時に実行
-        loadMemberDetail();
+        document.addEventListener('DOMContentLoaded', loadMemberDetail);
     </script>
 </body>
 </html>
