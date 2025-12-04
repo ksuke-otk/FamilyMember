@@ -5,6 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家族アルバムvivi - 家族設定</title>
     <link rel="stylesheet" href="vivi_family_style.css">
+    <style>
+        /* 💡 今回の修正用の追加スタイル */
+        
+        /* リストアイテムをFlexboxにして横並びを整える */
+        .member-item {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px !important;
+        }
+
+        /* 名前などの情報エリアを広げる */
+        .member-item .info {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+
+        /* ボタンをまとめるエリア */
+        .action-area {
+            display: flex;
+            gap: 10px; /* ボタン同士の間隔 */
+            align-items: center;
+        }
+
+        /* 「編集」「削除」テキストボタンのスタイル */
+        .text-btn {
+            padding: 6px 12px;
+            font-size: 0.9em;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #fff;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        /* 編集ボタンの色設定 */
+        .text-btn.edit {
+            border: 1px solid var(--primary-color, #6ec6ff);
+            color: var(--primary-color, #6ec6ff);
+        }
+        .text-btn.edit:hover {
+            background-color: var(--primary-color, #6ec6ff);
+            color: #fff;
+        }
+
+        /* 削除ボタンの色設定 */
+        .text-btn.delete {
+            border: 1px solid var(--danger-color, #e74c3c);
+            color: var(--danger-color, #e74c3c);
+        }
+        .text-btn.delete:hover {
+            background-color: var(--danger-color, #e74c3c);
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -13,7 +68,7 @@
             <div class="header-center"><h1>家族設定</h1></div>
             <div class="header-right">
                 <a href="album_setting.html" class="nav-item"><span class="icon">⚙️</span></a>
-                </div>
+            </div>
         </header>
 
         <nav class="member-tabs">
@@ -23,9 +78,6 @@
 
         <main class="main-content">
             <section id="family-section" class="member-section active">
-
-
-
 
                 <button class="add-button primary-button" onclick="location.href='member_add.html'">
                     <span class="icon">＋</span> 新しい家族を招待する
@@ -37,8 +89,10 @@
                             <p><span class="name">私の名前 (父)</span></p>
                             <p><span class="role">管理者</span></p>
                         </div>
-                        <span class="edit-icon" onclick="event.stopPropagation(); location.href='member_edit.html?id=1'">✎</span>
-                        <span class="delete-icon" onclick="event.stopPropagation(); showDeleteModal('私の名前 (父)', '1')">🗑️</span>
+                        <div class="action-area">
+                            <button class="text-btn edit" onclick="event.stopPropagation(); location.href='member_edit.html?id=1'">編集</button>
+                            <button class="text-btn delete" onclick="event.stopPropagation(); showDeleteModal('私の名前 (父)', '1')">削除</button>
+                        </div>
                     </li>
 
                     <li class="member-item">
@@ -46,10 +100,13 @@
                             <p><span class="name">妻の名前 (母)</span></p>
                             <p><span class="role">投稿可能</span></p>
                         </div>
-                        <span class="edit-icon" onclick="event.stopPropagation(); location.href='member_edit.html?id=2'">✎</span>
-                        <span class="delete-icon" onclick="event.stopPropagation(); showDeleteModal('妻の名前 (母)', '2')">🗑️</span>
+                        <div class="action-area">
+                            <button class="text-btn edit" onclick="event.stopPropagation(); location.href='member_edit.html?id=2'">編集</button>
+                            <button class="text-btn delete" onclick="event.stopPropagation(); showDeleteModal('妻の名前 (母)', '2')">削除</button>
+                        </div>
                     </li>
                 </ul>
+
                 <div class="permission-info-box">
                     <h3 class="permission-title">権限について</h3>
                     <div class="permission-item">
@@ -112,20 +169,12 @@
     <script>
         let memberToDeleteId = null;
 
-        /**
-         * タブとセクションの表示を切り替える
-         * @param {string} sectionId - 'family' または 'kids'
-         * @param {HTMLElement} element - クリックされたタブボタン
-         */
-
         function showSection(sectionId, element) {
             document.querySelectorAll('.member-tabs .tab').forEach(tab => tab.classList.remove('active'));
-            // elementが渡されていない場合（初期ロード時）、IDで要素を取得
             const targetTab = element || document.getElementById(`tab-${sectionId}`);
             if (targetTab) {
                 targetTab.classList.add('active');
             }
-
             
             document.querySelectorAll('.member-section').forEach(section => section.style.display = 'none');
             document.getElementById(`${sectionId}-section`).style.display = 'block';
@@ -144,22 +193,21 @@
 
         function deleteMemberConfirmed() {
             if (memberToDeleteId) {
-                const memberElement = document.querySelector(`.member-item > .delete-icon[onclick$="'${memberToDeleteId}')"]`).closest('.member-item');
-                if (memberElement) memberElement.remove();
-                //alert(`ID ${memberToDeleteId} のメンバーを削除しました。`);
+                // 削除対象の行を特定して削除
+                // 注意: class構造が変わったため、親要素の取得ロジックを修正
+                const deleteBtn = document.querySelector(`.text-btn.delete[onclick*="'${memberToDeleteId}')"]`);
+                if(deleteBtn) {
+                    const memberElement = deleteBtn.closest('.member-item');
+                    if (memberElement) memberElement.remove();
+                }
             }
             hideDeleteModal(); 
         }
-        // 💡 ページロード時の初期表示ロジック
+
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const activeTabParam = urlParams.get('tab');
-            
-            // URLパラメータをチェック: 'kid' があれば子どもタブ、なければ家族タブを初期表示
             const initialSectionId = (activeTabParam === 'kid') ? 'kids' : 'family';
-            
-            // showSection関数を実行し、指定されたタブとセクションを表示
-            // 第二引数にnullを渡し、関数内でIDから要素を取得するようにしました
             showSection(initialSectionId, null); 
         });
     </script>
