@@ -129,24 +129,25 @@ input:focus {
 /* ⭐ パスワード入力欄とボタンのレイアウト修正 (ここが重要) ⭐ */
 /* ================================================= */
 
-/* パスワード表示トグルボタンのスタイル */
+/* パスワード表示切替ボタン */
 .password-toggle {
-    /* form-group (position: relative) を基準に絶対配置 */
-    position: absolute; 
-    right: 5px; /* 入力フィールドの右端から5px */
-    
-    /* ラベルの高さと入力フィールドのborder/paddingを考慮して、入力フィールドの垂直中央に配置 */
-    /* ラベルの下から入力フィールドが始まるため、topは入力フィールドの真ん中を指すよう調整が必要です */
-    top: calc(18px + 50%); /* labelの高さの目安(約24px) + inputの高さの半分 */
-    transform: translateY(-50%); /* ボタン自体を上方向に半分の高さだけ移動させて中央揃えにする */
-    
+    position: absolute; /* 親要素の.form-groupを基準に配置 */
+    /* .form-group内の右端から15px (入力フォームの右パディング分) */
+    right: 15px; 
+    /* 入力フォームの高さの中央に配置 */
+    top: 50%;
+    transform: translateY(-50%);
+    /* その他のスタイルはそのまま */
     background: none;
     border: none;
     cursor: pointer;
-    padding: 8px; 
-    color: #888;
-    line-height: 1;
-    z-index: 10;
+    padding: 5px;
+    color: #999;
+}
+/* .form-groupにrelativeを設定して、password-toggleの基準にする */
+.form-group {
+    position: relative; /* 子要素のabsoluteの基準点 */
+    margin-bottom: 20px;
 }
 
 /* パスワード入力フィールドの右側に、ボタンのスペースを確保する */
@@ -159,11 +160,33 @@ input[type="password"] {
     width: 20px;
     height: 20px;
 }
-
 /* ================================================= */
 /* ⭐ パスワード入力欄とボタンのレイアウト修正 (ここまで) ⭐ */
 /* ================================================= */
 
+
+
+/* login.html, login_add.html のフォームグループ内の要素 */
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"], /* family-name, other-relation 用 */
+.form-group select /* family-relation 用 */
+{
+    /* 確実に親要素の幅いっぱいに広げる */
+    width: 100%; 
+    padding: 12px 15px;
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box; /* paddingとborderを幅に含める */
+}
+
+/* フォームの必須マーク（*）がはみ出すのを防ぐため、ラベルにも調整 */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
 /* ログインボタン */
 .primary-button {
     width: 100%;
@@ -252,6 +275,50 @@ footer a:hover {
 
     main {
         padding: 20px 15px 30px;
+    }
+}
+/* ログイン/新規登録画面のヘッダー */
+.login-container header {
+    position: relative; /* back-link の基準点とする */
+    padding: 20px 10px;
+    text-align: center;
+}
+
+/* 戻るリンクのスタイル（前回の回答からの修正・採用） */
+.back-link {
+    position: absolute;
+    top: 20px;
+    left: 15px; /* 適切なパディング */
+    font-size: 0.9em;
+    color: var(--text-color); 
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+/* タイトルが戻るボタンと重ならないように、paddingを確保 */
+.login-container header h1 {
+    /* 戻るボタンの領域を確保 */
+    margin-left: 50px; 
+    /* 画面幅が広い場合の右側の調整も考慮 */
+    margin-right: 10px;
+    font-size: 1.5em; 
+    white-space: nowrap; /* タイトルが折り返されないように */
+}
+
+/* スマホでの調整 (既に一部定義されていますが、再確認) */
+@media (max-width: 400px) {
+    .back-link {
+        left: 5px; /* さらに左に寄せる */
+    }
+    .back-link span:not(.icon) { 
+        display: none; /* テキストを非表示にし、アイコンだけにする */
+    }
+    .login-container header h1 {
+        /* アイコンだけになっても、タイトルの位置は確保 */
+        margin-left: 30px; 
+        font-size: 1.4em; 
     }
 }
 /* ==================================== */
@@ -345,4 +412,59 @@ footer a:hover {
 
 .secondary-button:hover {
     background-color: #d0d0d0;
+}
+/* ================================================= */
+/* ⭐ パスワード入力欄とボタンのレイアウト修正 (ここが重要) ⭐ */
+/* ================================================= */
+
+/* .form-groupにrelativeを設定して、password-toggleの基準にする */
+.form-group {
+    position: relative; /* 子要素のabsoluteの基準点 */
+    margin-bottom: 20px;
+}
+
+/* パスワード入力フィールドの右側に、ボタンのスペースを確保する */
+/* 💡 修正: 詳細度を上げて確実に適用させる */
+.form-group input[type="password"],
+.form-group input[type="text"]#password { /* 表示切り替え後のtextタイプにも適用 */
+    /* 余裕を持たせて右側のパディングを確保 */
+    padding-right: 45px !important; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* パスワード表示切替ボタン */
+.password-toggle {
+    position: absolute; /* 親要素の.form-groupを基準に配置 */
+    /* 💡 修正: 右端からの位置を微調整 */
+    right: 10px; 
+    /* 💡 修正: 入力フォームの高さの中央に配置 (top: 50% はラベルの高さの影響を受ける可能性があるため調整) */
+    top: 50%;
+    transform: translateY(-10%); /* ラベルがある場合の微調整（必要に応じて数値を変更） */
+    /* もしラベルを含まないinput自体の高さの中央にしたい場合は、topの計算を変える必要がありますが、
+       簡易的には以下のようにbottom基準にする方法もあります */
+    /* bottom: 5px; */ 
+    
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #999;
+    z-index: 5; /* 入力欄より手前に表示 */
+    display: flex; /* SVGを中央に */
+    align-items: center;
+    justify-content: center;
+    height: 40px; /* タップしやすい高さ */
+}
+
+/* ラベルがある場合のパスワードトグルの位置調整 */
+/* ラベルの高さ(約20-25px)分だけ下にずらす必要がある場合 */
+.form-group label + input + .password-toggle {
+    top: 32px; /* ラベルの下、inputの中央あたりに来るように絶対値で指定する方が安定する場合が多い */
+    transform: none;
+}
+
+.password-toggle svg {
+    width: 20px;
+    height: 20px;
 }
