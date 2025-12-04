@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家族アルバムvivi - 子ども情報</title>
     <link rel="stylesheet" href="vivi_family_style.css">
+    <style>
+        /* 削除ボタン用の追加スタイル */
+        .delete-action-btn {
+            background-color: #fff;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            transition: background-color 0.2s;
+        }
+        .delete-action-btn:hover {
+            background-color: #fff5f5;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -14,13 +26,7 @@
             </div>
             <div class="header-center"><h1 id="detail-title">子ども情報</h1></div>
             <div class="header-right">
-                <button class="icon-button edit-button" id="edit-button-link">
-                    <span class="icon">✎</span> 
-                </button>
-                <button class="icon-button delete-button-icon" onclick="showDeleteKidModal()">
-                    <span class="icon">🗑️</span>
-                </button>
-            </div>
+                </div>
         </header>
 
         <main class="main-content">
@@ -43,38 +49,41 @@
                 </div>
             </section>
 
-            <main class="main-content">
-
-    
-                <button class="secondary-button" id="growth-record-link">
-                    <span class="icon">📈</span> 成長記録
+            <div class="form-actions" style="margin-top: 20px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 15px;">
+                <button type="button" class="primary-button large-button" id="edit-btn">
+                    編集
                 </button>
-                
-                <div class="form-actions delete-area" style="margin-top: 20px;">
-                </div>
-            </main>
+                <button type="button" class="primary-button large-button delete-action-btn" onclick="showDeleteModal()">
+                    削除
+                </button>
+            </div>
 
+            <button class="secondary-button" id="growth-record-link">
+                <span class="icon">📈</span> 成長記録
+            </button>
+            
         </main>
 
         <nav class="bottom-nav">
             <a href="top.html" class="nav-item"><span class="icon">🖼️</span>アルバム</a>
-            <a href="height_measure.html" class="nav-item "><span class="icon">📷</span>カメラ</a>
+            <a href="height_measure.html" class="nav-item"><span class="icon">📷</span>カメラ</a>
             <a href="family_member.html" class="nav-item active"><span class="icon">👪</span>家族</a>
        </nav>  
 
     </div>
  
-    <div id="delete-kid-modal" class="modal-overlay" style="display:none;">
-            <div class="modal-content">
-                      <p id="kid-modal-message">子どもの情報を削除しますか？</p>                     <div class="modal-buttons">
-                             <button class="button-yes" onclick="deleteKidConfirmed()">はい</button>
-                             <button class="button-no" onclick="hideDeleteKidModal()">いいえ</button>
-                      </div>
+    <div id="delete-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <p id="modal-message">子どもの情報を削除しますか？</p>
+            <div class="modal-buttons">
+                <button class="button-yes" onclick="deleteKidConfirmed()">はい</button>
+                <button class="button-no" onclick="hideDeleteModal()">いいえ</button>
             </div>
+        </div>
     </div>
 
     <script>
-        // 子どもデータ定義 (本来はサーバーサイドやAPIから取得するデータ)
+        // 子どもデータ定義
         const kids = {
             'a': {
                 name: 'Aちゃん',
@@ -93,17 +102,14 @@
         };
 
         // URLからクエリパラメータを取得
-                const params = new URLSearchParams(window.location.search);
-                const currentKidId = params.get('id');
+        const params = new URLSearchParams(window.location.search);
+        const currentKidId = params.get('id');
 
         function loadKidDetail() {
-            // URLからクエリパラメータを取得
-            const params = new URLSearchParams(window.location.search);
             const kidId = params.get('id');
             const data = kids[kidId];
 
             if (!data) {
-                // データが見つからない場合の処理
                 document.getElementById('detail-title').textContent = '情報が見つかりません';
                 document.querySelector('.main-content').innerHTML = '<p style="text-align:center; margin-top: 50px;">指定された子どもの情報がありません。</p>';
                 return;
@@ -111,63 +117,55 @@
 
             // 1. ヘッダーを更新
             document.getElementById('detail-title').textContent = `子ども情報 (${data.title_name})`;
-            // 編集リンクを更新 (kids_add.html?edit=a or b)
-            document.getElementById('edit-button-link').onclick = () => {
+            
+            // 2. 編集ボタンのリンク設定
+            document.getElementById('edit-btn').onclick = () => {
                 location.href = `kids_edit.html?edit=${kidId}`;
             };
 
-            // 2. 詳細情報を更新
+            // 3. 詳細情報を更新
             document.getElementById('kid-name').textContent = data.name;
             document.getElementById('kid-gender').textContent = data.gender;
             document.getElementById('kid-birthday').textContent = data.birthday;
             document.getElementById('kid-age').textContent = data.age;
 
-            // 3. 成長記録リンクを更新
+            // 4. 成長記録リンクを更新
             document.getElementById('growth-record-link').onclick = () => {
                 location.href = `growth_view.html?kid=${kidId}`;
             };
         }
 
-/**
-         * 💡【追加】子ども削除モーダルを表示
-         */ 
-            function showDeleteKidModal() {
-            const data = kids[currentKidId];
-            const kidName = data ? data.name : 'この子どもの情報';
-
-            // モーダル内のメッセージを更新
-            document.getElementById('kid-modal-message').textContent = `子どもの情報を削除しますか？`;
- 
-             // モーダルを表示
-            document.getElementById('delete-kid-modal').style.display = 'flex';
-             }
+        /**
+         * 💡 修正: 共通のモーダル表示関数名に変更
+         */ 
+        function showDeleteModal() {
+            // モーダルを表示
+            document.getElementById('delete-modal').style.display = 'flex';
+        }
 
          /**
-         * 💡【追加】子ども削除モーダルを非表示
-         */
-            function hideDeleteKidModal() {
-             document.getElementById('delete-kid-modal').style.display = 'none';
-            }
+         * 💡 修正: 共通のモーダル非表示関数名に変更
+         */
+        function hideDeleteModal() {
+             document.getElementById('delete-modal').style.display = 'none';
+        }
 
-
-          /**
-         * 💡【修正】子ども情報削除の実行
-         */
-            function deleteKidConfirmed() {
-            const data = kids[currentKidId];
-            const kidName = data ? data.name : 'この子どもの情報';
-
+        /**
+         * 削除実行処理
+         */
+        function deleteKidConfirmed() {
             // 削除処理のシミュレーション
+            console.log(`子ども情報(ID:${currentKidId})を削除しました`);
  
             // モーダルを閉じる
-             hideDeleteKidModal();
+            hideDeleteModal();
  
-            // 削除後、家族メンバー一覧画面へ遷移
+            // 削除後、家族メンバー一覧画面の子どもタブへ遷移
             location.href = 'family_member.html?tab=kid';
         }
 
-            // ページ読み込み時に実行
-            document.addEventListener('DOMContentLoaded', loadKidDetail);
+        // ページ読み込み時に実行
+        document.addEventListener('DOMContentLoaded', loadKidDetail);
     </script>
 </body>
 </html>
