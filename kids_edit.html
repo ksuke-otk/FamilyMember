@@ -96,27 +96,36 @@
         location.href = 'family_member.html?tab=kid';
         }
         
-        /**
-         * 💡 新規追加: 編集完了ボタン押下時の処理
-         * @param {Event} event 
-         */
-        function handleEdit(event) {
-            event.preventDefault(); 
-            const form = document.getElementById('edit-family-form');
+// kids_edit.html の handleEdit 関数
+function handleEdit(event) {
+    event.preventDefault(); 
+    const form = document.getElementById('edit-family-form');
 
-            if (!form.checkValidity()) {
-                console.log("必須項目が未入力です。");
-                return; 
-            }
-            
-            const name = form.elements['kid-name'].value;
-            // ... (その他のデータ取得/更新処理) ...
+    if (!form.checkValidity()) {
+        console.log("必須項目が未入力です。");
+        return; 
+    }
+    
+    // フォームから最新の値を取得
+    const name = form.elements['kid-name'].value;
+    const gender = form.elements['kid-gender'].value;
+    const birthday = form.elements['kid-birthday'].value;
+    
+    // データをURLパラメータとして確認画面に渡す
+    const params = new URLSearchParams({
+        id: currentKidId, // 編集対象のIDも忘れずに渡す
+        name: name,
+        gender: gender,
+        birthday: birthday
+    });
 
-            console.log(`子どもの情報 (ID: ${currentKidId}) を更新しました。`);
-            
-            // 💡 修正: 編集完了後、家族メンバー画面に遷移し、tab=kidを付与
-            location.href = 'family_member.html?tab=kid';
-        }
+    // 確認画面に遷移
+    location.href = `kids_edit_confirmation.html?${params.toString()}`;
+
+    // 💡 以前のコード（削除またはコメントアウト）
+    // console.log(`子どもの情報 (ID: ${currentKidId}) を更新しました。`);
+    // location.href = 'family_member.html?tab=kid';
+}
         
         /**
          * フォームの初期値を設定する処理
