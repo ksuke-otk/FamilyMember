@@ -167,21 +167,30 @@
 
 
             
-            // FormDataに選択されたファイルリストを追加 (アップロードシミュレーション用)
-            const formData = new FormData(form);
-            formData.delete('photos'); 
-            
-            selectedFiles.forEach(file => {
-                formData.append('photos[]', file, file.name); 
-            });
+// --- 💡 修正箇所: 確認画面へのデータ作成と遷移 ---
+    
+    // 1. 選択された子どもの名前を取得（ここでは value 属性を利用）
+    const selectedKids = Array.from(kidsCheckboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.nextSibling.textContent.trim()); // ラベルのテキストを取得
+    
+    // 2. 題名を取得
+    const caption = form.elements['caption'].value || '（題名なし）';
+    
+    // 3. クエリパラメータを作成
+    const params = new URLSearchParams();
+    params.append('file_count', selectedFiles.length); // ファイル数
+    params.append('caption', caption);                 // 題名
+    params.append('kids', selectedKids.join(','));     // 子どもタグ
+    
+    // 4. 確認画面に遷移
+    location.href = `picture_add_confirmation.html?${params.toString()}`;
+    // ----------------------------------------------------
 
-
-            // アップロード処理のシミュレーション
-            console.log(`${selectedFiles.length}枚の写真をアップロードします...`);
-
-            // 成功後、アルバムトップ画面に遷移
-            location.href = 'top.html';
-        }
+    // FormDataに選択されたファイルリストを追加 (アップロードシミュレーション用)
+    // ... (後続の FormData の処理は削除またはコメントアウト)
+    
+}
 
 // ----------------------------------------------------
         // 💡 新規/修正: キャンセルボタンの処理 (カスタムモーダル)
