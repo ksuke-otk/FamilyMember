@@ -49,24 +49,19 @@
             border-radius: 4px;
             margin-left: 5px;
         }
-        /* 💡 修正箇所: 管理者一覧内の削除ボタン（テキスト版）のスタイル */
+        /* 管理者一覧内の削除ボタンの位置調整 */
         .admin-item .delete-icon {
             position: static; 
             transform: none; 
             margin-left: 10px; 
-            color: var(--danger-color); /* 赤文字にする */
-            border: 1px solid var(--danger-color); /* 赤枠線を追加 */
-            border-radius: 6px;
-            padding: 4px 10px;
+            color: var(--light-gray);
             cursor: pointer;
-            font-size: 0.9em;
-            font-weight: bold;
-            background: #fff;
-            transition: all 0.2s;
+            font-size: 1.2em;
+            border: none;
+            background: none;
         }
         .admin-item .delete-icon:hover {
-            background-color: var(--danger-color);
-            color: #fff;
+            color: var(--danger-color);
         }
 
         /* アルバム削除エリアのスタイル */
@@ -152,8 +147,8 @@
                         </div>
                 </div>
                 
-                <a href="#" class="action-link" onclick="alert('パスワード変更画面へ遷移')">
-                    パスワードを変更する <span class="icon">∨</span>
+                <a href="password_change.html" class="action-link">
+                    管理者パスワードを変更する <span class="icon"></span>
                 </a>
 
                 <button class="logout-link-button" onclick="location.href='logout.html'">
@@ -298,7 +293,7 @@
                     ? `<span class="admin-name">${admin.name}</span><span class="self-badge">あなた</span>` 
                     : `<span class="admin-name">${admin.name}</span>`;
                 
-                // 💡 修正箇所: ゴミ箱アイコンから「削除」テキストボタンに変更
+                // 削除ボタン (テキスト版)
                 const deleteButton = admin.isSelf 
                     ? '' 
                     : `<button class="delete-icon" onclick="showDeleteAdminModal('${admin.id}', '${admin.name}')">削除</button>`;
